@@ -33,21 +33,21 @@ public class ModelTableBlockFullData extends ModelTableBlockAbstract {
 
    public static final int INDEX_07_HASH_RATE    = 7;
 
-   public static final int INDEX_08_PAYLOAD      = 8;
+   public static final int INDEX_08_MINER_STR    = 8;
 
-   public static final int INDEX_09_VERSION      = 9;
+   public static final int INDEX_09_PAYLOAD      = 9;
 
-   public static final int INDEX_10_TARGET       = 10;
+   public static final int INDEX_10_VERSION      = 10;
 
-   public static final int INDEX_11_PROOF_WORK   = 11;
+   public static final int INDEX_11_TARGET       = 11;
 
-   public static final int INDEX_12_SAFEBOX_HASH = 12;
+   public static final int INDEX_12_PROOF_WORK   = 12;
 
-   public static final int NUM_COLUMNS           = 13;
+   public static final int INDEX_13_SAFEBOX_HASH = 13;
+
+   public static final int NUM_COLUMNS           = 14;
 
    private BlockRange      currentRange;
-
-   private Object          diffUnitTime;
 
    public ModelTableBlockFullData(PascalSwingCtx psc) {
       super(psc, NUM_COLUMNS);
@@ -64,70 +64,13 @@ public class ModelTableBlockFullData extends ModelTableBlockAbstract {
       columnModel.setDouble(INDEX_05_REWARD, "reward");
       columnModel.setDouble(INDEX_06_FEE, "fee");
       columnModel.setLong(INDEX_07_HASH_RATE, "hashrate");
-      columnModel.setString(INDEX_08_PAYLOAD, "payload");
-      columnModel.setString(INDEX_09_VERSION, "version");
-      columnModel.setString(INDEX_10_TARGET, "target");
-      columnModel.setString(INDEX_11_PROOF_WORK, "pow");
-      columnModel.setString(INDEX_12_SAFEBOX_HASH, "safeboxhash");
+      columnModel.setString(INDEX_08_MINER_STR, "minerstat");
+      columnModel.setString(INDEX_09_PAYLOAD, "payload");
+      columnModel.setString(INDEX_10_VERSION, "version");
+      columnModel.setString(INDEX_11_TARGET, "target");
+      columnModel.setString(INDEX_12_PROOF_WORK, "pow");
+      columnModel.setString(INDEX_13_SAFEBOX_HASH, "safeboxhash");
 
-   }
-
-   public int getColumnIndexBlock() {
-      return INDEX_00_BLOCK;
-   }
-
-   public int getColumnIndexMiner() {
-      return INDEX_08_PAYLOAD;
-   }
-
-   public int getColumnIndexOps() {
-      return INDEX_03_OPERATIONS;
-   }
-
-   /**
-    * Called by Table when displaying rows
-    */
-   public Object getValueAt(int row, int col) {
-      Block a = getRow(row);
-      if (a == null) {
-         return null;
-      }
-      switch (col) {
-         case INDEX_00_BLOCK:
-            return a.getBlock();
-         case INDEX_01_DATE:
-            return this.psc.getDateUnit(a.getTimestamp()); //unix time is seconds. java is millis
-         case INDEX_02_TIME:
-            SupportBlock support = (SupportBlock) a.getObjectSupport();
-            if (support != null) {
-               return support.getTimeBlockDiffStr();
-            } else {
-               return null;
-            }
-         case INDEX_03_OPERATIONS:
-            Integer i = a.getOperationCount();
-            return i;
-         case INDEX_06_FEE:
-            Double d = a.getFee();
-            return d;
-         case INDEX_05_REWARD:
-            return a.getReward();
-         case INDEX_10_TARGET:
-            return a.getCompactTarget();
-         case INDEX_09_VERSION:
-            return a.getVersion();
-         case INDEX_08_PAYLOAD:
-            return a.getPayload();
-         case INDEX_11_PROOF_WORK:
-            return a.getProofOfWork();
-         case INDEX_12_SAFEBOX_HASH:
-            return a.getSafeBoxHash();
-         case INDEX_07_HASH_RATE:
-            return a.getLast50HashRateKhs();
-         default:
-            break;
-      }
-      return null;
    }
 
    public void computeStatsGlobal() {
@@ -144,6 +87,7 @@ public class ModelTableBlockFullData extends ModelTableBlockAbstract {
          Integer accountAtRowInteger = blockAtRow.getBlock();
          //TODO this depends on the ordering of incoming blocks
          if (row != rowLast) {
+            //we must take the block not from the row 
             Block blockBefore = getRow(row + 1);
             SupportBlock supportBlockBefore = (SupportBlock) blockBefore.getObjectSupport();
             long diffUnixTime = blockAtRow.getTimestamp().longValue() - blockBefore.getTimestamp().longValue();
@@ -153,7 +97,6 @@ public class ModelTableBlockFullData extends ModelTableBlockAbstract {
 
             //was set during creation
             supportBlock.getMinerStat().addBlockTime((int) diffUnixTime);
-
 
             if (row == 0) {
                //first row
@@ -195,5 +138,79 @@ public class ModelTableBlockFullData extends ModelTableBlockAbstract {
       psc.getIntToColor().incrementLighBgCarrouselIndex();
       support.setBlockRange(newRange);
       return newRange;
+   }
+
+   public int getColumnIndexBlock() {
+      return INDEX_00_BLOCK;
+   }
+
+   public int getColumnIndexBlockTime() {
+      return INDEX_02_TIME;
+   }
+
+   public int getColumnIndexMiner() {
+      return INDEX_09_PAYLOAD;
+   }
+
+   public int getColumnIndexMinerStat() {
+      return INDEX_08_MINER_STR;
+   }
+
+   public int getColumnIndexOps() {
+      return INDEX_03_OPERATIONS;
+   }
+
+   /**
+    * Called by Table when displaying rows
+    */
+   public Object getValueAt(int row, int col) {
+      Block a = getRow(row);
+      if (a == null) {
+         return null;
+      }
+      SupportBlock support = null;
+      switch (col) {
+         case INDEX_00_BLOCK:
+            return a.getBlock();
+         case INDEX_01_DATE:
+            return this.psc.getDateUnit(a.getTimestamp()); //unix time is seconds. java is millis
+         case INDEX_02_TIME:
+            support = (SupportBlock) a.getObjectSupport();
+            if (support != null) {
+               return support.getTimeBlockDiffStr();
+            } else {
+               return null;
+            }
+         case INDEX_03_OPERATIONS:
+            Integer i = a.getOperationCount();
+            return i;
+         case INDEX_06_FEE:
+            Double d = a.getFee();
+            return d;
+         case INDEX_05_REWARD:
+            return a.getReward();
+         case INDEX_11_TARGET:
+            return a.getCompactTarget();
+         case INDEX_08_MINER_STR:
+            support = (SupportBlock) a.getObjectSupport();
+            if (support != null) {
+               return support.getMinerStat().computeStatString();
+            } else {
+               return "";
+            }
+         case INDEX_10_VERSION:
+            return a.getVersion();
+         case INDEX_09_PAYLOAD:
+            return a.getPayload();
+         case INDEX_12_PROOF_WORK:
+            return a.getProofOfWork();
+         case INDEX_13_SAFEBOX_HASH:
+            return a.getSafeBoxHash();
+         case INDEX_07_HASH_RATE:
+            return a.getLast50HashRateKhs();
+         default:
+            break;
+      }
+      return null;
    }
 }

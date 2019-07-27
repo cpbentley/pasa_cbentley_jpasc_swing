@@ -175,7 +175,7 @@ public abstract class TablePanelOperationAbstract extends TablePanelAbstract<Ope
    public void setColumnRenderers() {
       //then set specifics
       CellRendereManager crm = psc.getCellRendereManager();
-      getBenTable().setColumnRenderer(getColumnIndexBlock(), crm.getBlock());
+      getBenTable().setColumnRenderer(getColumnIndexBlock(), crm.getCellRendererBlockInteger());
       getBenTable().setColumnRenderer(getColumnIndexOpCount(), crm.getCellRendererOpCount());
       getBenTable().setColumnRenderer(getColumnIndexType(), crm.getCellRendererOpType());
       getBenTable().setColumnRenderer(getColumnIndexTypeSub(), crm.getCellRendererOpTypeSub());

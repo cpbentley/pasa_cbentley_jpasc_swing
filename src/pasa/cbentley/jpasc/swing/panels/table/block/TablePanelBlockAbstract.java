@@ -43,6 +43,14 @@ public abstract class TablePanelBlockAbstract extends TablePanelAbstract<Block> 
       return getTableModel().getColumnIndexBlock();
    }
 
+   protected int getColumnIndexBlockMinerStat() {
+      return getTableModel().getColumnIndexMinerStat();
+   }
+
+   protected int getColumnIndexBlockTime() {
+      return getTableModel().getColumnIndexBlockTime();
+   }
+
    public void cmdShowSelectedBlockOperationsTabHome() {
       //#debug
       toDLog().pFlow("", this, TablePanelBlockAbstract.class, "cmdShowSelectedBlockOperationsTabHome", LVL_05_FINE, true);
@@ -57,9 +65,11 @@ public abstract class TablePanelBlockAbstract extends TablePanelAbstract<Block> 
 
    public void setColumnRenderers() {
       CellRendereManager crm = psc.getCellRendereManager();
-      getBenTable().setColumnRenderer(getColumnIndexBlock(), crm.getBlock());
+      getBenTable().setColumnRenderer(getColumnIndexBlock(), crm.getCellRendererBlockInteger());
+      getBenTable().setColumnRenderer(getColumnIndexBlockTime(), crm.getCellRendererBlockTime());
       getBenTable().setColumnRenderer(getColumnIndexOps(), crm.getCellRendererBlockOp());
       getBenTable().setColumnRenderer(getColumnIndexMiner(), crm.getCellRendererBlockMiner());
+      getBenTable().setColumnRenderer(getColumnIndexBlockMinerStat(), crm.getCellRendererBlockMiner());
    }
 
    /**

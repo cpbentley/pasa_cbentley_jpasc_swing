@@ -18,36 +18,13 @@ import pasa.cbentley.core.src4.utils.ColorUtils;
 import pasa.cbentley.jpasc.pcore.interfaces.IBlockListener;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 
-public class CellRendererBlockRGB extends DefaultTableCellRenderer implements TableCellRenderer, IBlockListener {
+public class CellRendererBlockRGB extends DefaultTableCellRenderer implements TableCellRenderer {
 
    private PascalSwingCtx psc;
-
-   private int            currentBlock = 0;
 
    public CellRendererBlockRGB(PascalSwingCtx psc) {
       this.psc = psc;
       super.setOpaque(true);
-
-      //listen to blocks
-      psc.addBlockListener(this);
-   }
-
-   public void pingNewBlock(Integer newBlock, long millis) {
-      if(newBlock != null) {
-         currentBlock = newBlock.intValue();
-      }
-   }
-
-   public void pingNoBlock(long millis) {
-   }
-
-   public void pingNewPendingCount(Integer count, Integer oldCount) {
-   }
-
-   public void pingDisconnect() {
-   }
-
-   public void pingError() {
    }
 
    @Override
@@ -60,6 +37,7 @@ public class CellRendererBlockRGB extends DefaultTableCellRenderer implements Ta
       }
       Number value = (Number) aNumberValue;
       int block = value.intValue();
+      int currentBlock = psc.getPCtx().getRPCConnection().getLastBlockMinedValue();
       int diff = currentBlock - block;
       int div = diff / 128;
       int mod = diff % 128;
@@ -72,27 +50,5 @@ public class CellRendererBlockRGB extends DefaultTableCellRenderer implements Ta
       renderer.setForeground(c);
       return this;
    }
-
-   //#mdebug
-   public String toString() {
-      return Dctx.toString(this);
-   }
-
-   public void toString(Dctx dc) {
-      dc.root(this, "CellRendererBlockRGB");
-   }
-
-   public String toString1Line() {
-      return Dctx.toString1Line(this);
-   }
-
-   public void toString1Line(Dctx dc) {
-      dc.root1Line(this, "CellRendererBlockRGB");
-   }
-
-   public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
-   }
-   //#enddebug
 
 }

@@ -19,10 +19,10 @@ public class CellRendererBlock extends DefaultTableCellRenderer implements Table
    private Number baseValue   = 0;
 
 
-   private PascalSwingCtx psc2;
+   private PascalSwingCtx psc;
 
    public CellRendererBlock(PascalSwingCtx psc) {
-      this.psc2 = psc;
+      this.psc = psc;
       super.setOpaque(true);
    }
 
@@ -35,7 +35,17 @@ public class CellRendererBlock extends DefaultTableCellRenderer implements Table
       if (baseValue == null) {
          baseValue = value;
       }
-      int color = psc2.getRandom().nextInt();
+      
+      int lastBlockMined = psc.getPCtx().getRPCConnection().getLastBlockMinedValue();
+      int diff = lastBlockMined - value.intValue();
+      Color colorForeground = null;
+      Color colorBackground = null;
+      if(diff == 0) {
+         colorForeground = Color.BLACK;
+      } else {
+         
+      }
+      int color = psc.getRandom().nextInt();
       Color c = new Color(color);
       renderer.setForeground(c);
       return this;

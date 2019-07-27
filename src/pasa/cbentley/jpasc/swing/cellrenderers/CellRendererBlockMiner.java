@@ -12,7 +12,14 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
+import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableBlockFullData;
+import pasa.cbentley.jpasc.swing.utils.SupportBlock;
 
+/**
+ * Renders the payload cell of a block, depends on the miner string
+ * @author Charles Bentley
+ *
+ */
 public class CellRendererBlockMiner extends PascalTableCellRenderer implements TableCellRenderer {
 
    public CellRendererBlockMiner(PascalSwingCtx psc) {
@@ -30,20 +37,21 @@ public class CellRendererBlockMiner extends PascalTableCellRenderer implements T
       if (isSelected) {
          return this;
       }
-      String minerNameStr = (String) minerName;
-      int min = Math.min(8, minerNameStr.length());
-      String str8 = minerNameStr.substring(0, min);
+      
+      ModelTableBlockFullData model = (ModelTableBlockFullData)table.getModel();
+      int modelIndex = table.convertRowIndexToModel(row);
+      SupportBlock supportBlock = (SupportBlock) model.getRow(modelIndex).getObjectSupport();
+      String minerKey = supportBlock.getMinerKey();
       Color c = null;
       if (isDarkTheme()) {
-         c = psc.getIntToColor().getColorDarkBgName(str8);
+         c = psc.getIntToColor().getColorDarkBgName(minerKey);
       } else {
-         c = psc.getIntToColor().getColorLightBgNameMiner(str8);
+         c = psc.getIntToColor().getColorLightBgNameMiner(minerKey);
       }
       if (isSelected) {
          c = psc.getCellRendereManager().getSelectedColor(c);
       }
       renderer.setBackground(c);
-      setText(minerNameStr);
       return this;
    }
 

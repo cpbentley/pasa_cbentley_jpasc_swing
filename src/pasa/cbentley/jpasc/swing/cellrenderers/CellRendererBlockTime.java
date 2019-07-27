@@ -10,8 +10,11 @@ import java.awt.Component;
 
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
+import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableBlockFullData;
+import pasa.cbentley.jpasc.swing.utils.SupportBlock;
 
 /**
  * Colors the block time cell with a color
@@ -41,17 +44,22 @@ public class CellRendererBlockTime extends PascalTableCellRenderer implements Ta
       if(isSelected) {
          return this;
       }
-      
-      Number value = (Number) aNumberValue;
-      int iv = value.intValue();
-      int c = 0;
-      if(isDarkTheme()) {
-         c = psc.getIntToColor().getColorDarkFgOp(iv);
+      //we have a string.. we need the value
+      ModelTableBlockFullData model = (ModelTableBlockFullData)table.getModel();
+      int modelIndex = table.convertRowIndexToModel(row);
+      SupportBlock supportBlock = (SupportBlock) model.getRow(modelIndex).getObjectSupport();
+      int diffSeconds = (int) supportBlock.getTimeBlockDiff();
+      //should be 5 minutes so 
+      int minutes5 = 60 * 5;
+      int diff = minutes5 - diffSeconds;
+      Color color = null;
+      if(diff > 0) {
+         //less get a 
+         color = psc.getIntToColor().getColorLightBlockTimeBelow(diff);
       } else {
-         c = psc.getIntToColor().getColorLightFgOp(iv);
+         color = psc.getIntToColor().getColorLightBlockTimeAbove(Math.abs(diff));
       }
-      //TODO map real objects
-      renderer.setForeground(new Color(c));
+      renderer.setBackground(color);
       return this;
    }
 

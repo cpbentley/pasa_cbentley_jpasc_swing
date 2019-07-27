@@ -15,6 +15,8 @@ public class SupportBlock implements IStringable {
 
    private BlockRange       blockRange;
 
+   private String           minerKey;
+
    private MinerStat        minerStat;
 
    protected final PCoreCtx pc;
@@ -22,8 +24,6 @@ public class SupportBlock implements IStringable {
    private long             timeBlockDiff;
 
    private String           timeBlockDiffStr;
-
-   private String           minerKey;
 
    public SupportBlock(PCoreCtx pc) {
       this.pc = pc;
@@ -33,24 +33,48 @@ public class SupportBlock implements IStringable {
       return blockRange;
    }
 
+   public String getMinerKey() {
+      return minerKey;
+   }
+
    public MinerStat getMinerStat() {
       return minerStat;
    }
 
+   /**
+    * Get block diff in seconds
+    * @return
+    */
    public long getTimeBlockDiff() {
       return timeBlockDiff;
+   }
+
+   public String getTimeBlockDiffStr() {
+      return timeBlockDiffStr;
    }
 
    public void setBlockRange(BlockRange blockRange) {
       this.blockRange = blockRange;
    }
 
+   public void setMinerKey(String minerKey) {
+      this.minerKey = minerKey;
+   }
+
    public void setMinerStat(MinerStat minerStat) {
       this.minerStat = minerStat;
    }
 
+   /**
+    * Block diff in seconds
+    * @param timeBlockDiff
+    */
    public void setTimeBlockDiff(long timeBlockDiff) {
       this.timeBlockDiff = timeBlockDiff;
+   }
+
+   public void setTimeBlockDiffStr(String timeBlockDiffStr) {
+      this.timeBlockDiffStr = timeBlockDiffStr;
    }
 
    //#mdebug
@@ -82,22 +106,6 @@ public class SupportBlock implements IStringable {
 
    private void toStringPrivate(Dctx dc) {
 
-   }
-
-   public String getTimeBlockDiffStr() {
-      return timeBlockDiffStr;
-   }
-
-   public void setTimeBlockDiffStr(String timeBlockDiffStr) {
-      this.timeBlockDiffStr = timeBlockDiffStr;
-   }
-
-   public String getMinerKey() {
-      return minerKey;
-   }
-
-   public void setMinerKey(String minerKey) {
-      this.minerKey = minerKey;
    }
 
    //#enddebug

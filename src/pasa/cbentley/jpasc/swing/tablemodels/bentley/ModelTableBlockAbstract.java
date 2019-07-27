@@ -56,7 +56,9 @@ public abstract class ModelTableBlockAbstract extends ModelTableBAbstractWithCol
    }
 
    public abstract int getColumnIndexBlock();
-
+   
+   public abstract int getColumnIndexBlockTime();
+   public abstract int getColumnIndexMinerStat();
    public abstract int getColumnIndexOps();
 
    public int getTotalOps() {

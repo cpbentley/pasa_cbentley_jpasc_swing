@@ -27,49 +27,49 @@ import pasa.cbentley.swing.ctx.IEventsSwing;
 
 public class CellRendereManager implements IEventConsumer, IStringable, PropertyChangeListener {
 
-   private CellRendererAccount           cellRendererAccount;
+   private CellRendererAccount                cellRendererAccount;
 
-   private CellRendererAccountAge     cellRendererAccountAge;
+   private CellRendererAccountAge             cellRendererAccountAge;
 
-   private CellRendererAccountContiguous cellRendererAccountContiguous;
+   private CellRendererAccountContiguous      cellRendererAccountContiguous;
 
    private CellRendererAccountContiguousCount cellRendererAccountContiguousCount;
 
-   private CellRendererAccountOpCount cellRendererAccountOpCount;
+   private CellRendererAccountOpCount         cellRendererAccountOpCount;
 
-   private CellRendererOpAccount         cellRendererAccountOperation;
+   private CellRendererOpAccount              cellRendererAccountOperation;
 
-   private CellRendererAccountSoldContiguous cellRendererAccountSoldContiguous;
+   private CellRendererAccountSoldContiguous  cellRendererAccountSoldContiguous;
 
-   private CellRendererBalance           cellRendererBalanceInteger;
+   private CellRendererBalance                cellRendererBalanceInteger;
 
-   private TableCellRenderer             cellRendererBlock;
+   private TableCellRenderer                  cellRendererBlock;
 
-   private CellRendererBlockMiner cellRendererBlockMiner;
+   private CellRendererBlockMiner             cellRendererBlockMiner;
 
-   private CellRendererBlockOp        cellRendererBlockOp;
+   private CellRendererBlockOp                cellRendererBlockOp;
 
-   private CellRendererRedGreenDouble    cellRendererDouble;
+   private CellRendererRedGreenDouble         cellRendererDouble;
 
-   private CellRendererKeyAccountNum  cellRendererKeyAccountNum;
+   private CellRendererKeyAccountNum          cellRendererKeyAccountNum;
 
-   private CellRendererKeyName           cellRendererKeyName;
+   private CellRendererKeyName                cellRendererKeyName;
 
-   private CellRendererOpCount           cellRendererOpCount;
+   private CellRendererOpCount                cellRendererOpCount;
 
-   private CellRendererOpType         cellRendererOpType;
+   private CellRendererOpType                 cellRendererOpType;
 
-   private CellRendererOpTypeSub      cellRendererOpTypeSub;
+   private CellRendererOpTypeSub              cellRendererOpTypeSub;
 
-   private CellRendererPasaPrice         cellRendererPasaPrice;
+   private CellRendererPasaPrice              cellRendererPasaPrice;
 
-   private CellRendererTime              cellRendererTime;
+   private CellRendererTime                   cellRendererTime;
 
-   private boolean                       isDarkTheme;
+   private boolean                            isDarkTheme;
 
-   private PascalSwingCtx                psc;
+   private PascalSwingCtx                     psc;
 
-   private List<PascalTableCellRenderer> renderers;
+   private List<PascalTableCellRenderer>      renderers;
 
    public CellRendereManager(PascalSwingCtx psc) {
       this.psc = psc;
@@ -109,7 +109,11 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
 
    }
 
-   public TableCellRenderer getBlock() {
+   /**
+    * 
+    * @return
+    */
+   public TableCellRenderer getCellRendererBlockInteger() {
       if (cellRendererBlock == null) {
          cellRendererBlock = new CellRendererBlockRGB(psc);
          //cellRendererBlock = new CellRendererBlockRandom(psc);
@@ -124,6 +128,15 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
          registerRenderer(cellRendererKeyAccountNum);
       }
       return cellRendererKeyAccountNum;
+   }
+
+   private CellRendererBlockTime cellRendererBlockTime;
+
+   public CellRendererBlockTime getCellRendererBlockTime() {
+      if (cellRendererBlockTime == null) {
+         cellRendererBlockTime = new CellRendererBlockTime(psc);
+      }
+      return cellRendererBlockTime;
    }
 
    public CellRendererAccount getCellRendererAccount() {
@@ -307,9 +320,6 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
       renderers.add(renderer);
    }
 
-
-
- 
    //#mdebug
    public IDLog toDLog() {
       return toStringGetUCtx().toDLog();
@@ -341,6 +351,5 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
       return psc.getUCtx();
    }
    //#enddebug
-   
 
 }
