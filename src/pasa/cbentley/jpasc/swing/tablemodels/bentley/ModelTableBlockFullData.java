@@ -57,8 +57,8 @@ public class ModelTableBlockFullData extends ModelTableBlockAbstract {
       columnModel.setKeyPrefixTip("table.block.coltip.");
 
       columnModel.setInteger(INDEX_00_BLOCK, "block");
-      columnModel.setDate(INDEX_01_DATE, "date");
-      columnModel.setDate(INDEX_02_TIME, "time");
+      columnModel.setString(INDEX_01_DATE, "date");
+      columnModel.setString(INDEX_02_TIME, "time");
       columnModel.setInteger(INDEX_03_OPERATIONS, "ops");
       columnModel.setDouble(INDEX_04_VOLUME, "volume");
       columnModel.setDouble(INDEX_05_REWARD, "reward");
@@ -173,7 +173,12 @@ public class ModelTableBlockFullData extends ModelTableBlockAbstract {
          case INDEX_00_BLOCK:
             return a.getBlock();
          case INDEX_01_DATE:
-            return this.psc.getDateUnit(a.getTimestamp()); //unix time is seconds. java is millis
+            support = (SupportBlock) a.getObjectSupport();
+            if (support != null) {
+               return support.getTimeStr();
+            } else {
+               return null;
+            }
          case INDEX_02_TIME:
             support = (SupportBlock) a.getObjectSupport();
             if (support != null) {

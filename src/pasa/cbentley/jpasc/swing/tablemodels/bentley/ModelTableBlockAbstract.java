@@ -5,6 +5,7 @@
  */
 package pasa.cbentley.jpasc.swing.tablemodels.bentley;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import com.github.davidbolet.jpascalcoin.api.model.Block;
@@ -129,7 +130,9 @@ public abstract class ModelTableBlockAbstract extends ModelTableBAbstractWithCol
 
       SupportBlock supportBlock = new SupportBlock(psc.getPCtx());
       a.setObjectSupport(supportBlock);
-
+      Date date = psc.getDateUnit(a.getTimestamp()); //unix time is seconds. java is millis
+      String timeStr =  psc.getFormatDateTime().format(date);
+      supportBlock.setTimeStr(timeStr);
       supportBlock.setMinerKey(minerKey);
       supportBlock.setMinerStat(minerStat);
    }

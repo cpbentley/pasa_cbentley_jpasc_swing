@@ -25,6 +25,8 @@ public class SupportBlock implements IStringable {
 
    private String           timeBlockDiffStr;
 
+   private String timeStr;
+
    public SupportBlock(PCoreCtx pc) {
       this.pc = pc;
    }
@@ -63,6 +65,15 @@ public class SupportBlock implements IStringable {
 
    public void setMinerStat(MinerStat minerStat) {
       this.minerStat = minerStat;
+   }
+   
+   
+   
+   public String getTimeStr() {
+      return timeStr;
+   }
+   public void setTimeStr(String timeStr) {
+      this.timeStr = timeStr;
    }
 
    /**
@@ -107,6 +118,8 @@ public class SupportBlock implements IStringable {
    private void toStringPrivate(Dctx dc) {
 
    }
+
+ 
 
    //#enddebug
 
