@@ -57,9 +57,10 @@ public class CellRendererBlockSomeTesting extends DefaultTableCellRenderer imple
       Number valueN = (Number) value;
       str = String.valueOf(valueN.intValue());
       
+      //#mdebug
       String dstr = str + " isSel=" + isSelected + " hasF=" + hasFocus + " row" + rowIndex + " col=" + vColIndex;
       psc.toDLog().pTest(dstr, null, CellRendererBlockSomeTesting.class, "getTableCellRendererComponent", ITechLvl.LVL_04_FINER, true);
-
+      //#enddebug
       
       return renderer;
    }

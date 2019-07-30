@@ -26,13 +26,10 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -138,11 +135,19 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     */
    private BackForwardTabPage                backForwardManager;
 
+   StringBBuilder blockTimeBuilder;
+
+   DecimalFormat  blockTimesFormat = new DecimalFormat("##.##");
+
    private CellRendereManager                cellRendereManager;
 
    private final Color                       colorGreen      = new Color(0x228b22);
 
    private final Color                       colorRed        = new Color(0x8b0000);
+
+   private Color[] colorsAccountAge;
+
+   private Color[] colorsAccountContiguous;
 
    private int                               currentMode;
 
@@ -243,7 +248,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       this.sc = sc;
 
       blockTimeBuilder = new StringBBuilder();
-      
+
       setFilterInteger(new FilterIntOrEmpty(sc));
       setFilterDouble(new FilterDoubleOrEmpty(sc));
 
@@ -282,6 +287,10 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     */
    public void addBlockListener(IBlockListener listener) {
       swingBlockEvent.addBlockListener(listener);
+   }
+
+   public void addI18NKey(List<String> list) {
+      list.add("i18nPascalSwing");
    }
 
    public void appendToPane(JTextPane tp, String msg, Color c) {
@@ -441,45 +450,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       return sc.getUtils().iconToImage(ii);
    }
 
-   //   /**
-   //    * Add the {@link JTable} to the center inside a {@link JScrollPane}
-   //    * @param psc
-   //    * @param tableModel
-   //    * @param panel
-   //    * @return
-   //    */
-   //   public JTable createTableAndLink(PascalSwingCtx psc, AbstractTableModel tableModel, JPanel panel) {
-   //      JTable table = new JTable(tableModel);
-   //      table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-   //      //table.setFillsViewportHeight(true);
-   //      table.setAutoCreateRowSorter(true);
-   //      table.setDefaultRenderer(Date.class, new CellRendererTime(psc));
-   //      table.setDefaultRenderer(Double.class, psc.getCellRendererDouble());
-   //
-   //      //Create the scroll pane and add the table to it.
-   //      JScrollPane scrollPane = new JScrollPane(table);
-   //
-   //      table.getTableHeader().addMouseListener(new MouseAdapter() {
-   //         @Override
-   //         public void mouseClicked(MouseEvent e) {
-   //            System.out.println("mouseClicked Table Header " + e.getButton());
-   //            int col = table.columnAtPoint(e.getPoint());
-   //            if (e.getButton() == MouseEvent.BUTTON3) {
-   //               resizeColumnWidth(table, col);
-   //               table.revalidate();
-   //               table.repaint();
-   //               String name = table.getColumnName(col);
-   //               psc.getLog().consoleLog(name + " column resized");
-   //            }
-   //
-   //         }
-   //      });
-   //
-   //      //Add the scroll pane to this panel.
-   //      panel.add(scrollPane, BorderLayout.CENTER);
-   //      return table;
-   //   }
-
    public ImageIcon createImageIcon(String path, String description) {
       return sc.createImageIcon(path, description);
    }
@@ -508,59 +478,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       } else {
          return new Color(ColorUtils.FR_CYAN_Aigue_marine);
       }
-   }
-
-   private Color[] colorsAccountContiguous;
-
-   private Color[] getColorsAccountContiguous() {
-      if (colorsAccountContiguous == null) {
-         colorsAccountContiguous = new Color[6];
-         colorsAccountContiguous[0] = new Color(ColorUtils.FR_BEIGE_Blanc_neige);
-         colorsAccountContiguous[1] = new Color(ColorUtils.FR_BEIGE_Amande);
-         colorsAccountContiguous[2] = new Color(ColorUtils.FR_JAUNE_Ble);
-         colorsAccountContiguous[3] = new Color(ColorUtils.FR_ROSE_Pelure_doignon);
-         colorsAccountContiguous[4] = new Color(ColorUtils.FR_ROSE_Passion);
-         colorsAccountContiguous[5] = new Color(ColorUtils.FR_VIOLET_Byzantin);
-      }
-      return colorsAccountContiguous;
-   }
-
-   public Color getAccountContiguousColorLight(int streakCount) {
-      if (streakCount <= 1) {
-         return getColorsAccountContiguous()[0];
-      } else if (streakCount <= 10) {
-         return getColorsAccountContiguous()[1];
-      } else if (streakCount <= 30) {
-         return getColorsAccountContiguous()[2];
-      } else if (streakCount <= 50) {
-         return getColorsAccountContiguous()[3];
-      } else if (streakCount <= 70) {
-         return getColorsAccountContiguous()[4];
-      } else {
-         //70+
-         return getColorsAccountContiguous()[5];
-      }
-   }
-
-   private Color[] colorsAccountAge;
-
-   private Color[] getColorsAccountAge() {
-      if (colorsAccountAge == null) {
-         colorsAccountAge = new Color[11];
-         int index = 0;
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_ROUGE_Coquelicot); //0
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_SAUMON_Incarnat);
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_ORANGE_Blond);
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_ORANGE_Brulee); //3
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_VERT_Avocat);
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_VERT_Amande);
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_CYAN_Bleu_azur);
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_VERT_Blanc_menthe); // 7
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_CYAN_Bleu_canard); //8
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_CYAN_Aigue_marine); //9
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_BRUN_Alezan); //10
-      }
-      return colorsAccountAge;
    }
 
    public Color getAccountAgeColorLight(int age) {
@@ -594,6 +511,23 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
       int white = 0xFFFFFF;
       return new Color(white - account);
+   }
+
+   public Color getAccountContiguousColorLight(int streakCount) {
+      if (streakCount <= 1) {
+         return getColorsAccountContiguous()[0];
+      } else if (streakCount <= 10) {
+         return getColorsAccountContiguous()[1];
+      } else if (streakCount <= 30) {
+         return getColorsAccountContiguous()[2];
+      } else if (streakCount <= 50) {
+         return getColorsAccountContiguous()[3];
+      } else if (streakCount <= 70) {
+         return getColorsAccountContiguous()[4];
+      } else {
+         //70+
+         return getColorsAccountContiguous()[5];
+      }
    }
 
    public Integer getAccountNext(Integer account) {
@@ -633,6 +567,29 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       return backForwardManager;
    }
 
+   /**
+    * Can only be called from the UI Thread.
+    * 
+    * @param diifUnixTime unit time diff in seconds
+    * @return
+    */
+   public String getBlockTimeUIThread(long diffUnixTime) {
+      long millis = diffUnixTime * 1000;
+      int minutes = (int) TimeUnit.MILLISECONDS.toMinutes(millis);
+      int seconds = (int) (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(minutes));
+      //Formatter fr = new Formatter();
+      blockTimeBuilder.append(minutes);
+      blockTimeBuilder.append(',');
+      int c = blockTimeBuilder.getCount();
+      blockTimeBuilder.append(seconds);
+      if (c + 1 == blockTimeBuilder.getCount()) {
+         blockTimeBuilder.append('0');
+      }
+      String str = blockTimeBuilder.toString();
+      blockTimeBuilder.reset();
+      return str;
+   }
+
    public C5Ctx getC5() {
       return sc.getC5();
    }
@@ -658,6 +615,38 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       return new Color(account);
    }
 
+   private Color[] getColorsAccountAge() {
+      if (colorsAccountAge == null) {
+         colorsAccountAge = new Color[11];
+         int index = 0;
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_ROUGE_Coquelicot); //0
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_SAUMON_Incarnat);
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_ORANGE_Blond);
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_ORANGE_Brulee); //3
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_VERT_Avocat);
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_VERT_Amande);
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_CYAN_Bleu_azur);
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_VERT_Blanc_menthe); // 7
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_CYAN_Bleu_canard); //8
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_CYAN_Aigue_marine); //9
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_BRUN_Alezan); //10
+      }
+      return colorsAccountAge;
+   }
+
+   private Color[] getColorsAccountContiguous() {
+      if (colorsAccountContiguous == null) {
+         colorsAccountContiguous = new Color[6];
+         colorsAccountContiguous[0] = new Color(ColorUtils.FR_BEIGE_Blanc_neige);
+         colorsAccountContiguous[1] = new Color(ColorUtils.FR_BEIGE_Amande);
+         colorsAccountContiguous[2] = new Color(ColorUtils.FR_JAUNE_Ble);
+         colorsAccountContiguous[3] = new Color(ColorUtils.FR_ROSE_Pelure_doignon);
+         colorsAccountContiguous[4] = new Color(ColorUtils.FR_ROSE_Passion);
+         colorsAccountContiguous[5] = new Color(ColorUtils.FR_VIOLET_Byzantin);
+      }
+      return colorsAccountContiguous;
+   }
+
    public int getColumnHeaderWidth(JTable table, int column) {
 
       TableColumn tableColumn = table.getColumnModel().getColumn(column);
@@ -677,33 +666,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     */
    public Date getDateUnit(long unixTime) {
       return new Date(unixTime * 1000);
-   }
-
-   DecimalFormat  blockTimesFormat = new DecimalFormat("##.##");
-
-   StringBBuilder blockTimeBuilder;
-
-   /**
-    * Can only be called from the UI Thread.
-    * 
-    * @param diifUnixTime unit time diff in seconds
-    * @return
-    */
-   public String getBlockTimeUIThread(long diffUnixTime) {
-      long millis = diffUnixTime * 1000;
-      int minutes = (int)TimeUnit.MILLISECONDS.toMinutes(millis);
-      int seconds = (int)(TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(minutes));
-      //Formatter fr = new Formatter();
-      blockTimeBuilder.append(minutes);
-      blockTimeBuilder.append(',');
-      int c = blockTimeBuilder.getCount();
-      blockTimeBuilder.append(seconds);
-      if(c + 1 == blockTimeBuilder.getCount()) {
-         blockTimeBuilder.append('0');
-      }
-      String str = blockTimeBuilder.toString();
-      blockTimeBuilder.reset();
-      return str;
    }
 
    public PascalValueDefault getDefaults() {
@@ -967,10 +929,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       return colorRed;
    }
 
-   public RootPageManager getRootPageManager() {
-      return rootPageManager;
-   }
-
    //   public Account getSelectedAccount(ListAccountBasePanel lpane) {
    //      Account ac = null;
    //      int selRow = lpane.getJTable().getSelectedRow();
@@ -981,8 +939,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    //      return ac;
    //   }
 
-   public IRootTabPane getRootPrivateAssets() {
-      return rootPanePrivateAssets;
+   public RootPageManager getRootPageManager() {
+      return rootPageManager;
    }
 
    //   public Operation getSelectedOperation(JTable table, TableModelOperation tableModel) {
@@ -1014,6 +972,10 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    //      }
    //      return pk;
    //   }
+
+   public IRootTabPane getRootPrivateAssets() {
+      return rootPanePrivateAssets;
+   }
 
    public IRootTabPane getRootRPC() {
       return rootRPC;
@@ -1408,11 +1370,11 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       JOptionPane.showMessageDialog(c, message, "Error", JOptionPane.ERROR_MESSAGE, getIconErrorDialog());
    }
 
+   //#mdebug
    public IDLog toDLog() {
       return sc.toDLog();
    }
 
-   //#mdebug
    public void toString(Dctx dc) {
       dc.root(this, "PascalSwingCtx");
       toStringPrivate(dc);
@@ -1454,7 +1416,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       toStringPrivate(dc);
       super.toString1Line(dc.sup1Line());
    }
-   //#enddebug
 
    /**
     * A String for the whole application.
@@ -1548,7 +1509,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
             return "UnknonwnPID:" + pid;
       }
    }
-
+   //#enddebug
+   
    public boolean unlock(char[] ar) {
       boolean b = pc.getRPCConnection().unlock(new String(ar));
       if (b) {
@@ -1558,9 +1520,5 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
          getLog().consoleLogGreen("Wallet fail to unlock! Probably wrong password");
          return false;
       }
-   }
-
-   public void addI18NKey(List<String> list) {
-      list.add("i18nPascalSwing");
    }
 }

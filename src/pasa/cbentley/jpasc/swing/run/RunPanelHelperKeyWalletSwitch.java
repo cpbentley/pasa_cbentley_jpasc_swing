@@ -71,6 +71,9 @@ public class RunPanelHelperKeyWalletSwitch extends RunPascalSwingAbstract implem
       super();
    }
 
+   protected void addI18nPascal(List<String> list) {
+      list.add("i18nPascalSwingDemo");
+   }
 
    public void cmdRefresh(Object source) {
       //log it in the user console
@@ -87,6 +90,10 @@ public class RunPanelHelperKeyWalletSwitch extends RunPascalSwingAbstract implem
 
    public String getSelectorKeyPrefID() {
       return "VisualTestPanelKey";
+   }
+
+   protected void initForPrefsPascal(IPrefs prefs) {
+
    }
 
    /**
@@ -135,6 +142,7 @@ public class RunPanelHelperKeyWalletSwitch extends RunPascalSwingAbstract implem
     * setup the logger at. sub class may override.
     * Default opens all at finest level
     */
+   //#mdebug
    protected void toStringSetupLogger(UCtx uc) {
       BaseDLogger loggerFirst = (BaseDLogger) uc.toDLog();
       IConfig config = loggerFirst.getDefault().getConfig();
@@ -145,12 +153,5 @@ public class RunPanelHelperKeyWalletSwitch extends RunPascalSwingAbstract implem
       //negatives
       config.setFlagTagNeg(ITechTags.FLAG_07_PRINT_EVENT, true);
    }
-
-   protected void initForPrefsPascal(IPrefs prefs) {
-      
-   }
-
-   protected void addI18nPascal(List<String> list) {
-      list.add("i18nPascalSwingDemo");      
-   }
+   //#enddebug
 }

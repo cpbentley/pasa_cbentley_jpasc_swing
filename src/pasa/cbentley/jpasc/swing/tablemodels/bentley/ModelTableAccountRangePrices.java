@@ -165,7 +165,7 @@ public class ModelTableAccountRangePrices extends ModelTableAccountAbstract {
    }
 
    public Object getValueAt(int row, int col) {
-      //#never create an object here
+      //never create an object here
       Account a = getRow(row);
       if (a == null) {
          return null;
