@@ -42,25 +42,25 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
     */
    private static final long        serialVersionUID = -7955180093657758280L;
 
-   protected boolean                isTableUpdatingDisabled;
+   protected BCheckBox              cbRowNumbers;
 
-   protected final PascalSwingCtx   psc;
+   protected boolean                isAutoResizeColumns;
 
    /**
     * 
     */
    protected boolean                isFixedStatTextField;
 
+   protected boolean                isTableUpdatingDisabled;
+
+   protected PanelHelperRefresh     panelRefresh;
+
+   protected final PascalSwingCtx   psc;
+
    /**
     * Not null
     */
    protected PanelHelperLoadingStat statPanel;
-
-   protected PanelHelperRefresh     panelRefresh;
-
-   protected BCheckBox              cbRowNumbers;
-
-   protected boolean                isAutoResizeColumns;
 
    public TablePanelAbstract(PascalSwingCtx psc, String internalID) {
       super(psc.getSwingCtx(), internalID);
@@ -84,49 +84,6 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       }, "cb.rownumber");
    }
 
-   private void initPanelNorth() {
-      PanelPascal north = new PanelPascal(psc);
-      north.setLayout(new FlowLayout(FlowLayout.LEFT));
-      north.add(cbRowNumbers); //by default first position
-      subInitPanelNorth(north);
-      this.add(north, BorderLayout.NORTH);
-   }
-
-   protected void subInitPanelNorth(JPanel north) {
-
-   }
-
-   protected void subInitPanelSouth(JPanel south) {
-
-   }
-
-   protected void subWillRefreshTable() {
-
-   }
-
-   protected void subDidRefreshTable() {
-
-   }
-
-   private void initPanelSouth() {
-      PanelPascal south = new PanelPascal(psc);
-      south.setLayout(new FlowLayout(FlowLayout.LEFT));
-      subInitPanelSouth(south);
-      this.add(south, BorderLayout.SOUTH);
-   }
-
-   public void cmdRefresh(Object src) {
-      cmdTableRefresh();
-   }
-
-   /**
-    * Return the index of the column to be sorted by default
-    * @return
-    */
-   protected abstract int getDefSortColumnIndex();
-
-   protected abstract WorkerListTaskPage createWorker();
-
    protected void cmdClear() {
       //stop current worker
       if (this.workerTable != null) {
@@ -134,6 +91,10 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       }
       getBenTable().clearTableModel();
       this.repaint();
+   }
+
+   public void cmdRefresh(Object src) {
+      cmdTableRefresh();
    }
 
    /**
@@ -181,24 +142,16 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       subDidRefreshTable();
    }
 
+   protected abstract WorkerListTaskPage createWorker();
+
    /**
-    * By default, workers are paused, unless the user explicity asked the work to continue because
-    * user knows it will take some time and he wants to do something else while its working.
-    * 
-    * IF key MAJ key is pressed when lost focus occurs and command ctx
+    * Return the index of the column to be sorted by default
+    * @return
     */
-   public void tabLostFocus() {
-      if (workerTable != null) {
+   protected abstract int getDefSortColumnIndex();
 
-         //pause it if supports exists until tab gets back
-         //worker.pause();
-         boolean b = workerTable.cancel(true);
-
-         //#debug
-         toDLog().pWork("Worker was not null. Cancel method returns " + b, this, TablePanelAbstract.class, "tabLostFocus", ITechLvl.LVL_05_FINE, true);
-         workerTable = null;
-         //table data is kept
-      }
+   public ModelTableBAbstract<T> getTableModelAbstract() {
+      return getBenTable().getModel();
    }
 
    public void guiUpdate() {
@@ -214,6 +167,21 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       }
    }
 
+   private void initPanelNorth() {
+      PanelPascal north = new PanelPascal(psc);
+      north.setLayout(new FlowLayout(FlowLayout.LEFT));
+      north.add(cbRowNumbers); //by default first position
+      subInitPanelNorth(north);
+      this.add(north, BorderLayout.NORTH);
+   }
+
+   private void initPanelSouth() {
+      PanelPascal south = new PanelPascal(psc);
+      south.setLayout(new FlowLayout(FlowLayout.LEFT));
+      subInitPanelSouth(south);
+      this.add(south, BorderLayout.SOUTH);
+   }
+
    protected void initTab() {
       super.initTab();
 
@@ -227,34 +195,14 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       initPanelSouth();
    }
 
-   public abstract void setColumnRenderers();
-
    /**
+    * True if {@link TablePanelAbstract#panelSwingWorkerDone(PanelSwingWorker)} will resize table columns
     * 
-    * @param t
+    * GUI update will also resize columns since
     * @return
     */
-   public boolean removeFromModel(T t) {
-      if (isInitialized()) {
-         return getBenTable().getModel().removeRow(t);
-      }
-      return false;
-   }
-
-   /**
-    * Implementation reads its model and update the statistics of the worker
-    */
-   protected void subUpdateStatPanel() {
-
-   }
-
-   public ModelTableBAbstract<T> getTableModelAbstract() {
-      return getBenTable().getModel();
-   }
-
-   public void panelSwingWorkerCancelled(PanelSwingWorker tableBlockSwingWorker) {
-      //#debug
-      toDLog().pWork("", this, TablePanelAbstract.class, "panelSwingWorkCancelled", ITechLvl.LVL_05_FINE, true);
+   public boolean isAutoResizeColumns() {
+      return isAutoResizeColumns;
    }
 
    /**
@@ -292,6 +240,28 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       return true;
    }
 
+   public void panelSwingWorkerCancelled(PanelSwingWorker tableBlockSwingWorker) {
+      //#debug
+      toDLog().pWork("", this, TablePanelAbstract.class, "panelSwingWorkCancelled", ITechLvl.LVL_05_FINE, true);
+   }
+
+   /**
+    * Called when the worker is completely done
+    */
+   public void panelSwingWorkerDone(PanelSwingWorker worker) {
+      //#debug
+      toDLog().pFlow("", worker, TablePanelAbstract.class, "panelSwingWorkerDone", ITechLvl.LVL_05_FINE, false);
+
+      //before updating stats. request model global stats computation
+      getTableModelAbstract().computeStatsGlobal();
+      subUpdateStatPanel();
+      this.workerTable = null;
+      statPanel.setStateDone();
+      if (isAutoResizeColumns) {
+         super.resizeTableColumns();
+      }
+   }
+
    /**
     * Worker panel may update progress data 
     * 
@@ -317,30 +287,47 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
    }
 
    /**
-    * True if {@link TablePanelAbstract#panelSwingWorkerDone(PanelSwingWorker)} will resize table columns
     * 
-    * GUI update will also resize columns since
+    * @param t
     * @return
     */
-   public boolean isAutoResizeColumns() {
-      return isAutoResizeColumns;
+   public boolean removeFromModel(T t) {
+      if (isInitialized()) {
+         return getBenTable().getModel().removeRow(t);
+      }
+      return false;
+   }
+
+   protected void resizeTableColumnDefault() {
+      ModelTableBAbstract model = getTableModelAbstract();
+      if (model.getRowCount() < 200) {
+         super.resizeTableColumns();
+      }
+   }
+
+   public abstract void setColumnRenderers();
+
+   protected void subDidRefreshTable() {
+
+   }
+
+   protected void subInitPanelNorth(JPanel north) {
+
+   }
+
+   protected void subInitPanelSouth(JPanel south) {
+
    }
 
    /**
-    * Called when the worker is completely done
+    * Implementation reads its model and update the statistics of the worker
     */
-   public void panelSwingWorkerDone(PanelSwingWorker worker) {
-      //#debug
-      toDLog().pFlow("", worker, TablePanelAbstract.class, "panelSwingWorkerDone", ITechLvl.LVL_05_FINE, false);
+   protected void subUpdateStatPanel() {
 
-      //before updating stats. request model global stats computation
-      getTableModelAbstract().computeStatsGlobal();
-      subUpdateStatPanel();
-      this.workerTable = null;
-      statPanel.setStateDone();
-      if (isAutoResizeColumns) {
-         super.resizeTableColumns();
-      }
+   }
+
+   protected void subWillRefreshTable() {
+
    }
 
    public void tabGainFocus() {
@@ -367,10 +354,36 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       isTableUpdatingDisabled = false;
    }
 
-   protected void resizeTableColumnDefault() {
-      ModelTableBAbstract model = getTableModelAbstract();
-      if (model.getRowCount() < 200) {
-         super.resizeTableColumns();
+   /**
+    * By default, workers are paused, unless the user explicity asked the work to continue because
+    * user knows it will take some time and he wants to do something else while its working.
+    * 
+    * IF key MAJ key is pressed when lost focus occurs and command ctx
+    */
+   public void tabLostFocus() {
+      //#debug
+      toDLog().pFlow("", this, TablePanelAbstract.class, "tabLostFocus", ITechLvl.LVL_04_FINER, true);
+
+      if (workerTable != null) {
+         //#debug
+         toDLog().pFlow("workerTable is not null", workerTable, TablePanelAbstract.class, "tabLostFocus", ITechLvl.LVL_04_FINER, true);
+
+         //ask user if he wants to 
+         int returnValue = 0;
+         returnValue = JOptionPane.showConfirmDialog(this, "Data Task is running for this task. Abort it?", "Abort task on this tab?", JOptionPane.YES_NO_OPTION);
+
+         if (returnValue == JOptionPane.YES_OPTION) {
+            //pause it if supports exists until tab gets back
+            //worker.pause();
+            boolean b = workerTable.cancel(true);
+
+            //#debug
+            toDLog().pWork("Worker was not null. Cancel method returns " + b, this, TablePanelAbstract.class, "tabLostFocus", ITechLvl.LVL_05_FINE, true);
+            workerTable = null;
+         } else if (returnValue == JOptionPane.NO_OPTION) {
+            //table data is kept
+
+         }
       }
    }
 }
