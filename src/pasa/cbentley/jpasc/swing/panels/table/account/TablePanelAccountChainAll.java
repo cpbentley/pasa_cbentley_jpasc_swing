@@ -54,7 +54,7 @@ public class TablePanelAccountChainAll extends TablePanelAccountAbstractAll impl
     */
    public void panelSwingWorkerDone(PanelSwingWorker worker) {
       super.panelSwingWorkerDone(worker);
-      sortTableColAscending(ModelTableAccountFullData.INDEX_00_ACCOUNT);
+      //we don't want sorting by default. 
    }
 
    public void initTab() {
@@ -62,7 +62,7 @@ public class TablePanelAccountChainAll extends TablePanelAccountAbstractAll impl
    }
 
    protected void subPopulatePopMenu(BPopupMenu menu) {
-      super.addDefaultAccountMenuItems(menu);
+      super.addDefaultAccountMenuItemsNoSend(menu);
    }
 
    //#mdebug
