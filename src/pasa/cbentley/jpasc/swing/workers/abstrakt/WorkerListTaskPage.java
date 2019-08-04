@@ -45,7 +45,8 @@ public abstract class WorkerListTaskPage<K, V> extends WorkerListTask<K, V>  {
        PagerAbstract<V> pager = taskPage.getPager();
        WorkerStat ws = getWorkerStat();
        ws.setEntriesTotal(pager.getCountTotalItems());
-       ws.setEntriesCount(pager.getCountProcessed());
+       //the start of the pager gives the actual
+       ws.setEntriesCount(pager.getStart());
       super.newDataAvailable(list);
    }
    //#mdebug
