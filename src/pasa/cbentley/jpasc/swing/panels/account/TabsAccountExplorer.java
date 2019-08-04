@@ -82,7 +82,7 @@ public class TabsAccountExplorer extends TabbedBentleyPanel implements IMyTab, A
       listAccount = new TablePanelAccountChainAll(psc, this);
       listAccountPrices = new TablePanelAccountChainPrice(psc, this);
       listAccountRich = new TablePanelAccountChainBalance(psc, this);
-      listAccountRich.setDoubleMinNoRefresh("100000.0");
+      listAccountRich.setDoubleMinNoRefresh("20000.0");
       accountExplorerPanel = new PanelAccountDetails(psc, this);
 
       //deal with ordering of the tabs? TODO and what if there framed tab
