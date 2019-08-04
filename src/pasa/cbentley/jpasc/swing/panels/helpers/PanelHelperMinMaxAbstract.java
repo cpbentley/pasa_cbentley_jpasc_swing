@@ -11,9 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
-import pasa.cbentley.jpasc.swing.utils.DocRefresher;
 import pasa.cbentley.jpasc.swing.widgets.PanelPascal;
 import pasa.cbentley.swing.cmd.ICommandableRefresh;
+import pasa.cbentley.swing.utils.DocRefresher;
 import pasa.cbentley.swing.widgets.b.BButton;
 import pasa.cbentley.swing.widgets.b.BLabel;
 import pasa.cbentley.swing.widgets.b.BTextField;

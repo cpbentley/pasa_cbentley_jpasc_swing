@@ -24,12 +24,17 @@ import pasa.cbentley.jpasc.swing.panels.block.TabsBlocks;
 import pasa.cbentley.jpasc.swing.panels.operation.TabsOperations;
 import pasa.cbentley.swing.imytab.TabbedBentleyPanel;
 
+/**
+ * 
+ * @author Charles Bentley
+ *
+ */
 public class TabsChainExplorer extends TabbedBentleyPanel implements IRootTabPane {
 
    /**
     * 
     */
-   private static final long serialVersionUID = -2070986904157267209L;
+   private static final long   serialVersionUID = -2070986904157267209L;
 
    private TabsAccountExplorer accountExplorerPanel;
 
@@ -79,8 +84,7 @@ public class TabsChainExplorer extends TabbedBentleyPanel implements IRootTabPan
       this.addMyTab(operationsPanel);
       this.addMyTab(blockPanel);
       this.addMyTab(keysExplorer);
-      
-      
+
    }
 
    public void setNewPendingCount(Integer count) {
@@ -106,15 +110,16 @@ public class TabsChainExplorer extends TabbedBentleyPanel implements IRootTabPan
    }
 
    public void showAccountDetails(Account ac) {
+      //make sure operationpanel is init
+      initCheck();
       accountExplorerPanel.showAccountDetails(ac);
-      //TODO what if in its own frame?
-      jtabbePane.setSelectedComponent(accountExplorerPanel);
+      showTab(accountExplorerPanel);
    }
 
    public void showAccountDetails(Integer ac) {
-      Account acc = psc.getPascalClient().getAccount(ac);
-      if (acc != null) {
-         showAccountDetails(acc);
+      Account account = psc.getPascalClient().getAccount(ac);
+      if (account != null) {
+         showAccountDetails(account);
       }
    }
 
@@ -137,8 +142,10 @@ public class TabsChainExplorer extends TabbedBentleyPanel implements IRootTabPan
     * @see IRootTabPane#showBlock(Block)
     */
    public void showBlock(Block ac) {
+      initCheck();
       //make sure operationpanel is init
       operationsPanel.showBlock(ac);
+      showTab(operationsPanel);
    }
 
    public void showPublicKeyJavaAccountNames(PublicKeyJava pk) {

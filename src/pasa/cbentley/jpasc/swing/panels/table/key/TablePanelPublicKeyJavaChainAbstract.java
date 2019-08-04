@@ -115,13 +115,13 @@ public abstract class TablePanelPublicKeyJavaChainAbstract extends TablePanelPub
    }
 
    protected void subInitPanelSouth(JPanel south) {
-      panelRefresh = new PanelHelperRefresh(psc, this);
-      statPanel.setCompProgressBefore(panelRefresh);
-      statPanel.resetToSize(2); //2 stats here
-      statPanel.set(STAT_INDEX_0_NUM_KEYS, "stat.keys", 4);
-      statPanel.set(STAT_INDEX_1_NUM_ACCOUNTS, "stat.account", 6);
-      statPanel.addToPanelSerially(south); //boilerplate for linking widgets
-      south.add(statPanel);
+      panelHelperRefresh = new PanelHelperRefresh(psc, this);
+      panelHelperLoadingStat.setCompProgressBefore(panelHelperRefresh);
+      panelHelperLoadingStat.resetToSize(2); //2 stats here
+      panelHelperLoadingStat.set(STAT_INDEX_0_NUM_KEYS, "stat.keys", 4);
+      panelHelperLoadingStat.set(STAT_INDEX_1_NUM_ACCOUNTS, "stat.account", 6);
+      panelHelperLoadingStat.addToPanelSerially(south); //boilerplate for linking widgets
+      south.add(panelHelperLoadingStat);
    }
 
    protected void subPopulatePopMenu(BPopupMenu menu) {
@@ -130,8 +130,8 @@ public abstract class TablePanelPublicKeyJavaChainAbstract extends TablePanelPub
 
    protected void subUpdateStatPanel() {
       ModelTablePublicKeyJavaChain model = getTableModel();
-      statPanel.setStat(STAT_INDEX_0_NUM_KEYS, model.getNumKeys());
-      statPanel.setStat(STAT_INDEX_1_NUM_ACCOUNTS, model.getNumAccounts());
+      panelHelperLoadingStat.setStat(STAT_INDEX_0_NUM_KEYS, model.getNumKeys());
+      panelHelperLoadingStat.setStat(STAT_INDEX_1_NUM_ACCOUNTS, model.getNumAccounts());
    }
 
    //#mdebug

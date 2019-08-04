@@ -14,11 +14,16 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import pasa.cbentley.core.src4.event.BusEvent;
+import pasa.cbentley.core.src4.event.IEventBus;
+import pasa.cbentley.core.src4.event.IEventConsumer;
+import pasa.cbentley.jpasc.pcore.ctx.IEventsPCore;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableOperationAbstract;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableOperationFullData;
 import pasa.cbentley.jpasc.swing.workers.table.operation.WorkerTableOperationAbstract;
+import pasa.cbentley.jpasc.swing.workers.table.operation.WorkerTableOperationByBlock;
 import pasa.cbentley.swing.imytab.IMyTab;
 import pasa.cbentley.swing.threads.PanelSwingWorker;
 
@@ -31,7 +36,7 @@ import pasa.cbentley.swing.threads.PanelSwingWorker;
  * @author Charles Bentley
  *
  */
-public class TablePanelOperationHistoryRecent extends TablePanelOperationAbstract implements IMyTab, ActionListener {
+public class TablePanelOperationHistoryRecent extends TablePanelOperationAbstract implements IMyTab, ActionListener, IEventsPCore, IEventConsumer {
    /**
     * 
     */
@@ -47,10 +52,13 @@ public class TablePanelOperationHistoryRecent extends TablePanelOperationAbstrac
       super(psc, "operations_history", root);
       iconPendingOp = psc.createImageIcon("/icons/ops/pasc_p2_redblack_32.png", "");
       //sort on table
-      
+
       //TODO register on blocks on tab init
       //once a block has been found.. get its list of operations
       //TODO centralized in a cache for each block so you don't have to query the wallet 
+
+      IEventBus eventBusPCore = psc.getPCtx().getEventBusPCore();
+      eventBusPCore.addConsumer(this, PID_1_BLOCK_OPS, EID_1_BLOCK_OPS_0_ANY);
    }
 
    public void actionPerformed(ActionEvent e) {
@@ -64,8 +72,10 @@ public class TablePanelOperationHistoryRecent extends TablePanelOperationAbstrac
    }
 
    protected WorkerTableOperationAbstract createWorker() {
-      //TODO
-      return null;
+      //fetch the operations in the last X blocks 
+      //once initialized listen to new blocks and add them
+      Integer lastBlockMined = psc.getPCtx().getRPCConnection().getLastBlockMined();
+      return new WorkerTableOperationByBlock(psc, getTableModel(), lastBlockMined, this);
    }
 
    public void disposeTab() {
@@ -97,6 +107,12 @@ public class TablePanelOperationHistoryRecent extends TablePanelOperationAbstrac
    public void updateNewBlock(Integer newBlock) {
       // TODO Auto-generated method stub
 
+   }
+
+   public void consumeEvent(BusEvent e) {
+      if(e.getEventID() ==  EID_1_BLOCK_OPS_0_ANY) {
+         
+      }
    }
 
 }

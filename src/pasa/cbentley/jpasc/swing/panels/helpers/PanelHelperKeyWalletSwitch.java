@@ -27,28 +27,33 @@ public class PanelHelperKeyWalletSwitch extends PanelHelperKeyAbstract {
     */
    private static final long serialVersionUID = -6390888337199401137L;
 
-   private BCheckBox                       cbAllowDaemonPublic;
+   /**
+    * Possibly null
+    */
+   private BCheckBox         cbAllowDaemonPublic;
 
-   
    public PanelHelperKeyWalletSwitch(PascalSwingCtx psc, IStringPrefIDable idable, ICommandableRefresh refresh) {
       super(psc, idable, refresh);
    }
 
    public void buildUI() {
       super.buildUI();
-      
-      cbAllowDaemonPublic = new BCheckBox(sc, this, "cb.allowpublic");
-      this.add(labPublicKey);
-      this.add(comboKeys);
-      this.add(cbAllowDaemonPublic);
+      if (comboKeys != null) {
+         cbAllowDaemonPublic = new BCheckBox(sc, this, "cb.allowpublic");
+         this.add(labPublicKey);
+         this.add(comboKeys);
+         this.add(cbAllowDaemonPublic);
+      }
 
    }
 
-   
    public boolean isCanUse() {
+      if(cbAllowDaemonPublic == null) {
+         return false;
+      }
       return !cbAllowDaemonPublic.isSelected();
    }
-   
+
    protected ComboModelMapPublicKeyJava createModel() {
       return psc.getModelProviderPublicJavaKeyPrivate().createPublicKeyJavaPrivate();
    }

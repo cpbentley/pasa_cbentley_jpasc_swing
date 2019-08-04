@@ -34,7 +34,7 @@ public interface IRootTabPane {
    public Integer getAccountNext(Integer account);
 
    /**
-    * 
+    * Null if none available
     * @param account
     * @return
     */

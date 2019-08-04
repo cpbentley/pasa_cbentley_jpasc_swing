@@ -67,7 +67,7 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
    public static final int   STAT_INDEX_3_NUM_PRIVATE  = 3;
 
    public static final int   STAT_INDEX_4_NUM_SELLERS  = 4;
-   
+
    public static final int   STAT_INDEX_5_TOTAL_PRICE  = 5;
 
    protected IRootTabPane    root;
@@ -117,7 +117,7 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
       menu.add(new BCMenuItem<ICommandableAccount>(sc, this, pcm.getCmdAccountSendFromWin()));
 
    }
-   
+
    public final void addDefaultAccountMenuItemsNoSend(BPopupMenu menu) {
       SwingCtx sc = psc.getSwingCtx();
       PascalCmdManager pcm = psc.getCmds();
@@ -132,18 +132,6 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
       menu.addSeparator();
       menu.add(new BCMenuItem<ICommandableKey>(sc, this, pcm.getCmdKeyChangeName()));
 
-   }
-
-   /**
-    * 
-    * @param ac
-    * @return
-    */
-   public boolean removeAccountFromModel(Account ac) {
-      if (isInitialized()) {
-         return getBenTable().getModel().removeRow(ac);
-      }
-      return false;
    }
 
    /**
@@ -175,10 +163,38 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
       Account ac = getSelectedAccount();
    }
 
+   /**
+    * Shows the accounts with names of the selected key
+    */
+   public void cmdShowKeyAccountNames() {
+
+   }
+
+   /**
+    * Same as {@link ICommandableKey#cmdShowKeyAccountNames()} but in a new window
+    */
+   public void cmdShowKeyAccountNamesNewWindow() {
+
+   }
+
+   /**
+    * Shows the accounts of selected key
+    */
+   public void cmdShowKeyAccounts() {
+
+   }
+
+   /**
+    * Same as {@link ICommandableKey#cmdShowKeyAccounts()} but in a new window
+    */
+   public void cmdShowKeyAccountsNewWindow() {
+
+   }
+
    public void cmdShowSelectedAccountDetails() {
       //#debug
       toDLog().pFlow("", this, TablePanelAccountAbstract.class, "cmdShowSelectedAccountDetails", LVL_05_FINE, true);
-      
+
       Account ac = this.getSelectedAccount();
       if (ac != null) {
          //request to show the tab for account details in the current ctx
@@ -186,53 +202,13 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
       }
    }
 
-   /**
-    * 
-    */
-   public void cmdShowSelectedAccountSellerDetails() {
-    //#debug
-      toDLog().pFlow("", this, TablePanelAccountAbstract.class, "cmdShowSelectedAccountSellerDetails", LVL_05_FINE, true);
-      
-      Account ac = this.getSelectedAccount();
-      if (ac != null) {
-         //request to show the tab for account details in the current ctx
-         Integer seller = ac.getSellerAccount();
-         if(seller != null) {
-            root.showAccountDetails(seller);
-         } else {
-            psc.getLog().consoleLogDateRed("Selected account does not have a seller account");
-         }
-      }
-   }
-
-   /**
-    * 
-    */
-   public void cmdShowSelectedAccountSellerDetailsNewWindow() {
-      //#debug
-      toDLog().pFlow("", this, TablePanelAccountAbstract.class, "cmdShowSelectedAccountSellerDetails", LVL_05_FINE, true);
-      Account ac = this.getSelectedAccount();
-      if (ac != null) {
-         //request to show the tab for account details in the current ctx
-         Integer seller = ac.getSellerAccount();
-         if(seller != null) {
-            PanelAccountDetails details = new PanelAccountDetails(psc,root);
-            details.setAccount(seller);
-            psc.getSwingCtx().showInNewFrame(details);
-         } else {
-            psc.getLog().consoleLogDateRed("Selected account does not have a seller account");
-         }
-      }
-   }
-
-   
    public void cmdShowSelectedAccountDetailsNewWindow() {
-    //#debug
+      //#debug
       toDLog().pFlow("", this, TablePanelAccountAbstract.class, "cmdShowSelectedAccountDetailsNewWindow", LVL_05_FINE, true);
-      
+
       Account account = getSelectedAccount();
-      if(account != null) {
-         PanelAccountDetails details = new PanelAccountDetails(psc,root);
+      if (account != null) {
+         PanelAccountDetails details = new PanelAccountDetails(psc, root);
          details.setAccount(account);
          psc.getSwingCtx().showInNewFrame(details);
       }
@@ -264,6 +240,45 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
       }
    }
 
+   /**
+    * 
+    */
+   public void cmdShowSelectedAccountSellerDetails() {
+      //#debug
+      toDLog().pFlow("", this, TablePanelAccountAbstract.class, "cmdShowSelectedAccountSellerDetails", LVL_05_FINE, true);
+
+      Account ac = this.getSelectedAccount();
+      if (ac != null) {
+         //request to show the tab for account details in the current ctx
+         Integer seller = ac.getSellerAccount();
+         if (seller != null) {
+            root.showAccountDetails(seller);
+         } else {
+            psc.getLog().consoleLogDateRed("Selected account does not have a seller account");
+         }
+      }
+   }
+
+   /**
+    * 
+    */
+   public void cmdShowSelectedAccountSellerDetailsNewWindow() {
+      //#debug
+      toDLog().pFlow("", this, TablePanelAccountAbstract.class, "cmdShowSelectedAccountSellerDetails", LVL_05_FINE, true);
+      Account ac = this.getSelectedAccount();
+      if (ac != null) {
+         //request to show the tab for account details in the current ctx
+         Integer seller = ac.getSellerAccount();
+         if (seller != null) {
+            PanelAccountDetails details = new PanelAccountDetails(psc, root);
+            details.setAccount(seller);
+            psc.getSwingCtx().showInNewFrame(details);
+         } else {
+            psc.getLog().consoleLogDateRed("Selected account does not have a seller account");
+         }
+      }
+   }
+
    public void cmdShowSelectedAccountSendBalanceFrom() {
       // TODO Auto-generated method stub
 
@@ -271,35 +286,6 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
 
    public void cmdShowSelectedAccountSendBalanceFromNewWindow() {
       // TODO Auto-generated method stub
-
-   }
-
-
-   /**
-    * Shows the accounts of selected key
-    */
-   public void cmdShowKeyAccounts() {
-
-   }
-
-   /**
-    * Same as {@link ICommandableKey#cmdShowKeyAccounts()} but in a new window
-    */
-   public void cmdShowKeyAccountsNewWindow() {
-
-   }
-
-   /**
-    * Shows the accounts with names of the selected key
-    */
-   public void cmdShowKeyAccountNames() {
-
-   }
-
-   /**
-    * Same as {@link ICommandableKey#cmdShowKeyAccountNames()} but in a new window
-    */
-   public void cmdShowKeyAccountNamesNewWindow() {
 
    }
 
@@ -338,6 +324,34 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
 
    public void disposeTab() {
       super.disposeTab();
+   }
+
+   /**
+    * 
+    * @return
+    */
+   protected int getColumnIndexAccount() {
+      return getTableModel().getColumnIndexAccount();
+   }
+
+   protected int getColumnIndexAccountName() {
+      return getTableModel().getColumnIndexAccount();
+   }
+
+   protected int getColumnIndexAge() {
+      return getTableModel().getColumnIndexAge();
+   }
+
+   protected int getColumnIndexKey() {
+      return getTableModel().getColumnIndexKey();
+   }
+
+   protected int getColumnIndexOps() {
+      return getTableModel().getColumnIndexOps();
+   }
+
+   protected int getColumnIndexPrice() {
+      return getTableModel().getColumnIndexAge();
    }
 
    protected int getDefSortColumnIndex() {
@@ -392,30 +406,14 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
 
    /**
     * 
+    * @param ac
     * @return
     */
-   protected int getColumnIndexAccount() {
-      return getTableModel().getColumnIndexAccount();
-   }
-
-   protected int getColumnIndexAccountName() {
-      return getTableModel().getColumnIndexAccount();
-   }
-
-   protected int getColumnIndexAge() {
-      return getTableModel().getColumnIndexAge();
-   }
-
-   protected int getColumnIndexKey() {
-      return getTableModel().getColumnIndexKey();
-   }
-
-   protected int getColumnIndexOps() {
-      return getTableModel().getColumnIndexOps();
-   }
-
-   protected int getColumnIndexPrice() {
-      return getTableModel().getColumnIndexAge();
+   public boolean removeAccountFromModel(Account ac) {
+      if (isInitialized()) {
+         return getBenTable().getModel().removeRow(ac);
+      }
+      return false;
    }
 
    /**
@@ -431,14 +429,6 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
    }
 
    /**
-    * Override this for setting column renderers in addition to the default ones from 
-    * {@link TablePanelAccountAbstract#setColumnRenderers()}
-    */
-   protected void subSetColumnRenderers() {
-
-   }
-
-   /**
     * Adds {@link PanelHelperRefresh}
     */
    protected void subInitPanelNorth(JPanel north) {
@@ -450,20 +440,20 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
     */
    protected void subInitPanelSouth(JPanel south) {
       //we want min and max filter
-      panelRefresh = new PanelHelperRefresh(psc, this);
+      panelHelperRefresh = new PanelHelperRefresh(psc, this);
       //TODO disable stat computing option for slow computers
-      statPanel.setCompProgressBefore(panelRefresh);
-      statPanel.resetToSize(4);
+      panelHelperLoadingStat.setCompProgressBefore(panelHelperRefresh);
+      panelHelperLoadingStat.resetToSize(4);
       int[] vals = new int[] { 0, 0, 0, 0 };
       if (isFixedStatTextField) {
          vals = new int[] { 18, 15, 10, 3 };
       }
-      statPanel.set(STAT_INDEX_0_BALANCE, "stat.balance", vals[0]);
-      statPanel.set(STAT_INDEX_1_NUM_ACCOUNTS, "stat.account", vals[1]);
-      statPanel.set(STAT_INDEX_2_NUM_SOLD, "stat.forsale", vals[2]);
-      statPanel.set(STAT_INDEX_3_NUM_PRIVATE, "stat.private", vals[3]);
-      statPanel.addToPanelSerially(south);
-      south.add(statPanel);
+      panelHelperLoadingStat.set(STAT_INDEX_0_BALANCE, "stat.balance", vals[0]);
+      panelHelperLoadingStat.set(STAT_INDEX_1_NUM_ACCOUNTS, "stat.account", vals[1]);
+      panelHelperLoadingStat.set(STAT_INDEX_2_NUM_SOLD, "stat.forsale", vals[2]);
+      panelHelperLoadingStat.set(STAT_INDEX_3_NUM_PRIVATE, "stat.private", vals[3]);
+      panelHelperLoadingStat.addToPanelSerially(south);
+      south.add(panelHelperLoadingStat);
    }
 
    /**
@@ -475,14 +465,22 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
    protected abstract void subPopulatePopMenu(BPopupMenu menu);
 
    /**
+    * Override this for setting column renderers in addition to the default ones from 
+    * {@link TablePanelAccountAbstract#setColumnRenderers()}
+    */
+   protected void subSetColumnRenderers() {
+
+   }
+
+   /**
     * Default stats for Accounts
     */
    protected void subUpdateStatPanel() {
       ModelTableAccountAbstract model = getTableModel();
-      statPanel.setStat(STAT_INDEX_0_BALANCE, psc.getFormatDecimalCoins().format(model.getTotalBalanceCount()));
-      statPanel.setStat(STAT_INDEX_1_NUM_ACCOUNTS, model.getNumAccounts());
-      statPanel.setStat(STAT_INDEX_2_NUM_SOLD, model.getNumSales());
-      statPanel.setStat(STAT_INDEX_3_NUM_PRIVATE, model.getNumPrivates());
+      panelHelperLoadingStat.setStat(STAT_INDEX_0_BALANCE, psc.getFormatDecimalCoins().format(model.getTotalBalanceCount()));
+      panelHelperLoadingStat.setStat(STAT_INDEX_1_NUM_ACCOUNTS, model.getNumAccounts());
+      panelHelperLoadingStat.setStat(STAT_INDEX_2_NUM_SOLD, model.getNumSales());
+      panelHelperLoadingStat.setStat(STAT_INDEX_3_NUM_PRIVATE, model.getNumPrivates());
    }
 
    protected void subWillRefreshTable() {

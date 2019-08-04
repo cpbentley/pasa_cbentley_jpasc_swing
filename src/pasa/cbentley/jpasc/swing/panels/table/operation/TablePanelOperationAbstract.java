@@ -191,22 +191,22 @@ public abstract class TablePanelOperationAbstract extends TablePanelAbstract<Ope
     * Default south panel for stats
     */
    protected void subInitPanelSouth(JPanel south) {
-      panelRefresh = new PanelHelperRefresh(psc, this);
-      statPanel.setCompProgressBefore(panelRefresh);
-      statPanel.resetToSize(6);
+      panelHelperRefresh = new PanelHelperRefresh(psc, this);
+      panelHelperLoadingStat.setCompProgressBefore(panelHelperRefresh);
+      panelHelperLoadingStat.resetToSize(6);
       int[] vals = new int[] { 0, 0, 0, 0 };
       if (isFixedStatTextField) {
          vals = new int[] { 6, 5, 5, 8, 10, 8 };
       }
       int index = 0;
-      statPanel.set(STAT_INDEX_0_NUM_OPS, "stat.numops", vals[index++]);
-      statPanel.set(STAT_INDEX_1_NUM_ACCOUNTS, "stat.account", vals[index++]);
-      statPanel.set(STAT_INDEX_2_NUM_ACCOUNTS_RECEIVER, "stat.account.receiver", vals[index++]);
-      statPanel.set(STAT_INDEX_3_FEE, "stat.fee", vals[index++]);
-      statPanel.set(STAT_INDEX_4_VOLUME, "stat.volume", vals[index++]);
-      statPanel.set(STAT_INDEX_5_PAYLOAD, "stat.bytespayload", vals[index++]);
-      statPanel.addToPanelSerially(south);
-      south.add(statPanel);
+      panelHelperLoadingStat.set(STAT_INDEX_0_NUM_OPS, "stat.numops", vals[index++]);
+      panelHelperLoadingStat.set(STAT_INDEX_1_NUM_ACCOUNTS, "stat.account", vals[index++]);
+      panelHelperLoadingStat.set(STAT_INDEX_2_NUM_ACCOUNTS_RECEIVER, "stat.account.receiver", vals[index++]);
+      panelHelperLoadingStat.set(STAT_INDEX_3_FEE, "stat.fee", vals[index++]);
+      panelHelperLoadingStat.set(STAT_INDEX_4_VOLUME, "stat.volume", vals[index++]);
+      panelHelperLoadingStat.set(STAT_INDEX_5_PAYLOAD, "stat.bytespayload", vals[index++]);
+      panelHelperLoadingStat.addToPanelSerially(south);
+      south.add(panelHelperLoadingStat);
    }
 
    /**
@@ -214,12 +214,12 @@ public abstract class TablePanelOperationAbstract extends TablePanelAbstract<Ope
     */
    protected void subUpdateStatPanel() {
       ModelTableOperationAbstract model = getTableModel();
-      statPanel.setStat(STAT_INDEX_0_NUM_OPS, model.getNumOperations());
-      statPanel.setStat(STAT_INDEX_1_NUM_ACCOUNTS, model.getNumAccounts());
-      statPanel.setStat(STAT_INDEX_2_NUM_ACCOUNTS_RECEIVER, model.getNumReceivers());
-      statPanel.setStat(STAT_INDEX_3_FEE, model.getTotalFees());
-      statPanel.setStat(STAT_INDEX_4_VOLUME, model.getAmountTotal());
-      statPanel.setStat(STAT_INDEX_5_PAYLOAD, model.getNumBytesPayload());
+      panelHelperLoadingStat.setStat(STAT_INDEX_0_NUM_OPS, model.getNumOperations());
+      panelHelperLoadingStat.setStat(STAT_INDEX_1_NUM_ACCOUNTS, model.getNumAccounts());
+      panelHelperLoadingStat.setStat(STAT_INDEX_2_NUM_ACCOUNTS_RECEIVER, model.getNumReceivers());
+      panelHelperLoadingStat.setStat(STAT_INDEX_3_FEE, model.getTotalFees());
+      panelHelperLoadingStat.setStat(STAT_INDEX_4_VOLUME, model.getAmountTotal());
+      panelHelperLoadingStat.setStat(STAT_INDEX_5_PAYLOAD, model.getNumBytesPayload());
    }
 
 }

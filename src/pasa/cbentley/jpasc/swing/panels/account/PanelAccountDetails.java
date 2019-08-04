@@ -6,6 +6,7 @@
 package pasa.cbentley.jpasc.swing.panels.account;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -35,105 +36,116 @@ import pasa.cbentley.jpasc.swing.interfaces.ITechPrefsPascalSwing;
 import pasa.cbentley.jpasc.swing.panels.core.PanelTabAbstractPascal;
 import pasa.cbentley.jpasc.swing.panels.table.operation.TablePanelOperationByAccount;
 import pasa.cbentley.swing.IconFamily;
-import pasa.cbentley.swing.imytab.AbstractMyTab;
+import pasa.cbentley.swing.cmd.ICommandableRefresh;
+import pasa.cbentley.swing.ctx.SwingCtx;
 import pasa.cbentley.swing.imytab.IMyGui;
 import pasa.cbentley.swing.imytab.IMyTab;
+import pasa.cbentley.swing.utils.DocRefresher;
 import pasa.cbentley.swing.widgets.b.BButton;
+import pasa.cbentley.swing.widgets.b.BCheckBox;
+import pasa.cbentley.swing.widgets.b.BLabel;
+import pasa.cbentley.swing.widgets.b.BPanel;
+import pasa.cbentley.swing.widgets.b.BTextField;
 import pasa.dekholm.riverlayout.RiverLayout;
 
-public class PanelAccountDetails extends PanelTabAbstractPascal implements DocumentListener, IMyTab, IMyGui, ActionListener {
+public class PanelAccountDetails extends PanelTabAbstractPascal implements DocumentListener, IMyTab, IMyGui, ActionListener, ICommandableRefresh {
 
-   public static final String ID = "account_details";
+   public static final String           ID               = "account_details";
 
    /**
     * 
     */
-   private static final long        serialVersionUID = -1733914857369658375L;
+   private static final long            serialVersionUID = -1733914857369658375L;
 
-   private Account                  account;
+   private Account                      account;
 
-   private Integer                  accountNumber;
+   private Integer                      accountNumber;
 
-   private JButton                  butClear;
+   private BButton                      butClear;
 
-   private JButton                  butFindAccount;
+   private BButton                      butFindAccount;
 
-   private JCheckBox                cbIsPrivate;
+   private BCheckBox                    cbIsPrivate;
 
-   private JLabel                   labAccount;
+   private BLabel                       labAccount;
 
-   private JLabel                   labBalance;
+   private BLabel                       labBalance;
 
-   private JLabel                   labBlocks;
+   private BLabel                       labBlocks;
 
-   private JLabel                   labChecksum;
+   private BLabel                       labChecksum;
 
-   private JLabel                   labEncPubKey;
+   private BLabel                       labEncPubKey;
 
-   private JLabel                   labLastBlock;
+   private BLabel                       labLastBlock;
 
-   private JLabel                   labLastOpTime;
+   private BLabel                       labLastOpTime;
 
-   private JLabel                   labLockBlock;
+   private BLabel                       labLockBlock;
 
-   private JLabel                   labMolina;
+   private BLabel                       labMolina;
 
-   private JLabel                   labName;
+   private BLabel                       labName;
 
-   private JLabel                   labNumOperation;
+   private BLabel                       labNumOperation;
 
-   private JLabel                   labPrice;
+   private BLabel                       labPrice;
 
-   private JLabel                   labPublicKey;
+   private BLabel                       labPublicKey;
 
-   private JLabel                   labSeller;
+   private BLabel                       labSeller;
 
-   private JLabel                   labType;
+   private BLabel                       labType;
 
-   private JPanel                   operationsAccountPanel;
+   private BPanel                       operationsAccountPanel;
 
-   private JTextField               textAccount;
+   private JTextField                   textAccount;
 
-   private JTextArea                textAreaEncPubKey;
+   private JTextArea                    textAreaEncPubKey;
 
-   private JTextArea                textAreaPubKey;
+   private JTextArea                    textAreaPubKey;
 
-   private JTextField               textBalance;
+   private JTextField                   textBalance;
 
-   private JTextField               textCheckSum;
+   private JTextField                   textCheckSum;
 
-   private JTextField               textLastBlock;
+   private JTextField                   textLastBlock;
 
-   private JTextField               textLastOpTime;
+   private JTextField                   textLastOpTime;
 
-   private JTextField               textLockBlock;
+   private JTextField                   textLockBlock;
 
-   private JTextField               textMolina;
+   private JTextField                   textMolina;
 
-   private JTextField               textName;
+   private JTextField                   textName;
 
-   private JTextField               textNumOperations;
+   private JTextField                   textNumOperations;
 
-   private JTextComponent           textPrice;
+   private JTextComponent               textPrice;
 
-   private JTextField               textSeller;
+   private JTextField                   textSeller;
 
-   private JTextField               textType;
+   private JTextField                   textType;
 
-
-   private IRootTabPane             root;
+   private IRootTabPane                 root;
 
    private TablePanelOperationByAccount accountOperations;
 
-   private JButton                  butNext;
+   private BButton                      butNext;
 
-   private JButton                  butPrev;
+   private BButton                      butPrev;
 
-   private BButton butTopLeft;
+   private BButton                      butTopLeft;
 
-   private JTextField textNameFind;
+   private JTextField                   textNameFind;
 
-   private JButton butCopyAccountCk;
+   private BButton                      butCopyAccountCk;
+
+   private DocRefresher docRefresherAccountNumber;
+
+   private BLabel labFindName;
+
+   private DocRefresher docRefresherNameFind;
 
    public PanelAccountDetails(PascalSwingCtx psc, IRootTabPane root) {
       this(psc, root, ID);
@@ -159,7 +171,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
    }
 
    public void guiUpdate() {
-
+      super.guiUpdate();
    }
 
    public void initTab() {
@@ -174,135 +186,140 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       RiverLayout rl = new RiverLayout();
       container.setLayout(rl);
 
-      butClear = new JButton("Clear");
-      butClear.setToolTipText("Clear all data");
-      butClear.addActionListener(this);
+      butClear = new BButton(sc, this, "but.clear");
 
-      butNext = new JButton("Next >>");
-      butPrev = new JButton("<< Previous");
+      butNext = new BButton(sc, this, "Next >>");
+      butPrev = new BButton(sc, this, "<< Previous");
 
-      butNext.addActionListener(this);
-      butPrev.addActionListener(this);
-
-      butFindAccount = new JButton("Find Account");
+      butFindAccount = new BButton(sc, this, "Find Account");
       butFindAccount.setToolTipText("Show account along others");
-      butFindAccount.addActionListener(this);
-      
+
       Icon icon = getTabIcon(IconFamily.ICON_SIZE_2_MEDIUM, IconFamily.ICON_MODE_0_DEFAULT);
       Icon iconSel = getTabIcon(IconFamily.ICON_SIZE_2_MEDIUM, IconFamily.ICON_MODE_1_SELECTED);
+
+      //if icon is null.. use app icons
+      if (icon == null) {
+         icon = sc.getResIcon("default", "main", IconFamily.ICON_SIZE_2_MEDIUM, IconFamily.ICON_MODE_0_DEFAULT);
+         icon = sc.getResIcon("default", "main", IconFamily.ICON_SIZE_2_MEDIUM, IconFamily.ICON_MODE_1_SELECTED);
+      }
+
       butTopLeft = new BButton(sc, icon, iconSel);
+
       container.add("", butTopLeft);
 
       JPanel panelButtons = new JPanel();
-      panelButtons.add(butClear);
       panelButtons.add(butPrev);
       panelButtons.add(butNext);
       panelButtons.add(butFindAccount);
-      panelButtons.add(new JLabel("Find by name"));
-      
+      labFindName = new BLabel(sc,"but.findbyname");
+      panelButtons.add(labFindName);
+      panelButtons.add(butClear);
+
       textNameFind = new JTextField(16);
+      docRefresherNameFind = new DocRefresher(sc, this);
+      textNameFind.getDocument().addDocumentListener(docRefresherNameFind);
       panelButtons.add(textNameFind);
-      
+
       container.add("tab", panelButtons);
 
-      labAccount = new JLabel(psc.getSwingCtx().getResString("account"));
+      labAccount = new BLabel(sc, "text.account");
       container.add("p", labAccount);
       textAccount = new JTextField(11);
 
+      docRefresherAccountNumber = new DocRefresher(sc, this);
       int acs = psc.getPascPrefs().getInt(ITechPrefsPascalSwing.UI_EXPLORER_ACCOUNT, 0);
       textAccount.setText(String.valueOf(acs));
 
       container.add("tab", textAccount);
-      textAccount.getDocument().addDocumentListener(this);
+      textAccount.getDocument().addDocumentListener(docRefresherAccountNumber);
       psc.setIntFilter(textAccount);
 
-      labChecksum = new JLabel("Check sum");
+      labChecksum = new BLabel(sc, "text.checksum");
       container.add("br", labChecksum);
       textCheckSum = new JTextField(2);
       textCheckSum.setEnabled(false);
       container.add("tab", textCheckSum);
 
-      labType = new JLabel("Type");
+      labType = new BLabel(sc, "text.type");
       container.add("tab", labType);
       textType = new JTextField(7);
+      textType.setEnabled(false);
       container.add("tab", textType);
 
-      butCopyAccountCk = new JButton("Copy Account-Ck");
+      butCopyAccountCk = new BButton(sc, this, "but.copyaccountck");
 
       container.add("tab", butCopyAccountCk);
 
       //////////////////// new line
-      
-      labName = new JLabel(psc.getSwingCtx().getResString("name"));
+
+      labName = new BLabel(sc, "text.accountname");
       container.add("br", labName);
       textName = new JTextField(54);
       textName.setEditable(false);
       container.add("tab", textName);
 
-      labBalance = new JLabel("Balance");
+      labBalance = new BLabel(sc, "text.balance");
       container.add("br", labBalance);
       textBalance = new JTextField(15);
       textBalance.setEditable(false);
       container.add("tab", textBalance);
 
-      labMolina = new JLabel("Molinas");
+      labMolina = new BLabel(sc, "text.molinas");
       container.add("tab", labMolina);
       textMolina = new JTextField(5);
       textMolina.setEditable(false);
       container.add("tab", textMolina);
 
-      labPrice = new JLabel("Price");
+      labPrice = new BLabel(sc, "text.price");
       container.add("br", labPrice);
       textPrice = new JTextField(15);
       textPrice.setEditable(false);
       container.add("tab", textPrice);
-      cbIsPrivate = new JCheckBox("Private Sale");
+      cbIsPrivate = new BCheckBox(sc, this, "text.privatesale");
       cbIsPrivate.setEnabled(false);
 
-      labSeller = new JLabel("Seller Account");
+      labSeller = new BLabel(sc, "text.selleraccount");
       container.add("tab", labSeller);
       textSeller = new JTextField(15);
       textSeller.setEditable(false);
       container.add("tab", textSeller);
 
-      labLockBlock = new JLabel("Account locked for");
+      labLockBlock = new BLabel(sc, "text.accountlocked");
       container.add("tab", labLockBlock);
       textLockBlock = new JTextField(6);
       textLockBlock.setEditable(false);
-      labBlocks = new JLabel("Blocks");
+      labBlocks = new BLabel(sc, "Blocks");
       container.add("tab", textLockBlock);
       container.add("", labBlocks);
 
       container.add("tab", cbIsPrivate);
 
-      labNumOperation = new JLabel("#Operations");
-      labNumOperation.setToolTipText("Number of output operation made from this account");
+      labNumOperation = new BLabel(sc, "text.operationsnum");
       textNumOperations = new JTextField(10);
       textNumOperations.setEditable(false);
       container.add("br", labNumOperation);
       container.add("tab", textNumOperations);
 
-      labLastBlock = new JLabel("Last Block");
-      labLastBlock.setToolTipText("Block of last operation");
+      labLastBlock = new BLabel(sc, "text.lastblock");
       textLastBlock = new JTextField(10);
       textLastBlock.setEditable(false);
       container.add("tab", labLastBlock);
       container.add("tab", textLastBlock);
 
-      labLastOpTime = new JLabel("Last operation");
+      labLastOpTime = new BLabel(sc, "text.lastoperation");
       textLastOpTime = new JTextField(10);
       textLastOpTime.setEnabled(false);
       container.add("tab", labLastOpTime);
       container.add("tab", textLastOpTime);
 
-      labPublicKey = new JLabel("Base58 Public key");
+      labPublicKey = new BLabel(sc, "text.keybase58");
       textAreaPubKey = new JTextArea(2, 100);
       textAreaPubKey.setLineWrap(true);
       textAreaPubKey.setEditable(false);
       container.add("p", labPublicKey);
       container.add("tab", textAreaPubKey);
 
-      labEncPubKey = new JLabel("Encoded Public key");
+      labEncPubKey = new BLabel(sc, "text.keyencoded");
       textAreaEncPubKey = new JTextArea(2, 100);
       textAreaEncPubKey.setLineWrap(true);
       textAreaEncPubKey.setEditable(false);
@@ -326,7 +343,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
     * @param text
     */
    public void newAccountStringTyped(String text) {
-      if(text == null || text.equals("")) {
+      if (text == null || text.equals("")) {
          return;
       }
       AddressValidationResult av = psc.getPCtx().getAddressValidator().validate(text);
@@ -353,13 +370,16 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       this.account = account;
       textAccount.getText();
       String newText = account.getAccount() + "";
-      //         if(!textAccount.getText().equals(newText)) {
-      //            textAccount.setText(); throw an exception
-      //         }
+
+      if (!textAccount.getText().equals(newText)) {
+         docRefresherAccountNumber.setEnabled(false);
+         textAccount.setText(newText);
+         docRefresherAccountNumber.setEnabled(true);
+      }
+
       textCheckSum.setText("" + this.psc.getPCtx().calculateChecksum(account.getAccount()));
       textName.setText(account.getName() + "");
 
-   
       Double d = account.getBalance();
       int decimal = 0;
       double fractional = 0.0;
@@ -369,8 +389,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
          fractional = number - decimal; // you have 0.6789
       }
       textBalance.setText(d.toString());
-      String molinas = df.format(fractional);
-      textMolina.setText("" + molinas);
+      textMolina.setText(""+fractional);
 
       textNumOperations.setText(account.getnOperation().toString());
       String encPubKey = account.getEncPubkey();
@@ -419,7 +438,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       }
 
       accountOperations.clear();
-      
+
       accountOperations.showAccount(account);
 
    }
@@ -478,21 +497,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
 
    public void actionPerformed(ActionEvent e) {
       if (e.getSource() == butClear) {
-         textAccount.setText("");
-         textType.setText("");
-         textAreaEncPubKey.setText("");
-         textAreaPubKey.setText("");
-         textBalance.setText("");
-         textCheckSum.setText("");
-         textLastBlock.setText("");
-         textLastOpTime.setText("");
-         textLockBlock.setText("");
-         textName.setText("");
-         textNumOperations.setText("");
-         textType.setText("");
-         cbIsPrivate.setSelected(false);
-         textMolina.setText("");
-         accountOperations.clear();
+         cmdClear();
       } else if (e.getSource() == butFindAccount) {
          newAccountStringTyped(textAccount.getText());
       } else if (e.getSource() == butNext) {
@@ -501,6 +506,41 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       } else if (e.getSource() == butPrev) {
          Integer account = root.getAccountPrev(getAccountAsInt());
          textAccount.setText(account.toString());
+      }
+   }
+
+   private void cmdClear() {
+      textNameFind.setText("");
+      
+      textAccount.setText("");
+      textType.setText("");
+      textAreaEncPubKey.setText("");
+      textAreaPubKey.setText("");
+      textBalance.setText("");
+      textCheckSum.setText("");
+      textLastBlock.setText("");
+      textLastOpTime.setText("");
+      textLockBlock.setText("");
+      textName.setText("");
+      textNumOperations.setText("");
+      textType.setText("");
+      cbIsPrivate.setSelected(false);
+      textMolina.setText("");
+      accountOperations.clear();
+   }
+
+   public void cmdRefresh(Object source) {
+      if(source == docRefresherAccountNumber) {
+         newAccountStringTyped(textAccount.getText());
+      } else if(source == docRefresherNameFind) {
+         String nameStr = textNameFind.getText();
+         Account account = root.getAccessPascal().getAccessAccountDBolet().getAccountWithName(nameStr);
+         if(account != null) {
+            setAccount(account);
+            textNameFind.setForeground(Color.green);
+         } else {
+            textNameFind.setForeground(Color.red);
+         }
       }
    }
 

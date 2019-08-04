@@ -35,25 +35,25 @@ public class TabsOperations extends TabbedBentleyPanel implements IMyTab, Change
    /**
     * 
     */
-   private static final long          serialVersionUID = -5940455045019097140L;
+   private static final long                serialVersionUID = -5940455045019097140L;
 
-   private TablePanelOperationByBlock     listOperationPanel;
+   private TablePanelOperationByAccount     tablePanelOperationByAccount;
 
-   private TablePanelOperationHistoryRecent     opHistory;
+   private TablePanelOperationByExchanges   tablePanelOperationByExchanges;
 
-   private TablePanelOperationPending     pendingOpPanel;
+   private TablePanelOperationByKey         tablePanelOperationByKey;
 
-   private IRootTabPane               root;
+   private TablePanelOperationByBlock       tablePanelOperationByBlock;
 
-   private PascalSwingCtx             psc;
+   private PanelDetailsOperation            operationDetails;
 
-   private TablePanelOperationByAccount   accountOperations;
+   private TablePanelOperationHistoryRecent tablePanelOperationHistoryRecent;
 
-   private PanelDetailsOperation      operationDetails;
+   private TablePanelOperationPending       tablePanelOperationPending;
 
-   private TablePanelOperationByExchanges exchangeOperations;
+   private PascalSwingCtx                   psc;
 
-   private TablePanelOperationByKey       keyOperations;
+   private IRootTabPane                     root;
 
    public TabsOperations(PascalSwingCtx psc, IRootTabPane root) {
       super(psc.getSwingCtx(), "root_operations");
@@ -65,18 +65,18 @@ public class TabsOperations extends TabbedBentleyPanel implements IMyTab, Change
    public void disposeTab() {
       if (isInitialized()) {
          operationDetails.disposeTab();
-         pendingOpPanel.disposeTab();
-         opHistory.disposeTab();
-         listOperationPanel.disposeTab();
-         accountOperations.disposeTab();
-         keyOperations.disposeTab();
+         tablePanelOperationPending.disposeTab();
+         tablePanelOperationHistoryRecent.disposeTab();
+         tablePanelOperationByBlock.disposeTab();
+         tablePanelOperationByAccount.disposeTab();
+         tablePanelOperationByKey.disposeTab();
 
          operationDetails = null;
-         pendingOpPanel = null;
-         opHistory = null;
-         listOperationPanel = null;
-         accountOperations = null;
-         keyOperations = null;
+         tablePanelOperationPending = null;
+         tablePanelOperationHistoryRecent = null;
+         tablePanelOperationByBlock = null;
+         tablePanelOperationByAccount = null;
+         tablePanelOperationByKey = null;
          removeAlltabs();
       }
    }
@@ -87,26 +87,44 @@ public class TabsOperations extends TabbedBentleyPanel implements IMyTab, Change
 
    public void initTabs() {
       operationDetails = new PanelDetailsOperation(psc, root);
-      pendingOpPanel = new TablePanelOperationPending(psc, root);
-      opHistory = new TablePanelOperationHistoryRecent(psc, root);
-      listOperationPanel = new TablePanelOperationByBlock(psc, root);
-      accountOperations = new TablePanelOperationByAccount(psc, root, false);
-      exchangeOperations = new TablePanelOperationByExchanges(psc, root);
-      keyOperations = new TablePanelOperationByKey(psc, root);
+      tablePanelOperationPending = new TablePanelOperationPending(psc, root);
+      tablePanelOperationHistoryRecent = new TablePanelOperationHistoryRecent(psc, root);
+      tablePanelOperationByBlock = new TablePanelOperationByBlock(psc, root);
+      tablePanelOperationByAccount = new TablePanelOperationByAccount(psc, root, false);
+      tablePanelOperationByExchanges = new TablePanelOperationByExchanges(psc, root);
 
-      addMyTab(pendingOpPanel);
-      addMyTab(opHistory);
-      addMyTab(listOperationPanel);
-      addMyTab(accountOperations);
-      addMyTab(exchangeOperations);
-      addMyTab(keyOperations);
-      addMyTab(operationDetails);
+      tablePanelOperationByKey = new TablePanelOperationByKey(psc, root);
+
+      addMyTab(tablePanelOperationPending);
+      addMyTab(tablePanelOperationHistoryRecent);
+      addMyTab(tablePanelOperationByBlock);
+      addMyTab(tablePanelOperationByAccount);
+      addMyTab(tablePanelOperationByExchanges);
+      //addMyTab(tablePanelOperationByKey);
+      //addMyTab(operationDetails);
+   }
+
+   public void pingDisconnect() {
+   }
+
+   public void pingError() {
+   }
+
+   public void pingNewBlock(Integer newBlock, long millis) {
+      setPendingCount(0);
+   }
+
+   public void pingNewPendingCount(Integer count, Integer oldCount) {
+      setPendingCount(count);
+   }
+
+   public void pingNoBlock(long millis) {
    }
 
    public void setPendingCount(Integer count) {
-      if (pendingOpPanel != null) {
-         String newTitle = pendingOpPanel.getTabTitle() + " #" + count;
-         TabPosition pos = pendingOpPanel.getTabPosition();
+      if (tablePanelOperationPending != null) {
+         String newTitle = tablePanelOperationPending.getTabTitle() + " #" + count;
+         TabPosition pos = tablePanelOperationPending.getTabPosition();
          if (pos.isFramed()) {
             pos.getFrame().setTitle(newTitle);
          } else {
@@ -114,10 +132,10 @@ public class TabsOperations extends TabbedBentleyPanel implements IMyTab, Change
             jtabbePane.setTitleAt(index, newTitle);
          }
          //only update the table if it is the user active tab of its parent
-         if (isUserActive() || isSelected(pendingOpPanel)) {
-            pendingOpPanel.cmdTableRefresh();
+         if (isUserActive() || isSelected(tablePanelOperationPending)) {
+            tablePanelOperationPending.cmdTableRefresh();
          }
-         pendingOpPanel.repaint();
+         tablePanelOperationPending.repaint();
       }
    }
 
@@ -127,23 +145,8 @@ public class TabsOperations extends TabbedBentleyPanel implements IMyTab, Change
     */
    public void showBlock(Block ac) {
       initCheck();
-   }
-
-   public void pingNoBlock(long millis) {
-   }
-
-   public void pingDisconnect() {
-   }
-
-   public void pingError() {
-   }
-
-   public void pingNewPendingCount(Integer count, Integer oldCount) {
-      setPendingCount(count);
-   }
-
-   public void pingNewBlock(Integer newBlock, long millis) {
-      setPendingCount(0);
+      tablePanelOperationByBlock.showBlock(ac);
+      setSelected(tablePanelOperationByBlock);
    }
 
    //#mdebug

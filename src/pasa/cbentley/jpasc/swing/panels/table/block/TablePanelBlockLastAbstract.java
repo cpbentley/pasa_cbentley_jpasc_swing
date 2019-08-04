@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import com.github.davidbolet.jpascalcoin.api.model.Block;
 
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
+import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperRefresh;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableBlockAbstract;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableBlockFullData;
@@ -24,22 +25,21 @@ public abstract class TablePanelBlockLastAbstract extends TablePanelBlockAbstrac
    /**
     * 
     */
-   private static final long  serialVersionUID        = 3700280270517173649L;
+   private static final long serialVersionUID        = 3700280270517173649L;
 
+   private static final int  STAT_INDEX_0_NUM_BLOCKS = 0;
 
-   private static final int   STAT_INDEX_0_NUM_BLOCKS = 0;
+   private static final int  STAT_INDEX_1_NUM_OPS    = 1;
 
-   private static final int   STAT_INDEX_1_NUM_OPS    = 1;
+   private static final int  STAT_INDEX_2_FEES       = 2;
 
-   private static final int   STAT_INDEX_2_FEES       = 2;
+   private static final int  STAT_INDEX_3_AVERAGE_HS = 3;
 
-   private static final int   STAT_INDEX_3_AVERAGE_HS = 3;
+   private int               numBlocksInThePast;
 
-   private int              numBlocksInThePast;
-
-   public TablePanelBlockLastAbstract(PascalSwingCtx psc, String ID, int numBlocksInThePast) {
-      super(psc, ID);
-      if(numBlocksInThePast <= 0 ) {
+   public TablePanelBlockLastAbstract(PascalSwingCtx psc, String ID, int numBlocksInThePast, IRootTabPane root) {
+      super(psc, ID, root);
+      if (numBlocksInThePast <= 0) {
          this.numBlocksInThePast = 100;
       } else {
          this.numBlocksInThePast = numBlocksInThePast;
@@ -55,23 +55,23 @@ public abstract class TablePanelBlockLastAbstract extends TablePanelBlockAbstrac
    }
 
    protected void subInitPanelSouth(JPanel south) {
-      panelRefresh = new PanelHelperRefresh(psc, this);
-      statPanel.setCompProgressBefore(panelRefresh);
-      statPanel.resetToSize(4); //4 stats here
-      statPanel.set(STAT_INDEX_0_NUM_BLOCKS, "stat.blocks", 6);
-      statPanel.set(STAT_INDEX_1_NUM_OPS, "stat.ops", 8);
-      statPanel.set(STAT_INDEX_2_FEES, "stat.fee", 8);
-      statPanel.set(STAT_INDEX_3_AVERAGE_HS, "stat.averagehs", 8);
-      statPanel.addToPanelSerially(south); //boilerplate for linking widgets
-      south.add(statPanel);
+      panelHelperRefresh = new PanelHelperRefresh(psc, this);
+      panelHelperLoadingStat.setCompProgressBefore(panelHelperRefresh);
+      panelHelperLoadingStat.resetToSize(4); //4 stats here
+      panelHelperLoadingStat.set(STAT_INDEX_0_NUM_BLOCKS, "stat.blocks", 6);
+      panelHelperLoadingStat.set(STAT_INDEX_1_NUM_OPS, "stat.ops", 8);
+      panelHelperLoadingStat.set(STAT_INDEX_2_FEES, "stat.fee", 8);
+      panelHelperLoadingStat.set(STAT_INDEX_3_AVERAGE_HS, "stat.averagehs", 8);
+      panelHelperLoadingStat.addToPanelSerially(south); //boilerplate for linking widgets
+      south.add(panelHelperLoadingStat);
    }
 
    protected void subUpdateStatPanel() {
       ModelTableBlockAbstract model = getTableModel();
-      statPanel.setStat(STAT_INDEX_0_NUM_BLOCKS, model.getTotalBlocks());
-      statPanel.setStat(STAT_INDEX_1_NUM_OPS, model.getTotalOps());
-      statPanel.setStat(STAT_INDEX_2_FEES, model.getTotalFees());
-      statPanel.setStat(STAT_INDEX_3_AVERAGE_HS, model.getAverageHashRate());
+      panelHelperLoadingStat.setStat(STAT_INDEX_0_NUM_BLOCKS, model.getTotalBlocks());
+      panelHelperLoadingStat.setStat(STAT_INDEX_1_NUM_OPS, model.getTotalOps());
+      panelHelperLoadingStat.setStat(STAT_INDEX_2_FEES, model.getTotalFees());
+      panelHelperLoadingStat.setStat(STAT_INDEX_3_AVERAGE_HS, model.getAverageHashRate());
    }
 
    protected ModelTableBAbstract<Block> createTableModel() {

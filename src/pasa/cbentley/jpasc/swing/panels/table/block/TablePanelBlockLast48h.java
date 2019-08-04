@@ -6,6 +6,7 @@
 package pasa.cbentley.jpasc.swing.panels.table.block;
 
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
+import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 
 public class TablePanelBlockLast48h extends TablePanelBlockLastAbstract {
    /**
@@ -15,8 +16,8 @@ public class TablePanelBlockLast48h extends TablePanelBlockLastAbstract {
 
    public static final String ID               = "blocks_48h";
 
-   public TablePanelBlockLast48h(PascalSwingCtx psc) {
-      super(psc, ID, 576);
+   public TablePanelBlockLast48h(PascalSwingCtx psc, IRootTabPane root) {
+      super(psc, ID, 576,root);
    }
 
 }

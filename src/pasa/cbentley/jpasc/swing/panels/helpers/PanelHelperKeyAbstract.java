@@ -33,6 +33,9 @@ import pasa.cbentley.swing.widgets.b.BLabel;
  */
 public abstract class PanelHelperKeyAbstract extends PanelPascal implements ActionListener, IComboModelMapPublicKeyJavaListener {
 
+   /**
+    * Possibly null
+    */
    protected PublicKeyJavaComboBoxCached comboKeys;
 
    private boolean                       isDefChangeKeySelected;
@@ -43,13 +46,13 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
 
    protected BLabel                      labPublicKey;
 
-   protected IStringPrefIDable           owner;
+   protected IStringPrefIDable           idable;
 
    protected ICommandableRefresh         refresh;
 
    public PanelHelperKeyAbstract(PascalSwingCtx psc, IStringPrefIDable idable, ICommandableRefresh refresh) {
       super(psc);
-      this.owner = idable;
+      this.idable = idable;
       this.refresh = refresh;
 
       //TODO we want to listen to key events? to add and remove keys?
@@ -110,7 +113,7 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
     * @return
     */
    private String getComboPrefString() {
-      return owner.getSelectorKeyPrefID() + ".combochoice";
+      return idable.getSelectorKeyPrefID() + ".combochoice";
    }
 
    public SetFilterKey getFilterSet() {

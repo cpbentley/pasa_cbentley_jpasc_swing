@@ -27,15 +27,15 @@ public class TabsBlocks extends TabsPascalSwing implements IMyTab {
    /**
     * 
     */
-   private static final long      serialVersionUID = -5940455045019097140L;
+   private static final long        serialVersionUID = -5940455045019097140L;
 
-   private IRootTabPane           root;
+   private IRootTabPane             root;
 
-   private TablePanelBlockLast48h tablePanelBlockLast48h;
+   private TablePanelBlockLast48h   tablePanelBlockLast48h;
 
-   private TablePanelBlockLast24h tablePanelBlockLast24h;
+   private TablePanelBlockLast24h   tablePanelBlockLast24h;
 
-   private TablePanelBlockLastWeek tablePanelBlockLastWeek;
+   private TablePanelBlockLastWeek  tablePanelBlockLastWeek;
 
    private TablePanelBlockLastMonth tablePanelBlockLastMonth;
 
@@ -64,10 +64,10 @@ public class TabsBlocks extends TabsPascalSwing implements IMyTab {
    }
 
    public void initTabs() {
-      tablePanelBlockLast24h = new TablePanelBlockLast24h(psc);
-      tablePanelBlockLast48h = new TablePanelBlockLast48h(psc);
-      tablePanelBlockLastWeek = new TablePanelBlockLastWeek(psc);
-      tablePanelBlockLastMonth = new TablePanelBlockLastMonth(psc);
+      tablePanelBlockLast24h = new TablePanelBlockLast24h(psc, root);
+      tablePanelBlockLast48h = new TablePanelBlockLast48h(psc, root);
+      tablePanelBlockLastWeek = new TablePanelBlockLastWeek(psc, root);
+      tablePanelBlockLastMonth = new TablePanelBlockLastMonth(psc, root);
 
       addMyTab(tablePanelBlockLast24h);
       addMyTab(tablePanelBlockLast48h);

@@ -76,4 +76,9 @@ public interface ITechPrefsPascalSwing extends ITech {
 
    public static final String PREF_DEBUG_TRANSLATION        = "lang.debug";
 
+   /**
+    * Auto refresh when table is not empty
+    */
+   public static final String PREF_GLOBAL_MANUAL_REFRESH    = "global.manual.refresh";
+
 }

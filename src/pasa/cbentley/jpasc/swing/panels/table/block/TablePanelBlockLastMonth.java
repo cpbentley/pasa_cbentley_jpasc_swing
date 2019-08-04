@@ -6,6 +6,7 @@
 package pasa.cbentley.jpasc.swing.panels.table.block;
 
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
+import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 
 public class TablePanelBlockLastMonth extends TablePanelBlockLastAbstract {
    /**
@@ -15,8 +16,8 @@ public class TablePanelBlockLastMonth extends TablePanelBlockLastAbstract {
 
    public static final String ID               = "blocks_month";
 
-   public TablePanelBlockLastMonth(PascalSwingCtx psc) {
-      super(psc, ID, 8064);
+   public TablePanelBlockLastMonth(PascalSwingCtx psc, IRootTabPane root) {
+      super(psc, ID, 8064, root);
    }
 
 }

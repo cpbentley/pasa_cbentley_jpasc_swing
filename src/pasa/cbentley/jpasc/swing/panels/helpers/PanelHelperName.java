@@ -12,8 +12,8 @@ import javax.swing.JTextField;
 
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.ICommandableNameList;
-import pasa.cbentley.jpasc.swing.utils.DocRefresher;
 import pasa.cbentley.jpasc.swing.widgets.PanelPascal;
+import pasa.cbentley.swing.utils.DocRefresher;
 import pasa.cbentley.swing.widgets.b.BButton;
 import pasa.cbentley.swing.widgets.b.BCheckBox;
 import pasa.cbentley.swing.widgets.b.BLabel;

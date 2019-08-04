@@ -49,8 +49,6 @@ public abstract class TablePanelAccountAbstractAll extends TablePanelAccountAbst
     */
    public void panelSwingWorkerDone(PanelSwingWorker worker) {
       super.panelSwingWorkerDone(worker);
-      //TODO unless user pref override it
-      sortTableColAscending(getColumnIndexAccount());
    }
    
  

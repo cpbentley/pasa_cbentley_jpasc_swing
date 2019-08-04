@@ -67,25 +67,42 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
       psc.addI18NKey(list);
       pc.addI18NKey(list);
       gifc.addI18NKey(list);
-      
+
       addI18nPascal(list);
    }
 
+   /**
+    * 
+    */
    protected final void initOutsideUIForPrefs(IPrefs prefs) {
       pc.setPrefs(prefs);
       psc.setPrefs(prefs);
       initForPrefsPascal(prefs);
    }
+
+   /**
+    * 
+    * @param prefs
+    */
    protected abstract void initForPrefsPascal(IPrefs prefs);
-   
-   
+
+   /**
+    * 
+    * @param list
+    */
    protected abstract void addI18nPascal(List<String> list);
 
+   /**
+    * 
+    */
    public void cmdExit() {
       frame.savePrefs();
       psc.getCmds().cmdExit();
    }
 
+   /**
+    * 
+    */
    protected void initSkinner() {
       //load the look and feel before any Swing component
       PascalSkinManager pascalSkinManager = new PascalSkinManager(psc);
@@ -94,6 +111,10 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
       psc.setPascalSkinManager(pascalSkinManager);
    }
 
+   /**
+    * 
+    * @return
+    */
    protected PanelTabLoginConsole createLoginConsole() {
       //must be first if init needs to use it
       PanelTabConsole consolePanel = new PanelTabConsole(psc);
@@ -106,48 +127,32 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
       return panelLoginConsole;
    }
 
+
    //#mdebug
-   public IDLog toDLog() {
-      return toStringGetUCtx().toDLog();
-   }
-
-   public String toString() {
-      return Dctx.toString(this);
-   }
-
    public void toString(Dctx dc) {
-      dc.root(this, "PascalSwingRunAbstract");
+      dc.root(this, "RunPascalSwingAbstract");
       toStringPrivate(dc);
+      super.toString(dc.sup());
 
-      dc.nlLvl(uc);
-      dc.nlLvl(c5);
-      dc.nlLvl(sc);
       dc.nlLvl(imgc);
       dc.nlLvl(gifc);
       dc.nlLvl(pc);
       dc.nlLvl(psc);
 
-      dc.nlLvl(frame, "main");
-
-   }
-
-   public String toString1Line() {
-      return Dctx.toString1Line(this);
-   }
-
-   public void toString1Line(Dctx dc) {
-      dc.root1Line(this, "PascalSwingRunAbstract");
-      toStringPrivate(dc);
-   }
-
-   public UCtx toStringGetUCtx() {
-      return uc;
    }
 
    private void toStringPrivate(Dctx dc) {
+      
+   }
 
+   public void toString1Line(Dctx dc) {
+      dc.root1Line(this, "RunPascalSwingAbstract");
+      toStringPrivate(dc);
+      super.toString1Line(dc.sup1Line());
    }
 
    //#enddebug
+   
+
 
 }

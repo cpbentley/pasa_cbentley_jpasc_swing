@@ -79,7 +79,7 @@ public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSw
       labKeyText.setFont(new Font("Serif", Font.PLAIN, 12));
 
       
-      labBlockText = new BLabel(sc, "widget.totalasset.block");
+      labBlockText = new BLabel(sc, "text.block");
       labBlockText.setFont(new Font("Serif", Font.PLAIN, 14));
 
       labBlock = new BLabel(sc);
@@ -87,8 +87,8 @@ public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSw
       labBlock.setFont(new Font("Serif", Font.PLAIN, 15));
 
 
-      this.add(labBlockText);
       this.add(labBlock);
+      this.add(labBlockText);
       this.add(labPASC);
       this.add(labPASCText);
       this.add(labPASA);

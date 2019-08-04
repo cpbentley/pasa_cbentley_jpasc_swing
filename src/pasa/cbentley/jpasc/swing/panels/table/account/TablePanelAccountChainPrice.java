@@ -57,6 +57,7 @@ public class TablePanelAccountChainPrice extends TablePanelAccountAbstractMinMax
       //register for events
 
       psc.getPCtx().getEventBusPCore().addConsumer(this, IEventsPCore.PID_1_BLOCK_OPS, IEventsPCore.EID_1_BLOCK_OPS_1_PASA_TRADE);
+      
    }
 
    protected PanelHelperKeyAbstract createPanelHelperKey() {

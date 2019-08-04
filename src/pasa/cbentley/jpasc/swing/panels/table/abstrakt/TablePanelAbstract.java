@@ -17,12 +17,14 @@ import javax.swing.JPanel;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.jpasc.swing.cmds.ICmdIDs;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
+import pasa.cbentley.jpasc.swing.interfaces.ITechPrefsPascalSwing;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperLoadingStat;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperRefresh;
 import pasa.cbentley.jpasc.swing.panels.table.key.TablePanelPublicKeyJavaAbstract;
 import pasa.cbentley.jpasc.swing.widgets.PanelPascal;
 import pasa.cbentley.jpasc.swing.workers.abstrakt.WorkerListTaskPage;
 import pasa.cbentley.swing.cmd.ICommandableRefresh;
+import pasa.cbentley.swing.imytab.IMyTab;
 import pasa.cbentley.swing.model.ModelTableBAbstract;
 import pasa.cbentley.swing.table.AbstractTabTable;
 import pasa.cbentley.swing.threads.IWorkerPanel;
@@ -53,33 +55,38 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
 
    protected boolean                isTableUpdatingDisabled;
 
-   protected PanelHelperRefresh     panelRefresh;
+   protected PanelHelperRefresh     panelHelperRefresh;
 
    protected final PascalSwingCtx   psc;
 
    /**
     * Not null
     */
-   protected PanelHelperLoadingStat statPanel;
+   protected PanelHelperLoadingStat panelHelperLoadingStat;
 
    public TablePanelAbstract(PascalSwingCtx psc, String internalID) {
       super(psc.getSwingCtx(), internalID);
       this.psc = psc;
       isFixedStatTextField = true;
       isAutoResizeColumns = true;
-      statPanel = new PanelHelperLoadingStat(psc);
+      panelHelperLoadingStat = new PanelHelperLoadingStat(psc);
 
       cbRowNumbers = new BCheckBox(sc, new ActionListener() {
 
          public void actionPerformed(ActionEvent e) {
 
-            JOptionPane jop = new JOptionPane();
-            jop.setMessageType(JOptionPane.PLAIN_MESSAGE);
-            jop.setMessage("Please wait...");
-            JDialog dialog = jop.createDialog(null, "Message");
-            dialog.setVisible(true);
+//            JOptionPane jop = new JOptionPane();
+//            jop.setMessageType(JOptionPane.PLAIN_MESSAGE);
+//            jop.setMessage("Please wait...");
+//            JDialog dialog = jop.createDialog(null, "Message");
+//            dialog.setVisible(true);
+            
             cmdToggleRowHeader();
-            dialog.dispose();
+            
+//            dialog.dispose();
+            
+            //#debug
+            toDLog().pFlow("dialog diposed ",null,TablePanelAbstract.class,"actionPerformed",LVL_05_FINE,true);
          }
       }, "cb.rownumber");
    }
@@ -98,7 +105,7 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
    }
 
    /**
-    * 
+    * Refresh the table with a new worker, no checks, cancel previous worker if any.
     */
    public void cmdTableRefresh() {
 
@@ -126,8 +133,8 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
 
       this.workerTable = worker;
 
-      statPanel.setWorker(worker);
-      statPanel.setStateScanning();
+      panelHelperLoadingStat.setWorker(worker);
+      panelHelperLoadingStat.setStateScanning();
 
       //TODO add worker to global list.. with max number of workers.. and ability to stop 
       //view active workers in a list
@@ -206,7 +213,7 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
    }
 
    /**
-    * Checks whether table data must be updated.
+    * Checks whether table data must be updated. Called by 
     * 
     * <li> the block is the same as the current block
     * <li> table updating has been explicitely disabled with {@link TablePanelAbstract#tableRefreshDisable()}
@@ -218,18 +225,32 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
     * TODO Sub class may decide to not refresh because its data does not depend on block.
     * operations for instance
     * 
+    * Explicit refresh {@link TablePanelAbstract#cmdTableRefresh()} does not use this method.
+    * 
     * @return
     */
    public boolean isTableUpdateRequired() {
       if (isTableUpdatingDisabled) {
          return false;
       }
+      //if table is empty we want to refresh it as it costs nothing to try again
+      //and it might be the first time
+      if(getBenTable().getModel().getRowCount() == 0) {
+         return true;
+      }
+      
+      //check if global manual refresh setting. it overrides everything
+      boolean isManualRefresh = psc.getPascPrefs().getBoolean(ITechPrefsPascalSwing.PREF_GLOBAL_MANUAL_REFRESH, false);
+      if(isManualRefresh) {
+         return false;
+      }
+
       if (workerTable != null) {
          return false;
       }
-      if (panelRefresh != null) {
+      if (panelHelperRefresh != null) {
          Integer blockLastMine = psc.getPCtx().getRPCConnection().getLastBlockMined();
-         Integer blockLastRefresh = panelRefresh.getRefreshBlock();
+         Integer blockLastRefresh = panelHelperRefresh.getRefreshBlock();
          if (blockLastRefresh != null && blockLastMine != null) {
             if (blockLastMine == blockLastRefresh) {
                return false;
@@ -256,7 +277,7 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       getTableModelAbstract().computeStatsGlobal();
       subUpdateStatPanel();
       this.workerTable = null;
-      statPanel.setStateDone();
+      panelHelperLoadingStat.setStateDone();
       if (isAutoResizeColumns) {
          super.resizeTableColumns();
       }
@@ -275,14 +296,14 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       subUpdateStatPanel();
       //
       WorkerStat workerStats = worker.getWorkerStat();
-      statPanel.setStateStat(workerStats);
+      panelHelperLoadingStat.setStateStat(workerStats);
    }
 
    public void panelSwingWorkerStarted(PanelSwingWorker worker) {
       //check current block
-      if (panelRefresh != null) {
+      if (panelHelperRefresh != null) {
          Integer block = psc.getPCtx().getRPCConnection().getLastBlockMined();
-         panelRefresh.setRefreshBlock(block);
+         panelHelperRefresh.setRefreshBlock(block);
       }
    }
 
@@ -359,31 +380,44 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
     * user knows it will take some time and he wants to do something else while its working.
     * 
     * IF key MAJ key is pressed when lost focus occurs and command ctx
+    * 
+    * works with {@link TablePanelAbstract#tabWillBeHiddenByAnotherTab(IMyTab)} to disable or not
+    * the current running task.
     */
    public void tabLostFocus() {
       //#debug
       toDLog().pFlow("", this, TablePanelAbstract.class, "tabLostFocus", ITechLvl.LVL_04_FINER, true);
 
+      
       if (workerTable != null) {
          //#debug
          toDLog().pFlow("workerTable is not null", workerTable, TablePanelAbstract.class, "tabLostFocus", ITechLvl.LVL_04_FINER, true);
 
-         //ask user if he wants to 
+         //pause it if supports exists until tab gets back
+         //worker.pause();
+         boolean b = workerTable.cancel(true);
+
+         //#debug
+         toDLog().pWork("Worker was not null. Cancel method returns " + b, this, TablePanelAbstract.class, "tabLostFocus", ITechLvl.LVL_05_FINE, true);
+         workerTable = null;
+      }
+   }
+
+   public boolean tabWillBeHiddenByAnotherTab(IMyTab newSelectedTab) {
+      //check if its ok to be hidden and user really wants to hide the stand in the current state
+
+      if (workerTable != null) {
+         //depends on saved settings
+         JOptionPane jop = new JOptionPane();
+         jop.setMessageType(JOptionPane.PLAIN_MESSAGE);
+         jop.setMessage("Please wait...");
+         JDialog dialog = jop.createDialog(null, "Message");
+         dialog.setVisible(true);
+
          int returnValue = 0;
          returnValue = JOptionPane.showConfirmDialog(this, "Data Task is running for this task. Abort it?", "Abort task on this tab?", JOptionPane.YES_NO_OPTION);
-
-         if (returnValue == JOptionPane.YES_OPTION) {
-            //pause it if supports exists until tab gets back
-            //worker.pause();
-            boolean b = workerTable.cancel(true);
-
-            //#debug
-            toDLog().pWork("Worker was not null. Cancel method returns " + b, this, TablePanelAbstract.class, "tabLostFocus", ITechLvl.LVL_05_FINE, true);
-            workerTable = null;
-         } else if (returnValue == JOptionPane.NO_OPTION) {
-            //table data is kept
-
-         }
+         return false;
       }
+      return true;
    }
 }

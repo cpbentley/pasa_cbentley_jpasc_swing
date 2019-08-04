@@ -18,6 +18,7 @@ import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
 import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.interfaces.IPrefs;
 import pasa.cbentley.core.src4.logging.BaseDLogger;
+import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IConfig;
 import pasa.cbentley.core.src4.logging.ITechConfig;
 import pasa.cbentley.core.src4.logging.ITechLvl;
@@ -29,24 +30,11 @@ import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperKeyWalletSwitch;
 import pasa.cbentley.swing.actions.IExitable;
 import pasa.cbentley.swing.cmd.ICommandableRefresh;
 import pasa.cbentley.swing.interfaces.IStringPrefIDable;
+import pasa.cbentley.swing.utils.PrefIdable;
 import pasa.cbentley.swing.window.CBentleyFrame;
 
-public class RunPanelHelperKeyWalletSwitch extends RunPascalSwingAbstract implements IExitable, IStringPrefIDable, ICommandableRefresh {
+public class RunPanelHelperKeyWalletSwitch extends RunPascalSwingAbstract implements IExitable, ICommandableRefresh {
 
-   private class IDPanel implements IStringPrefIDable {
-
-      private String key;
-
-      public IDPanel(String key) {
-         this.key = key;
-
-      }
-
-      public String getSelectorKeyPrefID() {
-         return key;
-      }
-
-   }
 
    public static void main(final String[] args) {
       //create runner
@@ -88,10 +76,6 @@ public class RunPanelHelperKeyWalletSwitch extends RunPascalSwingAbstract implem
       }
    }
 
-   public String getSelectorKeyPrefID() {
-      return "VisualTestPanelKey";
-   }
-
    protected void initForPrefsPascal(IPrefs prefs) {
 
    }
@@ -99,7 +83,7 @@ public class RunPanelHelperKeyWalletSwitch extends RunPascalSwingAbstract implem
    /**
     * Called once inside the GUI thread.
     */
-   protected void initUIThreadInsideSwing() {
+   protected CBentleyFrame initUIThreadInsideSwing() {
       initSkinner();
 
       frame = new CBentleyFrame(sc, "demo_panelhelper_keywalletswitch");
@@ -111,8 +95,15 @@ public class RunPanelHelperKeyWalletSwitch extends RunPascalSwingAbstract implem
 
       PanelTabLoginConsole panel = createLoginConsole();
 
-      panelHelperKeyWalletSwitch1 = new PanelHelperKeyWalletSwitch(psc, new IDPanel("panel1"), this);
-      panelHelperKeyWalletSwitch2 = new PanelHelperKeyWalletSwitch(psc, new IDPanel("panel2"), this);
+      PrefIdable prefIdable1 = new PrefIdable(sc,"panel1");
+      panelHelperKeyWalletSwitch1 = new PanelHelperKeyWalletSwitch(psc, prefIdable1, this);
+      panelHelperKeyWalletSwitch1.setKeySelectionEnabled(true);
+      panelHelperKeyWalletSwitch1.buildUI();
+
+      PrefIdable prefIdable2 = new PrefIdable(sc,"panel2");
+      panelHelperKeyWalletSwitch2 = new PanelHelperKeyWalletSwitch(psc, prefIdable2, this);
+      panelHelperKeyWalletSwitch2.setKeySelectionEnabled(true);
+      panelHelperKeyWalletSwitch2.buildUI();
 
       JPanel center = new JPanel();
       center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
@@ -131,18 +122,31 @@ public class RunPanelHelperKeyWalletSwitch extends RunPascalSwingAbstract implem
       //set menubar
       MenuBarPascalDemo pascalMenuBarDemo = new MenuBarPascalDemo(psc, frame);
       frame.setJMenuBar(pascalMenuBarDemo);
-      frame.setExitable(this);
 
-      sc.guiUpdate();
+      return frame;
+   }
 
-      frame.positionFrame();
+   //#mdebug
+   public void toString(Dctx dc) {
+      dc.root(this, "RunPanelHelperKeyWalletSwitch");
+      toStringPrivate(dc);
+      super.toString(dc.sup());
+   }
+
+   public void toString1Line(Dctx dc) {
+      dc.root1Line(this, "RunPanelHelperKeyWalletSwitch");
+      toStringPrivate(dc);
+      super.toString1Line(dc.sup1Line());
+   }
+
+   private void toStringPrivate(Dctx dc) {
+
    }
 
    /**
     * setup the logger at. sub class may override.
     * Default opens all at finest level
     */
-   //#mdebug
    protected void toStringSetupLogger(UCtx uc) {
       BaseDLogger loggerFirst = (BaseDLogger) uc.toDLog();
       IConfig config = loggerFirst.getDefault().getConfig();
@@ -153,5 +157,7 @@ public class RunPanelHelperKeyWalletSwitch extends RunPascalSwingAbstract implem
       //negatives
       config.setFlagTagNeg(ITechTags.FLAG_07_PRINT_EVENT, true);
    }
+
    //#enddebug
+
 }
