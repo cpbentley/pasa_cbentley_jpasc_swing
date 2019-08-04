@@ -50,6 +50,10 @@ public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSw
 
    private PascalSwingCtx psc;
 
+   private BLabel labBlockText;
+
+   private BLabel labBlock;
+
    public WalletTotalAssets(PascalSwingCtx psc) {
       this.psc = psc;
       SwingCtx sc = psc.getSwingCtx();
@@ -74,6 +78,17 @@ public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSw
       labKeyText = new BLabel(sc, "widget.totalasset.key");
       labKeyText.setFont(new Font("Serif", Font.PLAIN, 12));
 
+      
+      labBlockText = new BLabel(sc, "widget.totalasset.block");
+      labBlockText.setFont(new Font("Serif", Font.PLAIN, 14));
+
+      labBlock = new BLabel(sc);
+      labBlock.setText("0");
+      labBlock.setFont(new Font("Serif", Font.PLAIN, 15));
+
+
+      this.add(labBlockText);
+      this.add(labBlock);
       this.add(labPASC);
       this.add(labPASCText);
       this.add(labPASA);
@@ -132,9 +147,10 @@ public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSw
       final int accountNum = res.pasa;
       final int keyNum = res.pks;
       final double pasc = res.pasc.getDouble();
+      labBlock.setText(String.valueOf(res.block));
+      labPASC.setText(psc.getPCtx().getPU().getPrettyPascBalance(pasc, ","));
       labPASA.setText(String.valueOf(accountNum));
       labKey.setText(String.valueOf(keyNum));
-      labPASC.setText(psc.getPCtx().getPU().getPrettyPascBalance(pasc, ","));
    }
 
    public void guiUpdate() {
@@ -153,14 +169,17 @@ public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSw
       labPASA.setForeground(new Color(ColorUtils.FR_BORDEAUX_Sang_de_boeuf));
       labPASC.setForeground(new Color(ColorUtils.FR_BORDEAUX_Bourgogne));
       labKey.setForeground(new Color(ColorUtils.FR_BORDEAUX_Sanguine));
+      labBlock.setForeground(new Color(ColorUtils.FR_VERT_Bouteille));
 
       labPASA.setFont(df);
       labPASC.setFont(df);
       labKey.setFont(df);
+      labBlock.setFont(df);
 
       labPASAText.setFont(dftext);
       labPASCText.setFont(dftext);
       labKeyText.setFont(dftext);
+      labBlockText.setFont(dftext);
    }
 
    public void mouseClicked(MouseEvent e) {
