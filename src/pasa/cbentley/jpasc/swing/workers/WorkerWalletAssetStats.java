@@ -31,10 +31,12 @@ public class WorkerWalletAssetStats extends AbstractBRunnable {
 
       public int             pasa;
 
-      public int             pks = 0;
+      public int             pks   = 0;
+
+      public int             block = 0;
    }
 
-   private PascalSwingCtx  psc;
+   private PascalSwingCtx           psc;
 
    /**
     * Volatile makes sure variable to be visible when it is read
@@ -76,10 +78,11 @@ public class WorkerWalletAssetStats extends AbstractBRunnable {
                asr.pasc = asr.pasc.add(pc.create(numCoinsPk));
                //#debug
                //psc.toDLog().pFlow("numCoinsPk="+numCoinsPk + " total="+asr.pasc.getDouble(), null, WorkerTableWalletAssetStats.class, "runAbstract", IDLog.LVL_05_FINE, true);
-               
+
             }
          }
       }
+      asr.block = psc.getPascalClient().getBlockCount() - 1;
       //publish result
       this.asr = asr;
    }
