@@ -114,7 +114,6 @@ public class ModelTableAccountFullData extends ModelTableAccountAbstract {
       }
    }
 
-   
    public int getColumnIndexAccount() {
       return INDEX_00_ACCOUNT;
    }
@@ -131,12 +130,20 @@ public class ModelTableAccountFullData extends ModelTableAccountAbstract {
       return INDEX_02_PUBLICKEY;
    }
 
+   public int getColumnIndexChecksum() {
+      return INDEX_01_CHECKSUM;
+   }
+
    public int getColumnIndexOps() {
       return INDEX_06_OPS;
    }
 
    public int getColumnIndexPrice() {
       return INDEX_08_PRICE;
+   }
+
+   public int getColumnIndexSeller() {
+      return INDEX_10_SELLER;
    }
 
 }

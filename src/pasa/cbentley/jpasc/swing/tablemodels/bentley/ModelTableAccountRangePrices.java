@@ -65,7 +65,7 @@ public class ModelTableAccountRangePrices extends ModelTableAccountAbstract {
     */
    private static final long serialVersionUID           = -4962292913762595283L;
 
-   private AccountRange currentRange;
+   private AccountRange      currentRange;
 
    public ModelTableAccountRangePrices(PascalSwingCtx psc) {
       super(psc, NUM_COLUMNS);
@@ -148,10 +148,16 @@ public class ModelTableAccountRangePrices extends ModelTableAccountAbstract {
       return INDEX_04_NAME;
    }
 
+   public int getColumnIndexSeller() {
+      return INDEX_10_SELLER;
+   }
+
    public int getColumnIndexAge() {
       return INDEX_05_AGE;
    }
-
+   public int getColumnIndexChecksum() {
+      return INDEX_01_CHECKSUM;
+   }
    public int getColumnIndexKey() {
       return INDEX_02_PUBLICKEY;
    }

@@ -112,6 +112,8 @@ public abstract class ModelTableAccountAbstract extends ModelTableBAbstractWithC
    public abstract int getColumnIndexKey();
 
    public abstract int getColumnIndexOps();
+   public abstract int getColumnIndexChecksum();
+   public abstract int getColumnIndexSeller();
 
    public abstract int getColumnIndexPrice();
 
