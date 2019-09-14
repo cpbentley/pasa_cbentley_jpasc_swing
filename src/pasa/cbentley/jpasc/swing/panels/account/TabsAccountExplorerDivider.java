@@ -18,35 +18,50 @@ import pasa.cbentley.jpasc.pcore.interfaces.IAccessPascal;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountChainAll;
+import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountChainAllRange;
 import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountChainBalance;
 import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountChainName;
 import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountChainPrice;
 import pasa.cbentley.swing.imytab.IMyTab;
 import pasa.cbentley.swing.imytab.TabbedBentleyPanel;
 
-public class TabsAccountExplorer extends TabbedBentleyPanel implements IMyTab, ActionListener, IRootTabPane {
-   public static final String            ID               = "root_account";
+/**
+ * Divides the Exploration of All Accounts into small blocks
+ * 
+ * <li> 0-9999
+ * <li> 10 000-99 999
+ * <li> 100 000-999 999
+ * <li> 1 000 000 - 1 999 999
+ * <li> 2 000 000 - 2 999 999
+ * 
+ * @author Charles Bentley
+ *
+ */
+public class TabsAccountExplorerDivider extends TabbedBentleyPanel implements IMyTab, ActionListener, IRootTabPane {
+   public static final String             ID               = "root_account";
 
    /**
     * 
     */
-   private static final long             serialVersionUID = 9151853322825121491L;
+   private static final long              serialVersionUID = 9151853322825121491L;
 
-   private PanelAccountDetails           accountExplorerPanel;
+   private PanelAccountDetails            accountExplorerPanel;
 
-   private TabsAccountExplorerDivider    listAccount;
+   private TablePanelAccountChainAllRange accountChainAllRange9999;
 
-   private TablePanelAccountChainName    listName;
+   private TablePanelAccountChainAllRange accountChainAllRange99999;
 
-   private PascalSwingCtx                psc;
+   private TablePanelAccountChainAllRange accountChainAllRange999999;
 
-   private IRootTabPane                  rootRPC;
+   private PascalSwingCtx                 psc;
 
-   private TablePanelAccountChainPrice   listAccountPrices;
+   private IRootTabPane                   rootRPC;
 
-   private TablePanelAccountChainBalance listAccountRich;
+   private TablePanelAccountChainAllRange accountChainAllRange1999999;
 
-   public TabsAccountExplorer(PascalSwingCtx psc, IRootTabPane root) {
+   private TablePanelAccountChainAllRange accountChainAllRange2999999;
+
+   public TabsAccountExplorerDivider(PascalSwingCtx psc, IRootTabPane root) {
       super(psc.getSwingCtx(), ID);
       this.psc = psc;
       this.rootRPC = root;
@@ -56,10 +71,6 @@ public class TabsAccountExplorer extends TabbedBentleyPanel implements IMyTab, A
    }
 
    public void disposeTab() {
-      listName = null;
-      listAccount = null;
-      accountExplorerPanel = null;
-
       removeAlltabs();
    }
 
@@ -78,11 +89,13 @@ public class TabsAccountExplorer extends TabbedBentleyPanel implements IMyTab, A
    public void initTabs() {
 
       //init default position
-      listName = new TablePanelAccountChainName(psc, this);
-      listAccount = new TabsAccountExplorerDivider(psc, this);
-      listAccountPrices = new TablePanelAccountChainPrice(psc, this);
-      listAccountRich = new TablePanelAccountChainBalance(psc, this);
-      listAccountRich.setDoubleMinNoRefresh("20000.0");
+      accountChainAllRange9999 = new TablePanelAccountChainAllRange(psc, this,0,9999);
+      accountChainAllRange99999 = new TablePanelAccountChainAllRange(psc, this,10000,99999);
+      accountChainAllRange999999 = new TablePanelAccountChainAllRange(psc, this,100000,999999);
+      accountChainAllRange1999999 = new TablePanelAccountChainAllRange(psc, this,1000000,1999999);
+      accountChainAllRange2999999 = new TablePanelAccountChainAllRange(psc, this,2000000,2999999);
+
+      //TODO dynamic title
       accountExplorerPanel = new PanelAccountDetails(psc, this);
 
       //deal with ordering of the tabs? TODO and what if there framed tab
@@ -99,11 +112,12 @@ public class TabsAccountExplorer extends TabbedBentleyPanel implements IMyTab, A
          }
       } else {
          //factory order
+         addMyTab(accountChainAllRange9999);
+         addMyTab(accountChainAllRange99999);
+         addMyTab(accountChainAllRange999999);
+         addMyTab(accountChainAllRange1999999);
+         addMyTab(accountChainAllRange2999999);
          addMyTab(accountExplorerPanel);
-         addMyTab(listAccount);
-         addMyTab(listName);
-         addMyTab(listAccountRich);
-         addMyTab(listAccountPrices);
       }
    }
 
