@@ -97,6 +97,7 @@ import pasa.cbentley.jpasc.swing.others.PascalSkinManager;
 import pasa.cbentley.jpasc.swing.others.PascalValueDefault;
 import pasa.cbentley.jpasc.swing.panels.funding.FundingManager;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableOperationAbstract;
+import pasa.cbentley.jpasc.swing.utils.PascalSwingUtils;
 import pasa.cbentley.jpasc.swing.utils.WalletKeyMapper;
 import pasa.cbentley.jpasc.swing.widgets.PasswordDialog;
 import pasa.cbentley.swing.IconFamily;
@@ -135,9 +136,9 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     */
    private BackForwardTabPage                backForwardManager;
 
-   StringBBuilder blockTimeBuilder;
+   private StringBBuilder blockTimeBuilder;
 
-   DecimalFormat  blockTimesFormat = new DecimalFormat("##.##");
+   private DecimalFormat  blockTimesFormat = new DecimalFormat("##.##");
 
    private CellRendereManager                cellRendereManager;
 
@@ -235,6 +236,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    private JLabel                            websitePascal;
 
+   private PascalSwingUtils pascalSwingUtils;
    /**
     * 
     * @param pc cannot be null
@@ -247,6 +249,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       this.pc = pc;
       this.sc = sc;
 
+      pascalSwingUtils = new PascalSwingUtils(this);
+      
       blockTimeBuilder = new StringBBuilder();
 
       setFilterInteger(new FilterIntOrEmpty(sc));
@@ -1520,5 +1524,9 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
          getLog().consoleLogGreen("Wallet fail to unlock! Probably wrong password");
          return false;
       }
+   }
+
+   public PascalSwingUtils getPascalSwingUtils() {
+      return pascalSwingUtils;
    }
 }
