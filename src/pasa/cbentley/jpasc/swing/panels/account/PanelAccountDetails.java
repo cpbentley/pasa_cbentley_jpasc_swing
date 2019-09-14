@@ -30,6 +30,7 @@ import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.jpasc.pcore.network.RPCConnection;
 import pasa.cbentley.jpasc.pcore.utils.AddressValidationResult;
+import pasa.cbentley.jpasc.pcore.utils.PascalCoinDouble;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.interfaces.ITechPrefsPascalSwing;
@@ -188,11 +189,10 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
 
       butClear = new BButton(sc, this, "but.clear");
 
-      butNext = new BButton(sc, this, "Next >>");
-      butPrev = new BButton(sc, this, "<< Previous");
+      butNext = new BButton(sc, this, "but.acc.next");
+      butPrev = new BButton(sc, this, "but.acc.previous");
 
-      butFindAccount = new BButton(sc, this, "Find Account");
-      butFindAccount.setToolTipText("Show account along others");
+      butFindAccount = new BButton(sc, this, "but.find.account");
 
       Icon icon = getTabIcon(IconFamily.ICON_SIZE_2_MEDIUM, IconFamily.ICON_MODE_0_DEFAULT);
       Icon iconSel = getTabIcon(IconFamily.ICON_SIZE_2_MEDIUM, IconFamily.ICON_MODE_1_SELECTED);
@@ -288,7 +288,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       container.add("tab", labLockBlock);
       textLockBlock = new JTextField(6);
       textLockBlock.setEditable(false);
-      labBlocks = new BLabel(sc, "Blocks");
+      labBlocks = new BLabel(sc, "text.blocks");
       container.add("tab", textLockBlock);
       container.add("", labBlocks);
 
@@ -380,16 +380,11 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       textCheckSum.setText("" + this.psc.getPCtx().calculateChecksum(account.getAccount()));
       textName.setText(account.getName() + "");
 
-      Double d = account.getBalance();
-      int decimal = 0;
-      double fractional = 0.0;
-      if (d != null) {
-         double number = d.doubleValue(); // you have this
-         decimal = (int) d.doubleValue(); // you have 12345
-         fractional = number - decimal; // you have 0.6789
-      }
-      textBalance.setText(d.toString());
-      textMolina.setText(""+fractional);
+     
+      PascalCoinDouble accountBalance = psc.getPCtx().getAccountBalance(account);
+      
+      textBalance.setText(accountBalance.getString());
+      textMolina.setText(accountBalance.getMolinasStr());
 
       textNumOperations.setText(account.getnOperation().toString());
       String encPubKey = account.getEncPubkey();
@@ -400,11 +395,9 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       textLastBlock.setText("" + updateB);
       RPCConnection con = psc.getPCtx().getRPCConnection();
       if (con.isConnected()) {
-         int diff = con.getLastBlockMined().intValue() - updateB.intValue();
-         int numMinutes = diff * 5;
-         // numDays
-         int numDays = numMinutes / (60 * 24);
-         textLastOpTime.setText(numDays + " days ago");
+         int ageDiff = con.getLastBlockMined().intValue() - updateB.intValue();
+         String timeAgo = psc.getPascalSwingUtils().computeTimeFromBlockAge(ageDiff);
+         textLastOpTime.setText(timeAgo);
       } else {
          textLastOpTime.setText("");
       }
