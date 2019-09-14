@@ -56,7 +56,7 @@ public class CellRendererAccountAge extends PascalTableCellRenderer implements T
          c = psc.getCellRendereManager().getSelectedColor(c);
       }
       if(renderer instanceof JLabel) {
-         String msg = (value * 5) + " minutes ago ";
+         String msg = psc.getPascalSwingUtils().computeTimeFromBlockAge(value);
          ((JLabel)renderer).setToolTipText(msg);
       }
       renderer.setBackground(c);
