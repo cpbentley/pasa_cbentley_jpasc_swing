@@ -117,7 +117,11 @@ public class TablePanelAccountChainPrice extends TablePanelAccountAbstractMinMax
     */
    protected void subSetColumnRenderers() {
       CellRendereManager rm = psc.getCellRendereManager();
-      getBenTable().setColumnRenderer(getColumnIndexAccount(), rm.getCellRendererAccountSoldContiguous());
+      getBenTable().setColumnRenderer(getColumnIndexAccount(), rm.getCellRendererAccountPascal());
+      getBenTable().setColumnRenderer(getColumnIndexSeller(), rm.getCellRendererAccountPascal());
+      
+      getBenTable().setColumnRenderer(getColumnIndexChecksum(), rm.getCellRendererAccountSoldContiguous());
+      
       int tableIndexRangeCount = ModelTableAccountRangePrices.INDEX_12_RANGE_SIZE;
       getBenTable().setColumnRenderer(tableIndexRangeCount, rm.getCellRendererAccountContiguousCount());
    }

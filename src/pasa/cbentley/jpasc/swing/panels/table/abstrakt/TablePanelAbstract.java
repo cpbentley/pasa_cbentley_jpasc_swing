@@ -46,7 +46,16 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
 
    protected BCheckBox              cbRowNumbers;
 
+   /**
+    * This flag tells Table to resize columns once the worker has finished.
+    */
    protected boolean                isAutoResizeColumns;
+
+   /**
+    * Tells the table to resize columns on GuiUpdate. Potentially costly, therefore turned off
+    * by default.
+    */
+   protected boolean                isAutoResizeColumnsOnGuiUpdate;
 
    /**
     * 
@@ -69,6 +78,7 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       this.psc = psc;
       isFixedStatTextField = true;
       isAutoResizeColumns = true;
+      isAutoResizeColumnsOnGuiUpdate = false;
       panelHelperLoadingStat = new PanelHelperLoadingStat(psc);
 
       cbRowNumbers = new BCheckBox(sc, new ActionListener() {
@@ -162,6 +172,8 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
    }
 
    public void guiUpdate() {
+      //#debug
+      toDLog().pFlow("start", this, TablePanelAbstract.class, "guiUpdate", LVL_04_FINER, true);
       super.guiUpdate();
       //since the whole structure of the table is updated.. set back renderers
       if (isInitialized()) {
@@ -169,9 +181,16 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
          psc.setDefaultRenderers(getBenTable().getTable());
          setColumnRenderers();
       }
-      if (isAutoResizeColumns) {
+      //TODO this is potentially very costly when many tables are active. so only update if visible
+      //when no visible save guiUpdate for this componenent
+      if (isAutoResizeColumnsOnGuiUpdate) {
+         //#debug
+         toDLog().pFlow("isAutoResizeColumnsOnGuiUpdate", this, TablePanelAbstract.class, "guiUpdate", LVL_03_FINEST, true);
          super.resizeTableColumns();
       }
+      //#debug
+      toDLog().pFlow("end", this, TablePanelAbstract.class, "guiUpdate", LVL_04_FINER, true);
+     
    }
 
    private void initPanelNorth() {

@@ -64,6 +64,8 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
 
    public static final int   STAT_INDEX_2_NUM_SOLD     = 2;
 
+   public static final int   STAT_INDEX_4_KEYS         = 4;
+
    public static final int   STAT_INDEX_3_NUM_PRIVATE  = 3;
 
    public static final int   STAT_INDEX_4_NUM_SELLERS  = 4;
@@ -346,6 +348,14 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
       return getTableModel().getColumnIndexKey();
    }
 
+   protected int getColumnIndexChecksum() {
+      return getTableModel().getColumnIndexChecksum();
+   }
+
+   protected int getColumnIndexSeller() {
+      return getTableModel().getColumnIndexSeller();
+   }
+
    protected int getColumnIndexOps() {
       return getTableModel().getColumnIndexOps();
    }
@@ -421,7 +431,7 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
     */
    public void setColumnRenderers() {
       CellRendereManager rm = psc.getCellRendereManager();
-      getBenTable().setColumnRenderer(getColumnIndexAccount(), rm.getCellRendererAccount());
+      getBenTable().setColumnRenderer(getColumnIndexAccount(), rm.getCellRendererAccountPascal());
       getBenTable().setColumnRenderer(getColumnIndexOps(), rm.getCellRendererAccountOpCount());
       getBenTable().setColumnRenderer(getColumnIndexKey(), rm.getCellRendererKeyName());
       getBenTable().setColumnRenderer(getColumnIndexAge(), rm.getCellRendererAccountAge());
