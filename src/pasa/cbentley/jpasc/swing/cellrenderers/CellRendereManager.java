@@ -24,6 +24,7 @@ import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableAccountRangePrices;
 import pasa.cbentley.swing.ctx.IEventsSwing;
+import pasa.cbentley.swing.table.renderer.CellRendererIntegerStringHSLPasc;
 
 public class CellRendereManager implements IEventConsumer, IStringable, PropertyChangeListener {
 
@@ -132,6 +133,10 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
 
    private CellRendererBlockTime cellRendererBlockTime;
 
+   private CellRendererIntegerStringHSLPasc cellRendererIntegerStringHSLPasc;
+
+   private CellRendererAccountPascal cellRendererAccountPascal;
+
    public CellRendererBlockTime getCellRendererBlockTime() {
       if (cellRendererBlockTime == null) {
          cellRendererBlockTime = new CellRendererBlockTime(psc);
@@ -147,6 +152,13 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
       return cellRendererAccount;
    }
 
+   public CellRendererIntegerStringHSLPasc getCellRendererAccountBentley() {
+      if (cellRendererIntegerStringHSLPasc == null) {
+         cellRendererIntegerStringHSLPasc = new CellRendererIntegerStringHSLPasc(psc.getSwingCtx());
+         //registerRenderer(CellRendererIntegerStringHSLPasc);
+      }
+      return cellRendererIntegerStringHSLPasc;
+   }
    public TableCellRenderer getCellRendererAccountAge() {
       if (cellRendererAccountAge == null) {
          cellRendererAccountAge = new CellRendererAccountAge(psc);
@@ -202,7 +214,14 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
       }
       return cellRendererBalanceInteger;
    }
+   public CellRendererAccountPascal getCellRendererAccountPascal() {
+      if (cellRendererAccountPascal == null) {
+         cellRendererAccountPascal = new CellRendererAccountPascal(psc);
+      }
+      return cellRendererAccountPascal;
+   }
 
+   
    public CellRendererBlockMiner getCellRendererBlockMiner() {
       if (cellRendererBlockMiner == null) {
          cellRendererBlockMiner = new CellRendererBlockMiner(psc);
