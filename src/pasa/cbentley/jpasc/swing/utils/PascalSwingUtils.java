@@ -11,11 +11,11 @@ import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 
 public class PascalSwingUtils implements IEventConsumer {
 
-   private boolean isInited = false;
+   private boolean                isInited = false;
 
    protected final PascalSwingCtx psc;
 
-   private String  strAgoMinutes;
+   private String                 strAgoMinutes;
 
    public PascalSwingUtils(PascalSwingCtx psc) {
       this.psc = psc;
@@ -74,9 +74,13 @@ public class PascalSwingUtils implements IEventConsumer {
       return msg;
    }
 
+   public void computeStringValues() {
+      strAgoMinutes = psc.getSwingCtx().getResString("text.minutes.ago");
+   }
+
    public void consumeEvent(BusEvent e) {
       //we only registered for language change.. update values
-      updateStringValues();
+      computeStringValues();
    }
 
    private void init() {
@@ -86,7 +90,7 @@ public class PascalSwingUtils implements IEventConsumer {
       psc.getUCtx().getEventBusRoot().addConsumer(this, IEventsCore.PID_1_FRAMEWORK, IEventsCore.EID_FRAMEWORK_2_LANGUAGE_CHANGED);
 
       //at construction time, the bundle of string is not yet available.
-      updateStringValues();
+      computeStringValues();
    }
 
    //#mdebug
@@ -118,10 +122,6 @@ public class PascalSwingUtils implements IEventConsumer {
 
    private void toStringPrivate(Dctx dc) {
 
-   }
-
-   public void updateStringValues() {
-      strAgoMinutes = psc.getSwingCtx().getResString("text.minutes.ago");
    }
 
    //#enddebug

@@ -251,7 +251,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
       pascalSwingUtils = new PascalSwingUtils(this);
       
-      blockTimeBuilder = new StringBBuilder();
+      blockTimeBuilder = new StringBBuilder(uc);
 
       setFilterInteger(new FilterIntOrEmpty(sc));
       setFilterDouble(new FilterDoubleOrEmpty(sc));
@@ -1386,7 +1386,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    }
 
    public String toString(PublicKey pkNew, Account buyer, Account bought, Double fee) {
-      StringBBuilder sb = new StringBBuilder();
+      StringBBuilder sb = new StringBBuilder(sc.getUCtx());
       sb.append("Account ");
       sb.append(buyer.getAccount());
       sb.append(" buys ");
@@ -1401,7 +1401,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    }
 
    public String toString(String pkNew, Account buyer, Account bought, Double fee) {
-      StringBBuilder sb = new StringBBuilder();
+      StringBBuilder sb = new StringBBuilder(uc);
       sb.append("Account ");
       sb.append(buyer.getAccount());
       sb.append(" buys ");

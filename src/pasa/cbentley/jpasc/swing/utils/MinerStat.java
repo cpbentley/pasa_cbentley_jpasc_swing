@@ -108,7 +108,7 @@ public class MinerStat {
    }
 
    public String getBlockTimeUIThread(long diffUnixTime) {
-      StringBBuilder blockTimeBuilder = new StringBBuilder();
+      StringBBuilder blockTimeBuilder = new StringBBuilder(pc.getUCtx());
       long millis = diffUnixTime * 1000;
       int minutes = (int) TimeUnit.MILLISECONDS.toMinutes(millis);
       int seconds = (int) (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(minutes));

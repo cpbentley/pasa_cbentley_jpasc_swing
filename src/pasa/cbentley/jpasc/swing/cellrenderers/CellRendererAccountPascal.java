@@ -61,7 +61,7 @@ public class CellRendererAccountPascal extends PascalTableCellRenderer implement
       super(psc);
       sc = psc.getSwingCtx();
       istr = new IntegerString(psc.getUCtx());
-      sb = new StringBBuilder(500);
+      sb = new StringBBuilder(psc.getUCtx(),500);
       colorData = new ColorData(psc.getUCtx());
       border = BorderFactory.createEmptyBorder();
    }

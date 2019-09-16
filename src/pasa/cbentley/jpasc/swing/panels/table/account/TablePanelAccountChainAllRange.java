@@ -7,6 +7,7 @@ package pasa.cbentley.jpasc.swing.panels.table.account;
 
 import javax.swing.SortOrder;
 
+import pasa.cbentley.core.src4.helpers.StringParametrized;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
@@ -46,6 +47,25 @@ public class TablePanelAccountChainAllRange extends TablePanelAccountAbstractAll
       this.startAccount = startAccount;
       this.endAccount = endAccount;
    }
+   
+   
+
+   public String getTabTitle() {
+      //title is parametrized
+      // TODO Auto-generated method stub
+      String rootTitle = super.getTabTitle();
+      if(rootTitle != null && rootTitle.charAt(0) == '\\') {
+         StringParametrized strp = new StringParametrized(sc.getUCtx());
+         strp.setString(rootTitle.substring(1, rootTitle.length()));
+         strp.setParam("%1",startAccount);
+         strp.setParam("%2",endAccount);
+         return strp.getString();
+      } else {
+         return rootTitle;
+      }
+   }
+
+
 
    /**
     * 
