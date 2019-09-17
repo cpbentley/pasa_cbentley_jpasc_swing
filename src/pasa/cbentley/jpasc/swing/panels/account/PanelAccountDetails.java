@@ -142,11 +142,11 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
 
    private BButton                      butCopyAccountCk;
 
-   private DocRefresher docRefresherAccountNumber;
+   private DocRefresher                 docRefresherAccountNumber;
 
-   private BLabel labFindName;
+   private BLabel                       labFindName;
 
-   private DocRefresher docRefresherNameFind;
+   private DocRefresher                 docRefresherNameFind;
 
    public PanelAccountDetails(PascalSwingCtx psc, IRootTabPane root) {
       this(psc, root, ID);
@@ -156,7 +156,6 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       super(psc, id);
       this.root = root;
       this.setLayout(new BorderLayout());
-
    }
 
    /**
@@ -211,7 +210,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       panelButtons.add(butPrev);
       panelButtons.add(butNext);
       panelButtons.add(butFindAccount);
-      labFindName = new BLabel(sc,"but.findbyname");
+      labFindName = new BLabel(sc, "but.findbyname");
       panelButtons.add(labFindName);
       panelButtons.add(butClear);
 
@@ -225,10 +224,11 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       labAccount = new BLabel(sc, "text.account");
       container.add("p", labAccount);
       textAccount = new JTextField(11);
+      String strKey = getAccountPrefKey();
+      int acs = psc.getPascPrefs().getInt(strKey, 0);
+      textAccount.setText(String.valueOf(acs));
 
       docRefresherAccountNumber = new DocRefresher(sc, this);
-      int acs = psc.getPascPrefs().getInt(ITechPrefsPascalSwing.UI_EXPLORER_ACCOUNT, 0);
-      textAccount.setText(String.valueOf(acs));
 
       container.add("tab", textAccount);
       textAccount.getDocument().addDocumentListener(docRefresherAccountNumber);
@@ -331,6 +331,11 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
 
       JScrollPane scrollPaneAll = new JScrollPane(container);
       this.add(scrollPaneAll, BorderLayout.CENTER);
+
+   }
+
+   private String getAccountPrefKey() {
+      return ITechPrefsPascalSwing.UI_EXPLORER_ACCOUNT + getTabInternalID();
    }
 
    public void insertUpdate(DocumentEvent e) {
@@ -349,7 +354,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       AddressValidationResult av = psc.getPCtx().getAddressValidator().validate(text);
       if (av.isValid()) {
          Integer iac = av.getAccount();
-         psc.getPascPrefs().putInt(ITechPrefsPascalSwing.UI_EXPLORER_ACCOUNT, iac.intValue());
+         psc.getPascPrefs().putInt(getAccountPrefKey(), iac.intValue());
          setAccount(iac);
       } else {
          //#debug
@@ -380,9 +385,8 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       textCheckSum.setText("" + this.psc.getPCtx().calculateChecksum(account.getAccount()));
       textName.setText(account.getName() + "");
 
-     
       PascalCoinDouble accountBalance = psc.getPCtx().getAccountBalance(account);
-      
+
       textBalance.setText(accountBalance.getString());
       textMolina.setText(accountBalance.getMolinasStr());
 
@@ -397,9 +401,9 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       if (con.isConnected()) {
          int ageDiff = con.getLastBlockMined().intValue() - updateB.intValue();
          String timeAgo = psc.getPascalSwingUtils().computeTimeFromBlockAge(ageDiff);
-         textLastOpTime.setText(timeAgo);
+         textLastOpTime.setText(ageDiff + " : " + timeAgo);
       } else {
-         textLastOpTime.setText("");
+         textLastOpTime.setText("Not connected");
       }
       textType.setText("" + account.getType());
 
@@ -461,6 +465,13 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
    }
 
    public void tabGainFocus() {
+      sc.executeLaterInUIThread(new Runnable() {
+         public void run() {
+            if (textCheckSum.getText() == null || textCheckSum.getText().equals("")) {
+               newAccountStringTyped(textAccount.getText());
+            }
+         }
+      });
       accountOperations.tabGainFocus();
    }
 
@@ -504,7 +515,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
 
    private void cmdClear() {
       textNameFind.setText("");
-      
+
       textAccount.setText("");
       textType.setText("");
       textAreaEncPubKey.setText("");
@@ -523,12 +534,12 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
    }
 
    public void cmdRefresh(Object source) {
-      if(source == docRefresherAccountNumber) {
+      if (source == docRefresherAccountNumber) {
          newAccountStringTyped(textAccount.getText());
-      } else if(source == docRefresherNameFind) {
+      } else if (source == docRefresherNameFind) {
          String nameStr = textNameFind.getText();
          Account account = root.getAccessPascal().getAccessAccountDBolet().getAccountWithName(nameStr);
-         if(account != null) {
+         if (account != null) {
             setAccount(account);
             textNameFind.setForeground(Color.green);
          } else {
