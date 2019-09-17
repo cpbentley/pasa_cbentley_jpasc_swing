@@ -61,6 +61,8 @@ public class TabsAccountExplorerDivider extends TabbedBentleyPanel implements IM
 
    private TablePanelAccountChainAllRange accountChainAllRange2999999;
 
+   private TablePanelAccountChainAllRange accountChainAllRange500000;
+
    public TabsAccountExplorerDivider(PascalSwingCtx psc, IRootTabPane root) {
       super(psc.getSwingCtx(), ID);
       this.psc = psc;
@@ -91,12 +93,13 @@ public class TabsAccountExplorerDivider extends TabbedBentleyPanel implements IM
       //init default position
       accountChainAllRange9999 = new TablePanelAccountChainAllRange(psc, this,0,9999);
       accountChainAllRange99999 = new TablePanelAccountChainAllRange(psc, this,10000,99999);
-      accountChainAllRange999999 = new TablePanelAccountChainAllRange(psc, this,100000,999999);
+      accountChainAllRange500000 = new TablePanelAccountChainAllRange(psc, this,100000,500000);
+      accountChainAllRange999999 = new TablePanelAccountChainAllRange(psc, this,500000,1000000);
       accountChainAllRange1999999 = new TablePanelAccountChainAllRange(psc, this,1000000,1999999);
       accountChainAllRange2999999 = new TablePanelAccountChainAllRange(psc, this,2000000,2999999);
 
       //TODO dynamic title
-      accountExplorerPanel = new PanelAccountDetails(psc, this);
+      accountExplorerPanel = new PanelAccountDetails(psc, this,"account_details_range");
 
       //deal with ordering of the tabs? TODO and what if there framed tab
       String state = psc.getPascPrefs().get(ID + "state", "");
@@ -112,12 +115,14 @@ public class TabsAccountExplorerDivider extends TabbedBentleyPanel implements IM
          }
       } else {
          //factory order
+         addMyTab(accountExplorerPanel);
+
          addMyTab(accountChainAllRange9999);
          addMyTab(accountChainAllRange99999);
+         addMyTab(accountChainAllRange500000);
          addMyTab(accountChainAllRange999999);
          addMyTab(accountChainAllRange1999999);
          addMyTab(accountChainAllRange2999999);
-         addMyTab(accountExplorerPanel);
       }
    }
 
@@ -134,7 +139,6 @@ public class TabsAccountExplorerDivider extends TabbedBentleyPanel implements IM
    public void showAccountOwner(Account ac) {
       //look it up in the snapshot
       psc.getLog().consoleLogError("Load Snapshot");
-
    }
 
    /**
