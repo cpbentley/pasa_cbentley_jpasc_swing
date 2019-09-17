@@ -13,6 +13,7 @@ import com.github.davidbolet.jpascalcoin.api.model.Account;
 import com.github.davidbolet.jpascalcoin.api.model.Operation;
 
 import pasa.cbentley.jpasc.swing.cellrenderers.CellRendereManager;
+import pasa.cbentley.jpasc.swing.cellrenderers.CellRendererAccountPascal;
 import pasa.cbentley.jpasc.swing.cellrenderers.CellRendererOpAccount;
 import pasa.cbentley.jpasc.swing.cmds.ICommandableOperation;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
@@ -180,7 +181,7 @@ public abstract class TablePanelOperationAbstract extends TablePanelAbstract<Ope
       getBenTable().setColumnRenderer(getColumnIndexType(), crm.getCellRendererOpType());
       getBenTable().setColumnRenderer(getColumnIndexTypeSub(), crm.getCellRendererOpTypeSub());
 
-      CellRendererOpAccount accountRenderer = crm.getCellRendererAccountOperation();
+      CellRendererAccountPascal accountRenderer = crm.getCellRendererAccountPascal();
       getBenTable().setColumnRenderer(getColumnIndexAccount(), accountRenderer);
       getBenTable().setColumnRenderer(getColumnIndexAccountSender(), accountRenderer);
       getBenTable().setColumnRenderer(getColumnIndexAccountReceiver(), accountRenderer);
