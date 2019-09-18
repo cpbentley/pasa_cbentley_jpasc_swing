@@ -36,6 +36,7 @@ import pasa.cbentley.swing.IconFamily;
 import pasa.cbentley.swing.ctx.SwingCtx;
 import pasa.cbentley.swing.imytab.AbstractMyTab;
 import pasa.cbentley.swing.panels.MemoryPanelProgressBar;
+import pasa.cbentley.swing.widgets.b.BButton;
 import pasa.cbentley.swing.widgets.b.BButtonToggle;
 
 /**
@@ -62,6 +63,7 @@ public class PanelTabLogin extends PanelTabAbstractPascal implements ActionListe
 
    private BButtonToggle     buttonLock;
 
+
    private JLabel            labWaitingTitle;
 
    private JLabel            loginBlockNumLab;
@@ -82,6 +84,8 @@ public class PanelTabLogin extends PanelTabAbstractPascal implements ActionListe
 
    private PingLogger        pingerLogger;
 
+   private PanelCtxHelperAbstract panelCtxHelperAbstract;
+   
    public PanelTabLogin(PascalSwingCtx psc) {
       super(psc, "login_pasc");
       psc.setLogin(this);
@@ -334,11 +338,17 @@ public class PanelTabLogin extends PanelTabAbstractPascal implements ActionListe
       buttonLock.setIcon("lock", "action", IconFamily.ICON_SIZE_1_SMALL);
       buttonLock.addMouseListener(this);
 
+      
       this.add(buttonConnect);
       this.add(buttonLock);
 
       this.add(mem);
 
+      if(panelCtxHelperAbstract != null) {
+         this.add(panelCtxHelperAbstract);
+         panelCtxHelperAbstract.init();
+      }
+      
       if (isConfigShowBlockInfo) {
          this.add(loginBlockNumLab);
          this.add(loginTimingLab);
@@ -436,5 +446,13 @@ public class PanelTabLogin extends PanelTabAbstractPascal implements ActionListe
 
    public void setConfigShowBlockInfo(boolean isConfigShowBlockInfo) {
       this.isConfigShowBlockInfo = isConfigShowBlockInfo;
+   }
+
+   public PanelCtxHelperAbstract getPanelCtxHelperAbstract() {
+      return panelCtxHelperAbstract;
+   }
+
+   public void setPanelCtxHelperAbstract(PanelCtxHelperAbstract panelCtxHelperAbstract) {
+      this.panelCtxHelperAbstract = panelCtxHelperAbstract;
    }
 }
