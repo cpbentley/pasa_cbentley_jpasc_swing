@@ -21,6 +21,7 @@ import javax.swing.table.TableCellRenderer;
 import pasa.cbentley.core.src4.helpers.ColorData;
 import pasa.cbentley.core.src4.helpers.IntegerString;
 import pasa.cbentley.core.src4.helpers.StringBBuilder;
+import pasa.cbentley.core.src4.utils.ColorUtils;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.swing.ctx.SwingCtx;
 
@@ -61,7 +62,7 @@ public class CellRendererAccountPascal extends PascalTableCellRenderer implement
       super(psc);
       sc = psc.getSwingCtx();
       istr = new IntegerString(psc.getUCtx());
-      sb = new StringBBuilder(psc.getUCtx(),500);
+      sb = new StringBBuilder(psc.getUCtx(), 500);
       colorData = new ColorData(psc.getUCtx());
       border = BorderFactory.createEmptyBorder();
    }
@@ -433,8 +434,16 @@ public class CellRendererAccountPascal extends PascalTableCellRenderer implement
          return this;
       Integer number = (Integer) integer;
       BGColor colors = getColorBg(number);
-      renderer.setBackground(colors.colorBg);
-      renderer.setForeground(colors.colorFg);
+      if (isSelected) {
+         Color colorBg = psc.getCellRendereManager().getSelectedColor(colors.colorBg);
+         renderer.setBackground(colorBg);
+         int fg = ColorUtils.getComplementaryColor(colorBg.getRGB());
+         renderer.setForeground(new Color(fg));
+         
+      } else {
+         renderer.setBackground(colors.colorBg);
+         renderer.setForeground(colors.colorFg);
+      }
       this.setBorder(border);
       this.setText(colors.text);
       ((JLabel) renderer).setToolTipText(colors.textToolTip);
