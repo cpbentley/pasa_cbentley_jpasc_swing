@@ -7,15 +7,12 @@ package pasa.cbentley.jpasc.swing.cellrenderers;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
-import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.border.Border;
-import javax.swing.border.EtchedBorder;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableCellRenderer;
 
 import pasa.cbentley.core.src4.helpers.ColorData;
@@ -64,7 +61,14 @@ public class CellRendererAccountPascal extends PascalTableCellRenderer implement
       istr = new IntegerString(psc.getUCtx());
       sb = new StringBBuilder(psc.getUCtx(), 500);
       colorData = new ColorData(psc.getUCtx());
-      border = BorderFactory.createEmptyBorder();
+      int top = 0;
+      int left = 3;
+      int right = 3;
+      int bot = 0;
+      border = new EmptyBorder(top,left,bot,right);
+      //we want to account number on the right (western)
+      this.setHorizontalAlignment(JLabel.TRAILING);
+      this.setBorder(border);
    }
 
    public BGColor getColorBg(int number) {
