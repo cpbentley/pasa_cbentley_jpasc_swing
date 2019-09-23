@@ -58,7 +58,7 @@ public class TablePanelAccountChainName extends TablePanelAccountAbstractKeyName
    }
 
    protected void subPopulatePopMenu(BPopupMenu menu) {
-      super.addDefaultAccountMenuItems(menu);
+      super.addDefaultAccountMenuItemsNoSendNoKey(menu);
    }
 
    //#mdebug

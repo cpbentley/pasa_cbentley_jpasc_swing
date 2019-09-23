@@ -136,19 +136,19 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     */
    private BackForwardTabPage                backForwardManager;
 
-   private StringBBuilder blockTimeBuilder;
+   private StringBBuilder                    blockTimeBuilder;
 
-   private DecimalFormat  blockTimesFormat = new DecimalFormat("##.##");
+   private DecimalFormat                     blockTimesFormat = new DecimalFormat("##.##");
 
    private CellRendereManager                cellRendereManager;
 
-   private final Color                       colorGreen      = new Color(0x228b22);
+   private final Color                       colorGreen       = new Color(0x228b22);
 
-   private final Color                       colorRed        = new Color(0x8b0000);
+   private final Color                       colorRed         = new Color(0x8b0000);
 
-   private Color[] colorsAccountAge;
+   private Color[]                           colorsAccountAge;
 
-   private Color[] colorsAccountContiguous;
+   private Color[]                           colorsAccountContiguous;
 
    private int                               currentMode;
 
@@ -206,7 +206,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     */
    private PreferencesSpyLogger              prefs;
 
-   Random                                    r               = new Random();
+   Random                                    r                = new Random();
 
    private RootPageManager                   rootPageManager;
 
@@ -230,13 +230,14 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     * 
     * When zero, no coloring effects
     */
-   private int                               themeCellEffect = 1;
+   private int                               themeCellEffect  = 1;
 
    private Object                            walletKeyMapper;
 
    private JLabel                            websitePascal;
 
-   private PascalSwingUtils pascalSwingUtils;
+   private PascalSwingUtils                  pascalSwingUtils;
+
    /**
     * 
     * @param pc cannot be null
@@ -250,7 +251,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       this.sc = sc;
 
       pascalSwingUtils = new PascalSwingUtils(this);
-      
+
       blockTimeBuilder = new StringBBuilder(uc);
 
       setFilterInteger(new FilterIntOrEmpty(sc));
@@ -265,6 +266,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       pascalEventsTopology[PID_4_WALLET_LOCK] = EID_4_ZZ_NUM;
       pascalEventsTopology[PID_5_CONNECTIONS] = EID_5_ZZ_NUM;
       pascalEventsTopology[PID_6_KEY_LOCAL_OPERATION] = EID_6_ZZ_NUM;
+      pascalEventsTopology[PID_7_PRIVACY_CHANGES] = EID_7_ZZ_NUM;
       eventBusPascal = new EventBusArray(getUCtx(), this, pascalEventsTopology);
       //setup the linkage for handling block events
       swingBlockEvent = new SwingBlockEventAdapter(this);
@@ -283,6 +285,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
       walletKeyMapper = new WalletKeyMapper(this);
 
+      //
+      isPrivateCtx = true;
    }
 
    /**
@@ -347,6 +351,9 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
       int themeCellEffect = prefs.getInt(ITechPrefsPascalSwing.PREFS_CELL_EFFECT, 1);
       this.themeCellEffect = themeCellEffect;
+      
+      //saved to prefs when changed
+      this.isPrivateCtx = prefs.getBoolean(ITechPrefsPascalSwing.PREFS_PRIVATE_CTX, true);
    }
 
    /**
@@ -1514,7 +1521,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       }
    }
    //#enddebug
-   
+
    public boolean unlock(char[] ar) {
       boolean b = pc.getRPCConnection().unlock(new String(ar));
       if (b) {
@@ -1528,5 +1535,23 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    public PascalSwingUtils getPascalSwingUtils() {
       return pascalSwingUtils;
+   }
+
+   private boolean isPrivateCtx;
+
+   /**
+    * Should the UI display private data?
+    * 
+    * Otherwise UI should hide or display public data
+    * 
+    * 
+    * @return
+    */
+   public boolean isPrivateCtx() {
+      return isPrivateCtx;
+   }
+   
+   public void setPrivateCtx(boolean b) {
+      isPrivateCtx = b;
    }
 }

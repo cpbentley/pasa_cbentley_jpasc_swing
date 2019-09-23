@@ -45,7 +45,7 @@ public class TabsAccountExplorerDivider extends TabbedBentleyPanel implements IM
     */
    private static final long              serialVersionUID = 9151853322825121491L;
 
-   private PanelAccountDetails            accountExplorerPanel;
+   private PanelAccountDetails            accountExplorerPanelRange;
 
    private TablePanelAccountChainAllRange accountChainAllRange9999;
 
@@ -98,8 +98,7 @@ public class TabsAccountExplorerDivider extends TabbedBentleyPanel implements IM
       accountChainAllRange1999999 = new TablePanelAccountChainAllRange(psc, this,1000000,1999999);
       accountChainAllRange2999999 = new TablePanelAccountChainAllRange(psc, this,2000000,2999999);
 
-      //TODO dynamic title
-      accountExplorerPanel = new PanelAccountDetails(psc, this,"account_details_range");
+      accountExplorerPanelRange = new PanelAccountDetails(psc, this,"account_details_range");
 
       //deal with ordering of the tabs? TODO and what if there framed tab
       String state = psc.getPascPrefs().get(ID + "state", "");
@@ -115,7 +114,7 @@ public class TabsAccountExplorerDivider extends TabbedBentleyPanel implements IM
          }
       } else {
          //factory order
-         addMyTab(accountExplorerPanel);
+         addMyTab(accountExplorerPanelRange);
 
          addMyTab(accountChainAllRange9999);
          addMyTab(accountChainAllRange99999);
@@ -128,12 +127,14 @@ public class TabsAccountExplorerDivider extends TabbedBentleyPanel implements IM
 
    public void showAccountDetails(Account ac) {
       initCheck();
-      accountExplorerPanel.setAccount(ac);
+      accountExplorerPanelRange.setAccount(ac);
+      showTab(accountExplorerPanelRange);
    }
 
    public void showAccountDetails(Integer ac) {
       initCheck();
-      accountExplorerPanel.setAccount(ac);
+      accountExplorerPanelRange.setAccount(ac);
+      showTab(accountExplorerPanelRange);
    }
 
    public void showAccountOwner(Account ac) {

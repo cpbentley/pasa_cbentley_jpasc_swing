@@ -68,6 +68,8 @@ public interface ITechPrefsPascalSwing extends ITech {
 
    public static final String PREFS_CELL_EFFECT             = "celleffects";
 
+   public static final String PREFS_PRIVATE_CTX             = "private.ctx";
+
    public static final String UI_ACCOUNT_NUMBER             = "ui.ops.account";
 
    public static final String UI_PK_STRING                  = "ui.pk.search";

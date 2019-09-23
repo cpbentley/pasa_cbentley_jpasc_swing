@@ -110,11 +110,13 @@ public class TabsAccountExplorer extends TabbedBentleyPanel implements IMyTab, A
    public void showAccountDetails(Account ac) {
       initCheck();
       accountExplorerPanel.setAccount(ac);
+      showTab(accountExplorerPanel);
    }
 
    public void showAccountDetails(Integer ac) {
       initCheck();
       accountExplorerPanel.setAccount(ac);
+      showTab(accountExplorerPanel);
    }
 
    public void showAccountOwner(Account ac) {
@@ -133,6 +135,7 @@ public class TabsAccountExplorer extends TabbedBentleyPanel implements IMyTab, A
 
    public void showBlock(Block ac) {
       initCheck();
+      //we don't support block UI at this level.. we must use parent
       rootRPC.showBlock(ac);
    }
 

@@ -19,6 +19,7 @@ import pasa.cbentley.jpasc.swing.workers.table.account.WorkerTableAccountChainMi
 import pasa.cbentley.jpasc.swing.workers.table.account.WorkerTableAccountWalletMinMaxBalance;
 import pasa.cbentley.swing.imytab.IMyTab;
 import pasa.cbentley.swing.threads.PanelSwingWorker;
+import pasa.cbentley.swing.widgets.b.BPopupMenu;
 
 /**
  * Table listing rich accounts on chain
@@ -49,6 +50,11 @@ public class TablePanelAccountChainBalance extends TablePanelAccountAbstractMinM
       panel.setNullIfEmpty();
       return panel;
    }
+   
+   protected void subPopulatePopMenu(BPopupMenu menu) {
+      super.addDefaultAccountMenuItemsNoSendNoKey(menu);
+   }
+
 
    /**
     * Sorts the table in {@link SortOrder#DESCENDING}

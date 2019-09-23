@@ -7,14 +7,19 @@ package pasa.cbentley.jpasc.swing.widgets;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.event.BusEvent;
 import pasa.cbentley.core.src4.event.IEventConsumer;
+import pasa.cbentley.core.src4.interfaces.ICommandable;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IDLog;
 import pasa.cbentley.core.src4.logging.ITechLvl;
@@ -22,19 +27,35 @@ import pasa.cbentley.core.src4.thread.AbstractBRunnable;
 import pasa.cbentley.core.src4.thread.IBRunnable;
 import pasa.cbentley.core.src4.thread.IBRunnableListener;
 import pasa.cbentley.core.src4.utils.ColorUtils;
+import pasa.cbentley.jpasc.pcore.utils.AssetStatResult;
 import pasa.cbentley.jpasc.swing.ctx.IEventsPascalSwing;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.workers.WorkerWalletAssetStats;
+import pasa.cbentley.swing.actions.BActionRefresh;
+import pasa.cbentley.swing.cmd.ICommandableRefresh;
 import pasa.cbentley.swing.ctx.SwingCtx;
 import pasa.cbentley.swing.imytab.IMyGui;
+import pasa.cbentley.swing.widgets.b.BCMenuItem;
 import pasa.cbentley.swing.widgets.b.BLabel;
+import pasa.cbentley.swing.widgets.b.BMenuItem;
+import pasa.cbentley.swing.widgets.b.BMenuItemToggle;
+import pasa.cbentley.swing.widgets.b.BRadioButtonMenuItem;
 
 /**
+ * Widget that displays
+ * <li> the block number
+ * <li> private pasc
+ * <li> private pasa
+ * <li> private # keys
+ * 
+ * By right clicking with mouse, the user may hide private data
+ * 
+ * Popup menu also provides a refresh action.
  * 
  * @author Charles Bentley
  *
  */
-public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSwing, IEventConsumer, MouseListener, IBRunnableListener {
+public class WalletTotalAssets extends JPanel implements IMyGui, ICommandable, IEventsPascalSwing, IEventConsumer, MouseListener, IBRunnableListener, ICommandableRefresh, ActionListener {
 
    private BLabel         labKey;
 
@@ -50,9 +71,17 @@ public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSw
 
    private PascalSwingCtx psc;
 
-   private BLabel labBlockText;
+   private BLabel         labBlockText;
 
-   private BLabel labBlock;
+   private BLabel         labBlock;
+
+   private JPopupMenu     popupMenu;
+
+   private BActionRefresh actionRefresh;
+
+   private JMenuItem      actionRefreshItem;
+
+   private BCMenuItem     itemTogglePrivacyCtx;
 
    public WalletTotalAssets(PascalSwingCtx psc) {
       this.psc = psc;
@@ -78,14 +107,12 @@ public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSw
       labKeyText = new BLabel(sc, "widget.totalasset.key");
       labKeyText.setFont(new Font("Serif", Font.PLAIN, 12));
 
-      
       labBlockText = new BLabel(sc, "text.block");
       labBlockText.setFont(new Font("Serif", Font.PLAIN, 14));
 
       labBlock = new BLabel(sc);
       labBlock.setText("0");
       labBlock.setFont(new Font("Serif", Font.PLAIN, 15));
-
 
       this.add(labBlock);
       this.add(labBlockText);
@@ -108,6 +135,18 @@ public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSw
       if (psc.getPCtx().getRPCConnection().isConnected()) {
          cmdComputeTotalAssets();
       }
+
+      popupMenu = new JPopupMenu();
+      actionRefresh = new BActionRefresh(psc.getSwingCtx(), this);
+      actionRefreshItem = popupMenu.add(actionRefresh);
+
+      itemTogglePrivacyCtx = new BCMenuItem<ICommandable>(sc, this, psc.getCmds().getCmdTogglePrivacyCtx());
+
+      popupMenu.add(itemTogglePrivacyCtx);
+
+      this.setComponentPopupMenu(popupMenu);
+
+      psc.getEventBusPascal().addConsumer(this, PID_7_PRIVACY_CHANGES, EID_1_PRIVACY_CTX);
    }
 
    /**
@@ -115,6 +154,8 @@ public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSw
     */
    public void cmdComputeTotalAssets() {
       WorkerWalletAssetStats worker = new WorkerWalletAssetStats(psc);
+      //read variable from
+      worker.setCanUse(psc.isPrivateCtx());
       worker.addListener(this);
       psc.getPCtx().getExecutorService().execute(worker);
    }
@@ -133,6 +174,9 @@ public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSw
          } else if (e.getEventID() == EID_5_CONNECTIONS_2_DISCONNECTED) {
             cmdResetAssets();
          }
+      } else if (e.getProducerID() == PID_7_PRIVACY_CHANGES) {
+         //update strings of menus? done with guiUpdate
+         cmdComputeTotalAssets();
       }
    }
 
@@ -143,14 +187,13 @@ public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSw
 
    }
 
-   public void fillResult(WorkerWalletAssetStats.AssetStatResult res) {
-      final int accountNum = res.pasa;
-      final int keyNum = res.pks;
-      final double pasc = res.pasc.getDouble();
-      labBlock.setText(String.valueOf(res.block));
+   public void fillResult(AssetStatResult res) {
+      final double pasc = res.getPascalCoinValue().getDouble();
       labPASC.setText(psc.getPCtx().getPU().getPrettyPascBalance(pasc, ","));
-      labPASA.setText(String.valueOf(accountNum));
-      labKey.setText(String.valueOf(keyNum));
+
+      labBlock.setText(res.getBlockStr());
+      labPASA.setText(res.getNumPasaStr());
+      labKey.setText(res.getNumPublicKeysStr());
    }
 
    public void guiUpdate() {
@@ -180,6 +223,20 @@ public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSw
       labPASCText.setFont(dftext);
       labKeyText.setFont(dftext);
       labBlockText.setFont(dftext);
+
+      sc.guiUpdateOnChildrenMenuPopup(popupMenu);
+   }
+
+   public void actionPerformed(ActionEvent e) {
+      if (e.getSource() == itemTogglePrivacyCtx) {
+
+      }
+   }
+
+   public void cmdRefresh(Object source) {
+      AssetStatResult empty = new AssetStatResult(psc.getPCtx());
+      fillResult(empty);
+      cmdComputeTotalAssets();
    }
 
    public void mouseClicked(MouseEvent e) {
@@ -210,7 +267,7 @@ public class WalletTotalAssets extends JPanel implements IMyGui, IEventsPascalSw
       toDLog().pFlow("newState=" + AbstractBRunnable.toStringState(newState), this, WalletTotalAssets.class, "runnerNewState", ITechLvl.LVL_05_FINE, true);
       //we are in the worker thread here
       WorkerWalletAssetStats worker = (WorkerWalletAssetStats) runner;
-      final WorkerWalletAssetStats.AssetStatResult res = worker.getAssetStatResultImmutable();
+      final AssetStatResult res = worker.getAssetStatResultImmutable();
       if (res != null) {
          psc.getSwingCtx().execute(new Runnable() {
 

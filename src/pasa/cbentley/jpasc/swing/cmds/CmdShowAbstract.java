@@ -30,14 +30,14 @@ public abstract class CmdShowAbstract<T> extends CmdSwingAbstract<T> implements 
       SwingCtx sc = pcm.getPSC().getSwingCtx();
       String s1 = sc.getResString(getKeyBase());
       String s2 = sc.getResString(getKeyShowType());
-      return s1 + " " + s2;
+      return s2 + " " + s1;
    }
 
    private String getKeyShowType() {
       if (type == SHOW_TYPE_1_NEW_WIN) {
-         return pcm.getKeyInNewWindow();
+         return pcm.getKeyInNewWindowCap();
       }
-      return pcm.getKeyInTab();
+      return pcm.getKeyInTabCap();
    }
 
    public String getCmdStringTip() {

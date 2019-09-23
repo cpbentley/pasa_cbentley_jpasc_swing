@@ -9,10 +9,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
-import pasa.cbentley.swing.actions.BAbstractAction;
+import pasa.cbentley.swing.actions.BActionAbstract;
 import pasa.cbentley.swing.ctx.SwingCtx;
 
-public class StopTaskAction extends BAbstractAction {
+public class BActionStopTask extends BActionAbstract {
 
    /**
     * 
@@ -21,13 +21,10 @@ public class StopTaskAction extends BAbstractAction {
 
    private IStoppable        stoppable;
 
-   public StopTaskAction(SwingCtx sc, IStoppable stoppable) {
+   public BActionStopTask(SwingCtx sc, IStoppable stoppable) {
       super(sc);
       this.stoppable = stoppable;
-   }
-
-   public void guiUpdate() {
-      this.putValue(Action.NAME, sc.getResString("action.stop.name")); //update with res bundle
+      this.keyName = "action.stoptask.name";
    }
 
    public void actionPerformed(ActionEvent e) {

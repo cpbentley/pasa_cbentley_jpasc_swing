@@ -83,6 +83,8 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
 
    private final PascalSwingCtx            psc;
 
+   private CmdTogglePrivacyCtx cmdTogglePrivacyCtx;
+
    public PascalCmdManager(PascalSwingCtx psc) {
       this.psc = psc;
    }
@@ -116,6 +118,8 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
       psc.getUIPref().putInt(PascalAudio.PREF_SOUND_VOLUME, val);
    }
 
+   
+   
    /**
     * Try to connect to the blockchain daemon using defautl login parameters.
     * Must refresh current loaded tab
@@ -404,6 +408,13 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
       }
       return cmdShowAccountSellerInInspectorTab;
    }
+   
+   public CmdTogglePrivacyCtx getCmdTogglePrivacyCtx() {
+      if(cmdTogglePrivacyCtx==null) {
+         cmdTogglePrivacyCtx = new CmdTogglePrivacyCtx(psc);
+      }
+      return cmdTogglePrivacyCtx;
+   }
 
    public CmdSwingAbstract<ICommandableAccount> getCmdShowAccountSellerInInspectorWin() {
       if (cmdShowAccountSellerInInspectorWindow == null) {
@@ -440,6 +451,14 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
       return cmdShowAccountKeyAccountsWin;
    }
 
+   public String getKeyInNewWindowCap() {
+      return "cmd.show.newwindow.cap";
+   }
+
+   public String getKeyInTabCap() {
+      return "cmd.show.tab.cap";
+   }
+   
    public String getKeyInNewWindow() {
       return "cmd.new.window";
    }

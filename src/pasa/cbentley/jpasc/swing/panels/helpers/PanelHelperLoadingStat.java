@@ -18,6 +18,7 @@ import pasa.cbentley.jpasc.swing.widgets.PanelPascal;
 import pasa.cbentley.jpasc.swing.widgets.PascalProgressBar;
 import pasa.cbentley.jpasc.swing.workers.abstrakt.WorkerListTaskPage;
 import pasa.cbentley.swing.threads.WorkerStat;
+import pasa.cbentley.swing.widgets.b.BPopupMenu;
 
 public class PanelHelperLoadingStat extends PanelPascal {
 
@@ -33,8 +34,10 @@ public class PanelHelperLoadingStat extends PanelPascal {
 
    public PanelHelperLoadingStat(PascalSwingCtx psc) {
       super(psc);
+      
       progressBar = new PascalProgressBar(psc);
       progressBar.setStringPainted(true);
+      
       entries = new IntToObjects(psc.getUCtx());
    }
 

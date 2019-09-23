@@ -12,7 +12,6 @@ import pasa.cbentley.core.src4.event.IEventConsumer;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.swing.audio.PascalAudio;
 import pasa.cbentley.jpasc.swing.cellrenderers.CellRendereManager;
-import pasa.cbentley.jpasc.swing.cmds.BCMenuItem;
 import pasa.cbentley.jpasc.swing.cmds.ICommandableKey;
 import pasa.cbentley.jpasc.swing.cmds.PascalCmdManager;
 import pasa.cbentley.jpasc.swing.ctx.IEventsPascalSwing;
@@ -26,6 +25,7 @@ import pasa.cbentley.swing.imytab.IMyGui;
 import pasa.cbentley.swing.imytab.IMyTab;
 import pasa.cbentley.swing.threads.IWorkerPanel;
 import pasa.cbentley.swing.threads.PanelSwingWorker;
+import pasa.cbentley.swing.widgets.b.BCMenuItem;
 import pasa.cbentley.swing.widgets.b.BMenuItem;
 import pasa.cbentley.swing.widgets.b.BPopupMenu;
 

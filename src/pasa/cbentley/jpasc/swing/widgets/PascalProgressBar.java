@@ -8,6 +8,7 @@ package pasa.cbentley.jpasc.swing.widgets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 
@@ -17,24 +18,31 @@ import pasa.cbentley.core.src4.logging.IStringable;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.core.src4.thread.ITechRunnable;
 import pasa.cbentley.jpasc.swing.actions.IStoppable;
-import pasa.cbentley.jpasc.swing.actions.StopTaskAction;
+import pasa.cbentley.jpasc.swing.actions.BActionStopTask;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.workers.abstrakt.WorkerListTaskPage;
+import pasa.cbentley.swing.actions.BActionRefresh;
+import pasa.cbentley.swing.ctx.SwingCtx;
 import pasa.cbentley.swing.imytab.IMyGui;
+import pasa.cbentley.swing.widgets.b.BPopupMenu;
 
 public class PascalProgressBar extends JProgressBar implements IStringable, MouseListener, IStoppable, IMyGui {
 
-   private PascalSwingCtx psc;
+   private PascalSwingCtx     psc;
 
    private WorkerListTaskPage worker;
 
-   private JPopupMenu     popupMenu;
+   private JPopupMenu         popupMenu;
 
-   private String         stringKeyDone;
+   private String             stringKeyDone;
 
-   private String         stringKeyScanning;
+   private String             stringKeyScanning;
 
-   private String         stringKeyActive;
+   private String             stringKeyActive;
+
+   private BActionStopTask    actionStop;
+
+   private JMenuItem          actionStopItem;
 
    public PascalProgressBar(PascalSwingCtx psc) {
       this.psc = psc;
@@ -42,19 +50,23 @@ public class PascalProgressBar extends JProgressBar implements IStringable, Mous
       stringKeyScanning = "progress.scanning";
       stringKeyDone = "progress.done";
       stringKeyActive = stringKeyDone;
-      
+
       this.addMouseListener(this);
       JPopupMenu pmenu = new JPopupMenu();
       popupMenu = pmenu;
-      popupMenu.add(new StopTaskAction(psc.getSwingCtx(), this));
+      actionStop = new BActionStopTask(psc.getSwingCtx(), this);
+      actionStopItem = popupMenu.add(actionStop);
       //deal with actions in this popup
-      this.add(popupMenu);
-
-      this.setToolTipText("Alt+Click To Stop the task");
+      //this.add(popupMenu);
+      //add right support
+      this.setComponentPopupMenu(popupMenu);
    }
 
    public void guiUpdate() {
-      this.setString(psc.getSwingCtx().getResString(stringKeyActive));
+      SwingCtx sc = psc.getSwingCtx();
+      this.setString(sc.getResString(stringKeyActive));
+      this.setToolTipText(sc.getResString("progressbar.tip"));
+      sc.guiUpdateOnChildrenMenuPopup(popupMenu);
    }
 
    /**
@@ -69,11 +81,13 @@ public class PascalProgressBar extends JProgressBar implements IStringable, Mous
    }
 
    public void setStateToScanning() {
+      actionStopItem.setEnabled(true);
       stringKeyActive = stringKeyScanning;
       guiUpdate();
    }
 
    public void setStateToDone() {
+      actionStopItem.setEnabled(false);
       this.setValue(this.getMaximum());
       stringKeyActive = stringKeyDone;
       guiUpdate();

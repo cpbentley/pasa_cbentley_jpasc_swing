@@ -16,7 +16,6 @@ import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.domain.java.AccountJava;
 import pasa.cbentley.jpasc.swing.audio.PascalAudio;
 import pasa.cbentley.jpasc.swing.cellrenderers.CellRendereManager;
-import pasa.cbentley.jpasc.swing.cmds.BCMenuItem;
 import pasa.cbentley.jpasc.swing.cmds.ICommandableAccount;
 import pasa.cbentley.jpasc.swing.cmds.ICommandableKey;
 import pasa.cbentley.jpasc.swing.cmds.PascalCmdManager;
@@ -32,6 +31,7 @@ import pasa.cbentley.swing.ctx.SwingCtx;
 import pasa.cbentley.swing.imytab.IMyGui;
 import pasa.cbentley.swing.imytab.IMyTab;
 import pasa.cbentley.swing.threads.PanelSwingWorker;
+import pasa.cbentley.swing.widgets.b.BCMenuItem;
 import pasa.cbentley.swing.widgets.b.BMenuItem;
 import pasa.cbentley.swing.widgets.b.BPopupMenu;
 
@@ -121,6 +121,32 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
    }
 
    public final void addDefaultAccountMenuItemsNoSend(BPopupMenu menu) {
+      SwingCtx sc = psc.getSwingCtx();
+      PascalCmdManager pcm = psc.getCmds();
+
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, this, pcm.getCmdShowAccountInInspectorTab()));
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, this, pcm.getCmdAccountShowKey()));
+      menu.addSeparator();
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, this, pcm.getCmdShowAccountInInspectorWin()));
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, this, pcm.getCmdAccountShowKeyWin()));
+      menu.addSeparator();
+      menu.add(new BCMenuItem<ICommandableKey>(sc, this, pcm.getCmdKeyChangeName()));
+
+   }
+
+   public final void addDefaultAccountMenuItemsNoSendNoKey(BPopupMenu menu) {
+      SwingCtx sc = psc.getSwingCtx();
+      PascalCmdManager pcm = psc.getCmds();
+
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, this, pcm.getCmdShowAccountInInspectorTab()));
+      menu.addSeparator();
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, this, pcm.getCmdShowAccountInInspectorWin()));
+      menu.addSeparator();
+      menu.add(new BCMenuItem<ICommandableKey>(sc, this, pcm.getCmdKeyChangeName()));
+
+   }
+
+   public final void addDefaultAccountMenuItemsMax(BPopupMenu menu) {
       SwingCtx sc = psc.getSwingCtx();
       PascalCmdManager pcm = psc.getCmds();
 

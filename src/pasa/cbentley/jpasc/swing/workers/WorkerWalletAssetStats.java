@@ -13,7 +13,7 @@ import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.core.src4.thread.AbstractBRunnable;
 import pasa.cbentley.jpasc.pcore.ctx.PCoreCtx;
-import pasa.cbentley.jpasc.pcore.utils.PascalCoinValue;
+import pasa.cbentley.jpasc.pcore.utils.AssetStatResult;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 
 /**
@@ -26,15 +26,7 @@ import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
  */
 public class WorkerWalletAssetStats extends AbstractBRunnable {
 
-   public class AssetStatResult {
-      public PascalCoinValue pasc;
 
-      public int             pasa;
-
-      public int             pks   = 0;
-
-      public int             block = 0;
-   }
 
    private PascalSwingCtx           psc;
 
@@ -43,6 +35,8 @@ public class WorkerWalletAssetStats extends AbstractBRunnable {
     */
    private volatile AssetStatResult asr;
 
+   private boolean isCanUse = true;
+   
    public AssetStatResult getAssetStatResultImmutable() {
       return asr;
    }
@@ -52,15 +46,15 @@ public class WorkerWalletAssetStats extends AbstractBRunnable {
       this.psc = psc;
    }
 
+   
    public void runAbstract() {
 
       //#debug
       psc.toDLog().pFlow("", null, WorkerWalletAssetStats.class, "runAbstract", ITechLvl.LVL_05_FINE, true);
 
       //show interval of blocks
-      AssetStatResult asr = new AssetStatResult();
-      PCoreCtx pc = psc.getPCtx();
-      asr.pasc = pc.getZero();
+      AssetStatResult asr = new AssetStatResult(psc.getPCtx());
+      asr.setCanUse(isCanUse);
       Integer start = null; //0 by default
       Integer end = null; //100
       //adapt listing to the speed of the data provider. measure the time needed to get 100 accounts
@@ -69,21 +63,35 @@ public class WorkerWalletAssetStats extends AbstractBRunnable {
          Iterator<PublicKey> it = list.iterator();
          while (it.hasNext()) {
             PublicKey pk = it.next();
-            if (pk.getCanUse()) {
-               asr.pks++;
+            boolean isKeyValid = false;
+            if(isCanUse) {
+               isKeyValid = pk.getCanUse();
+            } else {
+               isKeyValid = !pk.getCanUse();
+            }
+            if (isKeyValid) {
+               asr.incrementNumKeys();;
                int numAccounts = psc.getPascalClient().getWalletAccountsCount(pk.getEncPubKey(), null);
-               asr.pasa += numAccounts;
+               asr.incrementNumPasas(numAccounts);
                Double numCoinsPk = psc.getPascalClient().getWalletCoins(pk.getEncPubKey(), null);
                //immutable remember!
-               asr.pasc = asr.pasc.add(pc.create(numCoinsPk));
+               asr.addCoins(numCoinsPk);
                //#debug
                //psc.toDLog().pFlow("numCoinsPk="+numCoinsPk + " total="+asr.pasc.getDouble(), null, WorkerTableWalletAssetStats.class, "runAbstract", IDLog.LVL_05_FINE, true);
 
             }
          }
       }
-      asr.block = psc.getPascalClient().getBlockCount() - 1;
+      asr.setBlock(psc.getPascalClient().getBlockCount() - 1);
       //publish result
       this.asr = asr;
+   }
+
+   public boolean isCanUse() {
+      return isCanUse;
+   }
+
+   public void setCanUse(boolean isCanUse) {
+      this.isCanUse = isCanUse;
    }
 }

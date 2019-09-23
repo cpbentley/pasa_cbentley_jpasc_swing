@@ -5,6 +5,7 @@
  */
 package pasa.cbentley.jpasc.swing.cmds;
 
+import pasa.cbentley.core.src4.interfaces.ICommandable;
 import pasa.cbentley.jpasc.pcore.domain.java.AccountJava;
 
 public interface ICommandableAccount extends ICommandable {

@@ -9,7 +9,6 @@ import com.github.davidbolet.jpascalcoin.api.model.Account;
 import com.github.davidbolet.jpascalcoin.api.model.Block;
 
 import pasa.cbentley.jpasc.swing.cellrenderers.CellRendereManager;
-import pasa.cbentley.jpasc.swing.cmds.BCMenuItem;
 import pasa.cbentley.jpasc.swing.cmds.ICommandableBlock;
 import pasa.cbentley.jpasc.swing.cmds.PascalCmdManager;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
@@ -19,6 +18,7 @@ import pasa.cbentley.jpasc.swing.panels.table.abstrakt.TablePanelAbstract;
 import pasa.cbentley.jpasc.swing.panels.table.operation.TablePanelOperationByBlock;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableBlockAbstract;
 import pasa.cbentley.swing.ctx.SwingCtx;
+import pasa.cbentley.swing.widgets.b.BCMenuItem;
 import pasa.cbentley.swing.widgets.b.BPopupMenu;
 
 public abstract class TablePanelBlockAbstract extends TablePanelAbstract<Block> implements ICommandableBlock {

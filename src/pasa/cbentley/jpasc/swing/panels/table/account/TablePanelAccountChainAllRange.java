@@ -11,9 +11,8 @@ import pasa.cbentley.core.src4.helpers.StringParametrized;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
-import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableAccountFullData;
 import pasa.cbentley.jpasc.swing.workers.table.account.WorkerTableAccountAbstract;
-import pasa.cbentley.jpasc.swing.workers.table.account.WorkerTableAccountChainAll;
+import pasa.cbentley.jpasc.swing.workers.table.account.WorkerTableAccountChainRange;
 import pasa.cbentley.swing.imytab.IMyTab;
 import pasa.cbentley.swing.threads.PanelSwingWorker;
 import pasa.cbentley.swing.widgets.b.BPopupMenu;
@@ -31,9 +30,9 @@ public class TablePanelAccountChainAllRange extends TablePanelAccountAbstractAll
     */
    private static final long serialVersionUID = -3040964171971420256L;
 
-   private int               startAccount;
-
    private int               endAccount;
+
+   private int               startAccount;
 
    /**
     * Dynamic title
@@ -47,25 +46,6 @@ public class TablePanelAccountChainAllRange extends TablePanelAccountAbstractAll
       this.startAccount = startAccount;
       this.endAccount = endAccount;
    }
-   
-   
-
-   public String getTabTitle() {
-      //title is parametrized
-      // TODO Auto-generated method stub
-      String rootTitle = super.getTabTitle();
-      if(rootTitle != null && rootTitle.charAt(0) == '\\') {
-         StringParametrized strp = new StringParametrized(sc.getUCtx());
-         strp.setString(rootTitle.substring(1, rootTitle.length()));
-         strp.setParam("%1",startAccount);
-         strp.setParam("%2",endAccount);
-         return strp.getString();
-      } else {
-         return rootTitle;
-      }
-   }
-
-
 
    /**
     * 
@@ -78,24 +58,26 @@ public class TablePanelAccountChainAllRange extends TablePanelAccountAbstractAll
    }
 
    protected WorkerTableAccountAbstract createWorker() {
-      WorkerTableAccountChainAll worker = new WorkerTableAccountChainAll(psc, getTableModel(), this);
+      WorkerTableAccountChainRange worker = new WorkerTableAccountChainRange(psc, getTableModel(), this, startAccount, endAccount);
       return worker;
    }
 
-   /**
-    * Sorts the table in {@link SortOrder#DESCENDING}
-    */
-   public void panelSwingWorkerDone(PanelSwingWorker worker) {
-      super.panelSwingWorkerDone(worker);
-      //we don't want sorting by default. 
+   public String getTabTitle() {
+      String rootTitle = super.getTabTitle();
+      if (rootTitle != null && rootTitle.charAt(0) == '\\') {
+         StringParametrized strp = new StringParametrized(sc.getUCtx());
+         strp.setString(rootTitle.substring(1, rootTitle.length()));
+         strp.setParam("%1", startAccount);
+         strp.setParam("%2", endAccount);
+         return strp.getString();
+      } else {
+         return rootTitle;
+      }
    }
 
-   public void initTab() {
-      super.initTab();
-   }
 
    protected void subPopulatePopMenu(BPopupMenu menu) {
-      super.addDefaultAccountMenuItemsNoSend(menu);
+      super.addDefaultAccountMenuItemsNoSendNoKey(menu);
    }
 
    //#mdebug
