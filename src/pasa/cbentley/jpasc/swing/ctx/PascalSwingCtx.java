@@ -1554,4 +1554,9 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    public void setPrivateCtx(boolean b) {
       isPrivateCtx = b;
    }
+
+   public void copyToClipboard(String value, String title) {
+      getLog().consoleLogGreen(title + " copied to clipboard : " + value);
+      sc.copyStringToClipboard(value);      
+   }
 }
