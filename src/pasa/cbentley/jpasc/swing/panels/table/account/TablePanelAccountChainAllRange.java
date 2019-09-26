@@ -64,7 +64,7 @@ public class TablePanelAccountChainAllRange extends TablePanelAccountAbstractAll
 
    public String getTabTitle() {
       String rootTitle = super.getTabTitle();
-      if (rootTitle != null && rootTitle.charAt(0) == '\\') {
+      if (rootTitle != null && rootTitle.charAt(0) == '%') {
          StringParametrized strp = new StringParametrized(sc.getUCtx());
          strp.setString(rootTitle.substring(1, rootTitle.length()));
          strp.setParam("%1", startAccount);

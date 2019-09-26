@@ -14,10 +14,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 import pasa.cbentley.core.src4.logging.Dctx;
+import pasa.cbentley.core.src4.utils.ColorUtils;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 
 /**
- * Renders account contiguous when being sold
+ * Renderer that paints the background according to a model index Color
  * 
  * @author Charles Bentley
  *
@@ -31,14 +32,17 @@ public class CellRendererAccountSoldContiguous extends PascalTableCellRenderer i
 
    private int               colorColumnModelIndex;
 
+   private Color             bgColorDefault;
+
    public CellRendererAccountSoldContiguous(PascalSwingCtx psc, int colorColumnModelIndex) {
       super(psc);
       this.colorColumnModelIndex = colorColumnModelIndex;
       this.setHorizontalAlignment(JLabel.TRAILING);
+      bgColorDefault = Color.WHITE;
    }
 
    public void dataUpdate() {
-
+      //bgColorDefault = psc.getCellRendereManager().getUIBgColor();
    }
 
    @Override
@@ -49,11 +53,29 @@ public class CellRendererAccountSoldContiguous extends PascalTableCellRenderer i
       if (psc.isIgnoreCellEffects()) {
          return this;
       }
-      Color color = null;
       TableModel model = table.getModel();
       int modelIndex = table.convertRowIndexToModel(row);
-      color = (Color) model.getValueAt(modelIndex, colorColumnModelIndex);
-      renderer.setBackground(color);
+      Object color = model.getValueAt(modelIndex, colorColumnModelIndex);
+      if (color != null && color instanceof Color) {
+         if (isSelected) {
+            Color colorBg = psc.getCellRendereManager().getSelectedColor((Color) color);
+            renderer.setBackground(colorBg);
+            int fg = ColorUtils.getComplementaryColor(colorBg.getRGB());
+            renderer.setForeground(new Color(fg));
+         } else {
+            renderer.setBackground((Color) color);
+         }
+      } else {
+         if (isSelected) {
+            Color colorBg = psc.getCellRendereManager().getSelectedColor(bgColorDefault);
+            renderer.setBackground(colorBg);
+            int fg = ColorUtils.getComplementaryColor(colorBg.getRGB());
+            renderer.setForeground(new Color(fg));
+         } else {
+            //the default color
+            renderer.setBackground(bgColorDefault);
+         }
+      }
       return this;
    }
 

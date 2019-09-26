@@ -21,6 +21,7 @@ public class CmdKeyChangeName extends CmdSwingAbstract<ICommandableKey> {
    protected String                 keyBaseTip = "cmd.key.changename.tip";
 
    public CmdKeyChangeName(PascalCmdManager pcm) {
+      super(pcm.getSwingCtx());
       this.pcm = pcm;
    }
 

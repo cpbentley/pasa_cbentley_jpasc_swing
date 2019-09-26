@@ -124,6 +124,12 @@ public class ModelTableAccountRangePrices extends ModelTableAccountAbstract {
             //create a new range
             AccountRange newRange = createNewRangeForAccount(accountAtRow);
             currentRange.setRangeAfter(newRange);
+            //set the color of the range based on its size
+            if (currentRange.getRangeSizeValue() != 1) {
+               psc.getIntToColor().incrementLighBgCarrouselIndex();
+               Color color = psc.getIntToColor().getColorLightBgCarrousel(0);
+               currentRange.setColor(color);
+            }
             newRange.setRangeBefore(currentRange);
             currentRange = newRange;
          }
@@ -132,10 +138,7 @@ public class ModelTableAccountRangePrices extends ModelTableAccountAbstract {
 
    private AccountRange createNewRangeForAccount(Account accountAtRow) {
       Integer accountInteger = accountAtRow.getAccount();
-      AccountRange newRange = new AccountRange(psc.getPCtx(), accountInteger, accountInteger);
-      psc.getIntToColor().incrementLighBgCarrouselIndex();
-      Color color = psc.getIntToColor().getColorLightBgCarrousel(0);
-      newRange.setColor(color);
+      AccountRange newRange = new AccountRange(psc, accountInteger, accountInteger);
       accountAtRow.setObjectSupport(newRange);
       return newRange;
    }
@@ -155,9 +158,11 @@ public class ModelTableAccountRangePrices extends ModelTableAccountAbstract {
    public int getColumnIndexAge() {
       return INDEX_05_AGE;
    }
+
    public int getColumnIndexChecksum() {
       return INDEX_01_CHECKSUM;
    }
+
    public int getColumnIndexKey() {
       return INDEX_02_PUBLICKEY;
    }

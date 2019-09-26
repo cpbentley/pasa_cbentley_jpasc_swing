@@ -443,7 +443,6 @@ public class CellRendererAccountPascal extends PascalTableCellRenderer implement
          renderer.setBackground(colorBg);
          int fg = ColorUtils.getComplementaryColor(colorBg.getRGB());
          renderer.setForeground(new Color(fg));
-         
       } else {
          renderer.setBackground(colors.colorBg);
          renderer.setForeground(colors.colorFg);

@@ -18,7 +18,7 @@ public class TabsNodeCenter extends TabbedBentleyPanel {
     */
    private static final long    serialVersionUID = -3523191063614218767L;
 
-   private NodeCenterPanel      nodeCenter;
+   private PanelTabNodeCenter      nodeCenter;
 
    private ListConnectionsPanel nodeConnections;
 
@@ -50,7 +50,7 @@ public class TabsNodeCenter extends TabbedBentleyPanel {
    }
 
    public void initTabs() {
-      nodeCenter = new NodeCenterPanel(psc, root);
+      nodeCenter = new PanelTabNodeCenter(psc);
       nodeConnections = new ListConnectionsPanel(psc);
       settingsTab = new SettingsTab(psc);
       preferencesTab = new PreferenceTab(psc.getSwingCtx());

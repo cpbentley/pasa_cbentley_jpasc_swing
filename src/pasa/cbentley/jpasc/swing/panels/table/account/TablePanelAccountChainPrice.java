@@ -70,17 +70,7 @@ public class TablePanelAccountChainPrice extends TablePanelAccountAbstractMinMax
     * <li> Show Seller Account in Inspector
     */
    protected void subPopulatePopMenu(BPopupMenu menu) {
-      SwingCtx sc = psc.getSwingCtx();
-      PascalCmdManager pcm = psc.getCmds();
-
-      menu.add(new BCMenuItem<ICommandableAccount>(sc, this, pcm.getCmdShowAccountInInspectorTab()));
-      menu.add(new BCMenuItem<ICommandableAccount>(sc, this, pcm.getCmdShowAccountSellerInInspectorTab()));
-      menu.addSeparator();
-      menu.add(new BCMenuItem<ICommandableAccount>(sc, this, pcm.getCmdShowAccountInInspectorWin()));
-      menu.add(new BCMenuItem<ICommandableAccount>(sc, this, pcm.getCmdShowAccountSellerInInspectorWin()));
-      menu.addSeparator();
-      menu.add(new BCMenuItem<ICommandableKey>(sc, this, pcm.getCmdKeyChangeName()));
-      
+      psc.getPascalBPopupMenuFactory().addAccountSaleMenuItems(menu, this, this);
    }
    
    /**

@@ -78,15 +78,13 @@ public abstract class TablePanelPublicKeyJavaAbstract extends TablePanelAbstract
     * @param popupMenu
     */
    public void addDefaultKeyMenuItems(BPopupMenu popupMenu) {
-      SwingCtx sc = psc.getSwingCtx();
-      PascalCmdManager pcm = psc.getCmds();
-      popupMenu.add(new BCMenuItem<ICommandableKey>(sc, this, pcm.getCmdKeyChangeName()));
-      popupMenu.add(new BCMenuItem<ICommandableKey>(sc, this, pcm.getCmdShowKeyAccounts()));
-      popupMenu.add(new BCMenuItem<ICommandableKey>(sc, this, pcm.getCmdShowKeyAccountsWin()));
-      popupMenu.add(new BCMenuItem<ICommandableKey>(sc, this, pcm.getCmdShowKeyNames()));
-      popupMenu.add(new BCMenuItem<ICommandableKey>(sc, this, pcm.getCmdShowKeyNamesWin()));
+      psc.getPascalBPopupMenuFactory().addKeyMenuItemsDefault(popupMenu, this);
    }
 
+   public void addKeyMenuItems(BPopupMenu popupMenu) {
+      psc.getPascalBPopupMenuFactory().addKeyMenuItems(popupMenu, this);
+   }
+   
    public void cmdTableRefresh() {
       super.cmdTableRefresh();
    }

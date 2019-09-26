@@ -82,6 +82,7 @@ import pasa.cbentley.jpasc.pcore.utils.PascalUtils;
 import pasa.cbentley.jpasc.swing.audio.PascalAudio;
 import pasa.cbentley.jpasc.swing.cellrenderers.CellRendereManager;
 import pasa.cbentley.jpasc.swing.cellrenderers.PascalTableCellRenderer;
+import pasa.cbentley.jpasc.swing.cmds.PascalBPopupMenuFactory;
 import pasa.cbentley.jpasc.swing.cmds.PascalCmdManager;
 import pasa.cbentley.jpasc.swing.cmds.PascalPageManager;
 import pasa.cbentley.jpasc.swing.interfaces.IHelpManager;
@@ -238,6 +239,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    private PascalSwingUtils                  pascalSwingUtils;
 
+   private PascalBPopupMenuFactory           pascalBPopupMenuFactory;
+
    /**
     * 
     * @param pc cannot be null
@@ -258,6 +261,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       setFilterDouble(new FilterDoubleOrEmpty(sc));
 
       pascalCmdManager = new PascalCmdManager(this);
+      pascalBPopupMenuFactory = new PascalBPopupMenuFactory(this);
+
       pageManager = new PascalPageManager(this);
 
       int[] pascalEventsTopology = new int[PID_ZZ_NUM];
@@ -351,7 +356,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
       int themeCellEffect = prefs.getInt(ITechPrefsPascalSwing.PREFS_CELL_EFFECT, 1);
       this.themeCellEffect = themeCellEffect;
-      
+
       //saved to prefs when changed
       this.isPrivateCtx = prefs.getBoolean(ITechPrefsPascalSwing.PREFS_PRIVATE_CTX, true);
    }
@@ -463,6 +468,10 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    public ImageIcon createImageIcon(String path, String description) {
       return sc.createImageIcon(path, description);
+   }
+
+   public PascalBPopupMenuFactory getPascalBPopupMenuFactory() {
+      return pascalBPopupMenuFactory;
    }
 
    public Color getAccountAgeColorDark(int age) {
@@ -1550,13 +1559,13 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    public boolean isPrivateCtx() {
       return isPrivateCtx;
    }
-   
+
    public void setPrivateCtx(boolean b) {
       isPrivateCtx = b;
    }
 
    public void copyToClipboard(String value, String title) {
       getLog().consoleLogGreen(title + " copied to clipboard : " + value);
-      sc.copyStringToClipboard(value);      
+      sc.copyStringToClipboard(value);
    }
 }

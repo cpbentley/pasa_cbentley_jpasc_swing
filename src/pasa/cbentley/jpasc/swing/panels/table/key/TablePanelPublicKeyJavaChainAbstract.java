@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
+import pasa.cbentley.jpasc.swing.cmds.CmdCopyKeyBase58;
+import pasa.cbentley.jpasc.swing.cmds.CmdCopyKeyEncoded;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperRefresh;
@@ -19,7 +21,6 @@ import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTablePublicKeyJavaAbst
 import pasa.cbentley.jpasc.swing.workers.table.key.WorkerTableKeyAbstract;
 import pasa.cbentley.jpasc.swing.workers.table.key.WorkerTableKeyChainAll;
 import pasa.cbentley.swing.widgets.b.BPopupMenu;
-
 
 /**
  * Base class for Listing Keys from the chain.
@@ -32,18 +33,15 @@ import pasa.cbentley.swing.widgets.b.BPopupMenu;
  *
  */
 public abstract class TablePanelPublicKeyJavaChainAbstract extends TablePanelPublicKeyJavaAbstract {
-   
-   
 
    /**
     * 
     */
-   private static final long  serialVersionUID          = 1L;
+   private static final long serialVersionUID          = 1L;
 
-   private static final int   STAT_INDEX_0_NUM_KEYS     = 0;
+   private static final int  STAT_INDEX_0_NUM_KEYS     = 0;
 
-   private static final int   STAT_INDEX_1_NUM_ACCOUNTS = 1;
-
+   private static final int  STAT_INDEX_1_NUM_ACCOUNTS = 1;
 
    public TablePanelPublicKeyJavaChainAbstract(PascalSwingCtx psc, String id, IRootTabPane root) {
       super(psc, id, root);
@@ -69,14 +67,13 @@ public abstract class TablePanelPublicKeyJavaChainAbstract extends TablePanelPub
 
       }
    }
-   
+
    /**
     * We override for {@link TableModelPublicKeyJavaMyAssets}
     */
    protected ModelTablePublicKeyJavaAbstract createTableModel() {
       return new ModelTablePublicKeyJavaChain(psc);
    }
-
 
    public void cmdShowKeyAccounts() {
       PublicKeyJava pk = this.getSelectedPublicKeyA();
@@ -85,13 +82,23 @@ public abstract class TablePanelPublicKeyJavaChainAbstract extends TablePanelPub
       }
    }
 
+   public void cmdCopyKeyBase58(CmdCopyKeyBase58 cmd) {
+      PublicKeyJava pk = this.getSelectedPublicKeyA();
+      cmd.executeWith(pk);
+   }
+
+   public void cmdCopyKeyEncoded(CmdCopyKeyEncoded cmd) {
+      PublicKeyJava pk = this.getSelectedPublicKeyA();
+      cmd.executeWith(pk);
+   }
+
+   
    public void cmdShowKeyAccountsNewWindow() {
       PublicKeyJava pk = this.getSelectedPublicKeyA();
       TablePanelAccountWalletKey tab = new TablePanelAccountWalletKey(psc, root);
       tab.setPublicKey(pk);
       psc.showInNewFrameRelToFrameRoot(tab);
    }
-
 
    /**
     * Worker for getting the keys
@@ -101,15 +108,12 @@ public abstract class TablePanelPublicKeyJavaChainAbstract extends TablePanelPub
       return worker;
    }
 
-  
-
    /**
     * Override because here we know the type of the model
     */
    public ModelTablePublicKeyJavaChain getTableModel() {
       return (ModelTablePublicKeyJavaChain) getBenTable().getModel();
    }
-
 
    protected void subInitPanelNorth(JPanel north) {
    }

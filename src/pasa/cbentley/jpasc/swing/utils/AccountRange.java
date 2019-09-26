@@ -12,6 +12,7 @@ import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IDLog;
 import pasa.cbentley.core.src4.logging.IStringable;
 import pasa.cbentley.jpasc.pcore.ctx.PCoreCtx;
+import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 
 public class AccountRange implements IStringable {
 
@@ -33,7 +34,7 @@ public class AccountRange implements IStringable {
     */
    private Integer          loneliness;
 
-   protected final PCoreCtx pc;
+   protected final PascalSwingCtx psc;
 
    private AccountRange     rangeAfter;
 
@@ -45,12 +46,12 @@ public class AccountRange implements IStringable {
 
    private Integer          distanceRangeAfterInteger;
 
-   public AccountRange(PCoreCtx pc, Integer start, Integer end) {
-      this.pc = pc;
+   public AccountRange(PascalSwingCtx psc, Integer start, Integer end) {
+      this.psc = psc;
       this.rangeStart = start;
       this.rangeEnd = end;
    }
-   
+
    /**
     * true if account ranged was initialized with the same reference for start and end
     * @return
@@ -67,6 +68,10 @@ public class AccountRange implements IStringable {
       return rangeStart;
    }
 
+   /**
+    * Possibly null if not set
+    * @return
+    */
    public Color getColor() {
       return color;
    }
@@ -123,9 +128,9 @@ public class AccountRange implements IStringable {
          int count = 1;
          while (count < countDistance && before != null) {
             int distance = before.getDistanceRangeBefore();
-            if(distance == 1) {
+            if (distance == 1) {
                //do nothing.. this is the best case scenario
-            } else if(distance == 2) {
+            } else if (distance == 2) {
                //very good as well
                totalDistanceBefore += 1;
             } else {
@@ -141,9 +146,9 @@ public class AccountRange implements IStringable {
          while (count < countDistance && after != null) {
             int distance = after.getDistanceRangeAfter();
             // a distance of 1 is zero
-            if(distance == 1) {
+            if (distance == 1) {
                //do nothing.. this is the best case scenario
-            } else if(distance == 2) {
+            } else if (distance == 2) {
                //very good as well
                totalDistanceAfter += 1;
             } else {
@@ -167,10 +172,13 @@ public class AccountRange implements IStringable {
       return rangeBefore;
    }
 
+   public int getRangeSizeValue() {
+      return rangeEnd.intValue() - rangeStart.intValue() + 1;
+   }
+
    public Integer getRangeSizeObject() {
       if (rangeSizeObject == null) {
-         int rangeSize = rangeEnd.intValue() - rangeStart.intValue() + 1;
-         rangeSizeObject = new Integer(rangeSize);
+         rangeSizeObject = new Integer(getRangeSizeValue());
       }
       return rangeSizeObject;
    }
@@ -185,6 +193,8 @@ public class AccountRange implements IStringable {
 
    public void setColor(Color color) {
       this.color = color;
+      //#debug
+      //toDLog().pFlow("", this, AccountRange.class, "setColor", LVL_05_FINE, true);
    }
 
    public void setRangeAfter(AccountRange rangeAfter) {
@@ -219,12 +229,14 @@ public class AccountRange implements IStringable {
    }
 
    public UCtx toStringGetUCtx() {
-      return pc.getUCtx();
+      return psc.getUCtx();
    }
 
    private void toStringPrivate(Dctx dc) {
       dc.appendVarWithSpace("rangeStart", rangeStart);
       dc.appendVarWithSpace("rangeEnd", rangeEnd);
+      dc.appendVarWithSpace("size", getRangeSizeValue());
+      dc.appendVarWithSpace("color", psc.getSwingCtx().toSD().d1(color));
    }
 
    //#enddebug

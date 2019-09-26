@@ -13,10 +13,14 @@ import pasa.cbentley.swing.cmd.CmdSwingAbstract;
  */
 public class CmdTogglePrivacyCtx extends CmdSwingAbstract<ICommandable> implements IEventsPascalSwing {
 
-   protected final PascalSwingCtx psc;
+   protected final PascalSwingCtx   psc;
 
-   public CmdTogglePrivacyCtx(PascalSwingCtx psc) {
-      this.psc = psc;
+   protected final PascalCmdManager pcm;
+
+   public CmdTogglePrivacyCtx(PascalCmdManager pcm) {
+      super(pcm.getSwingCtx());
+      this.pcm = pcm;
+      this.psc = pcm.getPSC();
    }
 
    private String getKey() {

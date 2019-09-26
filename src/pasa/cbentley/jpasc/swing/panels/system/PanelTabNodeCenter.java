@@ -34,7 +34,6 @@ import com.github.davidbolet.jpascalcoin.api.model.NodeStatus;
 
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
-import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.swing.imytab.AbstractMyTab;
 import pasa.cbentley.swing.imytab.IMyGui;
 import pasa.cbentley.swing.imytab.IMyTab;
@@ -47,7 +46,7 @@ import pasa.dekholm.riverlayout.RiverLayout;
  * @author Charles Bentley
  *
  */
-public class NodeCenterPanel extends AbstractMyTab implements ActionListener, IMyTab, IMyGui {
+public class PanelTabNodeCenter extends AbstractMyTab implements ActionListener, IMyTab, IMyGui {
 
    /**
     * 
@@ -110,8 +109,6 @@ public class NodeCenterPanel extends AbstractMyTab implements ActionListener, IM
 
    private JLabel              labStatusStr;
 
-   private IRootTabPane        root;
-
    private JTextPane           stateText;
 
    private JTextField          textBlockCount;
@@ -158,10 +155,9 @@ public class NodeCenterPanel extends AbstractMyTab implements ActionListener, IM
 
    private JButton             butOpenNodeDataFolder;
 
-   public NodeCenterPanel(PascalSwingCtx psc, IRootTabPane root) {
+   public PanelTabNodeCenter(PascalSwingCtx psc) {
       super(psc.getSwingCtx(), ID);
       this.psc = psc;
-      this.root = root;
       setLayout(new BorderLayout());
 
    }
@@ -188,7 +184,7 @@ public class NodeCenterPanel extends AbstractMyTab implements ActionListener, IM
             dir += "\\AppData\\Roaming\\PascalCoin";
 
             //#debug
-            toDLog().pCmd("Opening folder " + dir, null, NodeCenterPanel.class, "actionPerformed", ITechLvl.LVL_08_INFO, true);
+            toDLog().pCmd("Opening folder " + dir, null, PanelTabNodeCenter.class, "actionPerformed", ITechLvl.LVL_08_INFO, true);
 
             desktop.open(new File(dir));
          } catch (IOException ex) {

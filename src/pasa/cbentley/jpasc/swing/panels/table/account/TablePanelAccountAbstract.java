@@ -11,11 +11,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.github.davidbolet.jpascalcoin.api.model.Account;
+import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
 
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.domain.java.AccountJava;
 import pasa.cbentley.jpasc.swing.audio.PascalAudio;
 import pasa.cbentley.jpasc.swing.cellrenderers.CellRendereManager;
+import pasa.cbentley.jpasc.swing.cmds.CmdCopyKeyBase58;
+import pasa.cbentley.jpasc.swing.cmds.CmdCopyKeyEncoded;
 import pasa.cbentley.jpasc.swing.cmds.ICommandableAccount;
 import pasa.cbentley.jpasc.swing.cmds.ICommandableKey;
 import pasa.cbentley.jpasc.swing.cmds.PascalCmdManager;
@@ -189,6 +192,24 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
 
    public void cmdSendToAccount() {
       Account ac = getSelectedAccount();
+   }
+
+   /**
+    * Copy selected key base58 into the clipboard
+    */
+   public void cmdCopyKeyBase58(CmdCopyKeyBase58 cmd) {
+      Account ac = getSelectedAccount();
+      String encPubKey = ac.getEncPubkey();
+      cmd.executeWithEncoded(encPubKey);
+   }
+
+   /**
+    * Copy selected key into the clipboard
+    */
+   public void cmdCopyKeyEncoded(CmdCopyKeyEncoded cmd) {
+      Account ac = getSelectedAccount();
+      String encPubKey = ac.getEncPubkey();
+      cmd.executeWithEncoded(encPubKey);
    }
 
    /**

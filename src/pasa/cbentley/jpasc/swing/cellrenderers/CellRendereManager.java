@@ -131,11 +131,11 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
       return cellRendererKeyAccountNum;
    }
 
-   private CellRendererBlockTime cellRendererBlockTime;
+   private CellRendererBlockTime            cellRendererBlockTime;
 
    private CellRendererIntegerStringHSLPasc cellRendererIntegerStringHSLPasc;
 
-   private CellRendererAccountPascal cellRendererAccountPascal;
+   private CellRendererAccountPascal        cellRendererAccountPascal;
 
    public CellRendererBlockTime getCellRendererBlockTime() {
       if (cellRendererBlockTime == null) {
@@ -155,10 +155,11 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
    public CellRendererIntegerStringHSLPasc getCellRendererAccountBentley() {
       if (cellRendererIntegerStringHSLPasc == null) {
          cellRendererIntegerStringHSLPasc = new CellRendererIntegerStringHSLPasc(psc.getSwingCtx());
-         //registerRenderer(CellRendererIntegerStringHSLPasc);
+         //registerRenderer(cellRendererIntegerStringHSLPasc);
       }
       return cellRendererIntegerStringHSLPasc;
    }
+
    public TableCellRenderer getCellRendererAccountAge() {
       if (cellRendererAccountAge == null) {
          cellRendererAccountAge = new CellRendererAccountAge(psc);
@@ -170,6 +171,7 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
    public CellRendererAccountContiguous getCellRendererAccountContiguous() {
       if (cellRendererAccountContiguous == null) {
          cellRendererAccountContiguous = new CellRendererAccountContiguous(psc);
+         registerRenderer(cellRendererAccountContiguous);
       }
       return cellRendererAccountContiguous;
    }
@@ -177,6 +179,7 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
    public CellRendererAccountContiguousCount getCellRendererAccountContiguousCount() {
       if (cellRendererAccountContiguousCount == null) {
          cellRendererAccountContiguousCount = new CellRendererAccountContiguousCount(psc);
+         registerRenderer(cellRendererAccountContiguousCount);
       }
       return cellRendererAccountContiguousCount;
    }
@@ -204,6 +207,7 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
    public CellRendererAccountSoldContiguous getCellRendererAccountSoldContiguous() {
       if (cellRendererAccountSoldContiguous == null) {
          cellRendererAccountSoldContiguous = new CellRendererAccountSoldContiguous(psc, ModelTableAccountRangePrices.INDEX_16_RANGE_COLOR);
+         registerRenderer(cellRendererAccountSoldContiguous);
       }
       return cellRendererAccountSoldContiguous;
    }
@@ -214,14 +218,15 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
       }
       return cellRendererBalanceInteger;
    }
+
    public CellRendererAccountPascal getCellRendererAccountPascal() {
       if (cellRendererAccountPascal == null) {
          cellRendererAccountPascal = new CellRendererAccountPascal(psc);
+         registerRenderer(cellRendererAccountPascal);
       }
       return cellRendererAccountPascal;
    }
 
-   
    public CellRendererBlockMiner getCellRendererBlockMiner() {
       if (cellRendererBlockMiner == null) {
          cellRendererBlockMiner = new CellRendererBlockMiner(psc);
@@ -240,7 +245,7 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
    public CellRendererRedGreenDouble getCellRendererDouble() {
       if (cellRendererDouble == null) {
          cellRendererDouble = new CellRendererRedGreenDouble(psc);
-         renderers.add(cellRendererDouble);
+         registerRenderer(cellRendererDouble);
       }
       return cellRendererDouble;
    }
@@ -292,6 +297,14 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
 
    public Color getLabelForeground() {
       return UIManager.getColor("Label.foreground");
+   }
+
+   public Color getTableDropCellBackground() {
+      return UIManager.getColor("Table.dropCellBackground");
+   }
+
+   public Color getTableDropCellForeground() {
+      return UIManager.getColor("Table.dropCellBackground");
    }
 
    /**

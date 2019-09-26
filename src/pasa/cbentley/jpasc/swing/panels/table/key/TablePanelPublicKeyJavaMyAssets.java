@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
+import pasa.cbentley.jpasc.swing.cmds.CmdCopyKeyBase58;
+import pasa.cbentley.jpasc.swing.cmds.CmdCopyKeyEncoded;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperKeyCreator;
@@ -21,20 +23,19 @@ import pasa.cbentley.jpasc.swing.workers.table.key.WorkerTableKeyWalletPrivate;
 import pasa.cbentley.swing.widgets.b.BPopupMenu;
 
 public class TablePanelPublicKeyJavaMyAssets extends TablePanelPublicKeyJavaAbstract {
-   
-   
-   public static final String KEY                       = "list_my_keys";
+
+   public static final String    KEY                       = "list_my_keys";
 
    /**
     * 
     */
-   private static final long  serialVersionUID          = 1L;
+   private static final long     serialVersionUID          = 1L;
 
-   private static final int   STAT_INDEX_0_NUM_KEYS     = 0;
+   private static final int      STAT_INDEX_0_NUM_KEYS     = 0;
 
-   private static final int   STAT_INDEX_1_NUM_ACCOUNTS = 1;
+   private static final int      STAT_INDEX_1_NUM_ACCOUNTS = 1;
 
-   private PanelHelperKeyCreator    keyCreatorPanel;
+   private PanelHelperKeyCreator keyCreatorPanel;
 
    public TablePanelPublicKeyJavaMyAssets(PascalSwingCtx psc, IRootTabPane root) {
       super(psc, KEY, root);
@@ -42,6 +43,16 @@ public class TablePanelPublicKeyJavaMyAssets extends TablePanelPublicKeyJavaAbst
 
    public void cmdChangeKeyName() {
       psc.getLog().consoleLogDateRed("Change account name in reference wallet.");
+   }
+
+   public void cmdCopyKeyBase58(CmdCopyKeyBase58 cmd) {
+      PublicKeyJava pk = this.getSelectedPublicKeyA();
+      cmd.executeWith(pk);
+   }
+
+   public void cmdCopyKeyEncoded(CmdCopyKeyEncoded cmd) {
+      PublicKeyJava pk = this.getSelectedPublicKeyA();
+      cmd.executeWith(pk);
    }
 
    public void cmdShowKeyAccountNames() {
@@ -89,8 +100,6 @@ public class TablePanelPublicKeyJavaMyAssets extends TablePanelPublicKeyJavaAbst
       WorkerTableKeyWalletPrivate worker = new WorkerTableKeyWalletPrivate(psc, this, getTableModel());
       return worker;
    }
-
-  
 
    /**
     * Override because here we know the type of the model

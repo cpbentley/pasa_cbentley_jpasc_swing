@@ -14,6 +14,7 @@ public abstract class CmdShowAbstract<T> extends CmdSwingAbstract<T> implements 
    protected final int              type;
 
    public CmdShowAbstract(PascalCmdManager pcm, int type) {
+      super(pcm.getSwingCtx());
       this.pcm = pcm;
       this.type = type;
    }

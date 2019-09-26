@@ -31,6 +31,7 @@ import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.ITechPrefsPascalSwing;
 import pasa.cbentley.jpasc.swing.widgets.HelpDialog;
 import pasa.cbentley.swing.cmd.CmdSwingAbstract;
+import pasa.cbentley.swing.ctx.SwingCtx;
 import pasa.cbentley.swing.dialogs.JOptionPaneWithSlider;
 import pasa.cbentley.swing.imytab.IMyTab;
 import pasa.cbentley.swing.window.CBentleyFrame;
@@ -83,7 +84,11 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
 
    private final PascalSwingCtx            psc;
 
-   private CmdTogglePrivacyCtx cmdTogglePrivacyCtx;
+   private CmdTogglePrivacyCtx             cmdTogglePrivacyCtx;
+
+   private CmdCopyKeyBase58                cmdCopyKeyBase58;
+
+   private CmdCopyKeyEncoded               cmdCopyKeyEncoded;
 
    public PascalCmdManager(PascalSwingCtx psc) {
       this.psc = psc;
@@ -99,6 +104,10 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
          toDLog().pTest("Unknown Class " + o, this, PascalCmdManager.class, "callBack", LVL_05_FINE, true);
          System.exit(0);
       }
+   }
+
+   public SwingCtx getSwingCtx() {
+      return psc.getSwingCtx();
    }
 
    public void cmdChangeLanguage(String lang, String country) {
@@ -118,8 +127,6 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
       psc.getUIPref().putInt(PascalAudio.PREF_SOUND_VOLUME, val);
    }
 
-   
-   
    /**
     * Try to connect to the blockchain daemon using defautl login parameters.
     * Must refresh current loaded tab
@@ -408,10 +415,10 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
       }
       return cmdShowAccountSellerInInspectorTab;
    }
-   
+
    public CmdTogglePrivacyCtx getCmdTogglePrivacyCtx() {
-      if(cmdTogglePrivacyCtx==null) {
-         cmdTogglePrivacyCtx = new CmdTogglePrivacyCtx(psc);
+      if (cmdTogglePrivacyCtx == null) {
+         cmdTogglePrivacyCtx = new CmdTogglePrivacyCtx(this);
       }
       return cmdTogglePrivacyCtx;
    }
@@ -421,6 +428,20 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
          cmdShowAccountSellerInInspectorWindow = new CmdShowAccountSellerInInspector(this, SHOW_TYPE_1_NEW_WIN);
       }
       return cmdShowAccountSellerInInspectorWindow;
+   }
+
+   public CmdCopyKeyEncoded getCmdCopyKeyEncoded() {
+      if (cmdCopyKeyEncoded == null) {
+         cmdCopyKeyEncoded = new CmdCopyKeyEncoded(this);
+      }
+      return cmdCopyKeyEncoded;
+   }
+
+   public CmdCopyKeyBase58 getCmdCopyKeyBase58() {
+      if (cmdCopyKeyBase58 == null) {
+         cmdCopyKeyBase58 = new CmdCopyKeyBase58(this);
+      }
+      return cmdCopyKeyBase58;
    }
 
    public CmdShowKeyAccounts getCmdShowKeyAccounts() {
@@ -458,7 +479,7 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
    public String getKeyInTabCap() {
       return "cmd.show.tab.cap";
    }
-   
+
    public String getKeyInNewWindow() {
       return "cmd.new.window";
    }

@@ -18,6 +18,18 @@ public interface ICommandableKey extends ICommandable {
    public void cmdChangeKeyName();
 
    /**
+    * Copy selected key base58 into the clipboard
+    * @param cmd TODO
+    */
+   public void cmdCopyKeyBase58(CmdCopyKeyBase58 cmd);
+
+   /**
+    * Copy selected key into the clipboard
+    * @param cmd TODO
+    */
+   public void cmdCopyKeyEncoded(CmdCopyKeyEncoded cmd);
+
+   /**
     * Shows the accounts of selected key
     */
    public void cmdShowKeyAccounts();
@@ -26,7 +38,7 @@ public interface ICommandableKey extends ICommandable {
     * Same as {@link ICommandableKey#cmdShowKeyAccounts()} but in a new window
     */
    public void cmdShowKeyAccountsNewWindow();
-   
+
    /**
     * Shows the accounts with names of the selected key
     */
