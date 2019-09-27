@@ -8,6 +8,7 @@ import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IDLog;
 import pasa.cbentley.core.src4.utils.DateUtils;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
+import pasa.cbentley.swing.ctx.SwingCtx;
 
 public class PascalSwingUtils implements IEventConsumer {
 
@@ -31,47 +32,58 @@ public class PascalSwingUtils implements IEventConsumer {
       if (!isInited) {
          init();
       }
-      String msg = "";
+      SwingCtx sc = psc.getSwingCtx();
+      if (blockAge < 0) {
+         return sc.getResString("text.blockfuture");
+      } else if (blockAge == 0) {
+         return sc.getResString("text.blocknow");
+      }
+      //else check other cases
       int minutes = blockAge * 5;
-      if (blockAge < 7) {
-         msg = minutes + this.strAgoMinutes;
-      } else if (blockAge < DateUtils.MINUTES_IN_A_DAY) {
+      if (minutes < 60) {
+         return sc.getResString("text.blockminutes", minutes);
+      } else if (minutes < DateUtils.MINUTES_IN_A_DAY) {
          int hours = minutes / 60;
          if (hours == 1) {
-            return "1 hour ago";
+            return sc.getResString("text.block1hour");
          } else {
-            return hours + " hours ago";
+            return sc.getResString("text.blockhours", hours);
          }
-      } else if (blockAge < DateUtils.MINUTES_IN_A_MONTH) {
+      } else if (minutes < DateUtils.MINUTES_IN_A_MONTH) {
          int days = minutes / DateUtils.MINUTES_IN_A_DAY;
          if (days == 1) {
-            return "1 day ago";
+            return sc.getResString("text.block1day");
          } else {
-            return days + " month ago";
+            return sc.getResString("text.blockdays", days);
          }
-      } else if (blockAge < DateUtils.MINUTES_IN_A_YEAR) {
+      } else if (minutes < DateUtils.MINUTES_IN_A_YEAR) {
          //months
          int months = minutes / DateUtils.MINUTES_IN_A_MONTH;
          if (months == 1) {
-            return "1 month ago";
+            return sc.getResString("text.block1month");
          } else {
-            return months + " month ago";
+            return sc.getResString("text.blockmonths", months);
          }
-      } else if (blockAge < DateUtils.MINUTES_IN_A_YEAR_2) {
+      } else if (minutes < DateUtils.MINUTES_IN_A_YEAR_2) {
          int monthsInYear = minutes - DateUtils.MINUTES_IN_A_YEAR;
          int month = monthsInYear / DateUtils.MINUTES_IN_A_MONTH;
-         if (month == 0) {
-            return "1 year ago";
+         if (month < 2) {
+            return sc.getResString("text.block1year");
          } else {
-            return "1 year and " + month + " months ago";
+            return sc.getResString("text.block1yearmonths", month);
          }
          //yearly
       } else {
          int years = minutes / DateUtils.MINUTES_IN_A_YEAR;
-         return years + " years ago";
+         int minutesLeftForMonth = minutes - (years * DateUtils.MINUTES_IN_A_YEAR);
+         int month = minutesLeftForMonth / DateUtils.MINUTES_IN_A_MONTH;
+         if(month < 2) {
+            return sc.getResString("text.blockyears", years);
+         } else {
+            return sc.getResString("text.blockyearsmonths", years, month);
+         }
+         
       }
-
-      return msg;
    }
 
    public void computeStringValues() {
