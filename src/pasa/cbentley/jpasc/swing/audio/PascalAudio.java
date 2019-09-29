@@ -65,7 +65,7 @@ public class PascalAudio implements IBlockListener {
    }
 
    public void setClipVolume(OggClipPascal clip) {
-      float gainSlider = psc.getUIPref().getInt(PascalAudio.PREF_SOUND_VOLUME, 60);
+      float gainSlider = psc.getUIPref().getInt(PascalAudio.PREF_SOUND_VOLUME, 100);
       float max = 100;
       float volume = gainSlider / max; //the desired volume in float (0.0f means no sound, 1.0f means full audio) 
       clip.setGain(volume);

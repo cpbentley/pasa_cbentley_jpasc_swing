@@ -134,7 +134,7 @@ public class PanelTabLogin extends PanelTabAbstractPascal implements ActionListe
       if (pingerLogger == null) {
          pingerLogger = new PingLogger(pc);
       }
-      rpc.startPinging();
+      //rpc.startPinging();
    }
 
    public void cmdLockStateUpdate() {

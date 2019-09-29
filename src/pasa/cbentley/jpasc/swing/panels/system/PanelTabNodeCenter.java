@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,6 +39,7 @@ import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.swing.imytab.AbstractMyTab;
 import pasa.cbentley.swing.imytab.IMyGui;
 import pasa.cbentley.swing.imytab.IMyTab;
+import pasa.cbentley.swing.widgets.b.BButton;
 import pasa.dekholm.riverlayout.RiverLayout;
 
 /**
@@ -55,9 +58,7 @@ public class PanelTabNodeCenter extends AbstractMyTab implements ActionListener,
 
    private static final String ID               = "daemon";
 
-   private JButton             butIcon1;
-
-   private JButton             butIcon2;
+   private JButton             butLogoIcon;
 
    private JButton             butStartNode;
 
@@ -153,7 +154,9 @@ public class PanelTabNodeCenter extends AbstractMyTab implements ActionListener,
 
    private PascalSwingCtx      psc;
 
-   private JButton             butOpenNodeDataFolder;
+   private BButton             butOpenDataFolderNode;
+
+   private BButton             butOpenDataFolderSettings;
 
    public PanelTabNodeCenter(PascalSwingCtx psc) {
       super(psc.getSwingCtx(), ID);
@@ -163,35 +166,70 @@ public class PanelTabNodeCenter extends AbstractMyTab implements ActionListener,
    }
 
    public void actionPerformed(ActionEvent e) {
-      if (e.getSource() == butStartNode) {
-         Boolean b = getClient().startNode();
-         if (b) {
-            psc.getLog().consoleLogGreen("Node started");
-         } else {
-            psc.getLog().consoleLog("Node could not be started");
-         }
-      } else if (e.getSource() == butStopNode) {
-         Boolean b = getClient().stopNode();
-         if (b) {
-            psc.getLog().consoleLogGreen("Node stopped");
-         } else {
-            psc.getLog().consoleLog("Node could not be stopped");
-         }
-      } else if (e.getSource() == butOpenNodeDataFolder) {
-         try {
-            Desktop desktop = Desktop.getDesktop();
-            String dir = System.getProperty("user.home");
-            dir += "\\AppData\\Roaming\\PascalCoin";
-
-            //#debug
-            toDLog().pCmd("Opening folder " + dir, null, PanelTabNodeCenter.class, "actionPerformed", ITechLvl.LVL_08_INFO, true);
-
-            desktop.open(new File(dir));
-         } catch (IOException ex) {
-            ex.printStackTrace();
-         }
+      Object src = e.getSource();
+      if (src == butStartNode) {
+         cmdNodeStart();
+      } else if (src == butStopNode) {
+         cmdNodeStop();
+      } else if (src == butOpenDataFolderNode) {
+         cmdOpenNodeDataFolder();
+      } else if (src == butOpenDataFolderSettings) {
+         cmdOpenDataFolderSettings();
+      } else if(src == butLogoIcon) {
+         //TODO fix the sound framework
+         String pathSound = sc.getResString("sound.pascal_logo");
+         boolean b = psc.getAudio().isPlaySounds();
+         psc.getAudio().setEnableAudio(true);
+         psc.getAudio().playAudio(pathSound);
+         psc.getAudio().setEnableAudio(b);
       }
+   }
 
+   private void cmdOpenDataFolderSettings() {
+      try {
+         Desktop desktop = Desktop.getDesktop();
+         String dir = psc.getPCtx().getSettingsPath();
+
+         //#debug
+         toDLog().pCmd("Opening folder " + dir, null, PanelTabNodeCenter.class, "actionPerformed", ITechLvl.LVL_08_INFO, true);
+
+         desktop.open(new File(dir));
+      } catch (IOException ex) {
+         ex.printStackTrace();
+      }
+   }
+
+   private void cmdOpenNodeDataFolder() {
+      try {
+         Desktop desktop = Desktop.getDesktop();
+         String dir = System.getProperty("user.home");
+         dir += "\\AppData\\Roaming\\PascalCoin";
+
+         //#debug
+         toDLog().pCmd("Opening folder " + dir, null, PanelTabNodeCenter.class, "actionPerformed", ITechLvl.LVL_08_INFO, true);
+
+         desktop.open(new File(dir));
+      } catch (IOException ex) {
+         ex.printStackTrace();
+      }
+   }
+
+   private void cmdNodeStop() {
+      Boolean b = getClient().stopNode();
+      if (b) {
+         psc.getLog().consoleLogGreen("Node stopped");
+      } else {
+         psc.getLog().consoleLog("Node could not be stopped");
+      }
+   }
+
+   private void cmdNodeStart() {
+      Boolean b = getClient().startNode();
+      if (b) {
+         psc.getLog().consoleLogGreen("Node started");
+      } else {
+         psc.getLog().consoleLog("Node could not be started");
+      }
    }
 
    public void disposeTab() {
@@ -223,17 +261,16 @@ public class PanelTabNodeCenter extends AbstractMyTab implements ActionListener,
 
       add(sp, BorderLayout.CENTER);
 
-      butIcon1 = new JButton(psc.createImageIcon("/icons/s64/pasc_p_gold_64.png", "/sounds/CarPassingBy.wav"));
-      butIcon1.addActionListener(this);
-      butIcon2 = new JButton(psc.createImageIcon("/icons/s64/pasc_node_64.png", "/sounds/CarPassingBy.wav"));
-      butIcon2.addActionListener(this);
+      Icon logo = sc.getResIcon("icon.pascal_logo_64");
+     
+      butLogoIcon = new BButton(sc, this, logo, logo);
 
-      butOpenNodeDataFolder = new JButton("Open Node Data Folder");
-      butOpenNodeDataFolder.addActionListener(this);
+      butOpenDataFolderNode = new BButton(sc, this, "but.openfolder.node");
+      butOpenDataFolderSettings = new BButton(sc, this, "but.openfolder.pcoresettings");
 
-      riverlayoutPanel.add("", butIcon1);
-      riverlayoutPanel.add("tab", butIcon2);
-      riverlayoutPanel.add("tab", butOpenNodeDataFolder);
+      riverlayoutPanel.add("", butLogoIcon);
+      riverlayoutPanel.add("tab", butOpenDataFolderNode);
+      riverlayoutPanel.add("tab", butOpenDataFolderSettings);
 
       labIsLockedTitle = new JLabel("Wallet State:");
       labIsLocked = new JLabel("Locked");
@@ -397,7 +434,7 @@ public class PanelTabNodeCenter extends AbstractMyTab implements ActionListener,
    }
 
    public void tabLostFocus() {
-      
+
    }
 
    public void updateState() {
