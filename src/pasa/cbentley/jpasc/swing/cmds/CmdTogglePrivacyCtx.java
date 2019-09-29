@@ -46,7 +46,7 @@ public class CmdTogglePrivacyCtx extends CmdSwingAbstract<ICommandable> implemen
    public void executeWith(ICommandable t) {
       boolean currentCtx = psc.isPrivateCtx();
       psc.setPrivateCtx(!currentCtx);
-      BusEvent event = psc.getEventBusPascal().createEvent(PID_7_PRIVACY_CHANGES, EID_1_PRIVACY_CTX, this);
+      BusEvent event = psc.getEventBusPascal().createEvent(PID_7_PRIVACY_CHANGES, EID_7_PRIVACY_1_CTX, this);
       psc.getEventBusPascal().putOnBus(event);
       psc.getSwingCtx().guiUpdateLater();
 

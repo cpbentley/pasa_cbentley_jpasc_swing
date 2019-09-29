@@ -5,10 +5,13 @@
  */
 package pasa.cbentley.jpasc.swing.panels.core;
 
+import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
-import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountChainKey;
+import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountPublicKeyJava;
+import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountWalletKey;
 import pasa.cbentley.jpasc.swing.panels.table.key.TablePanelPublicKeyJavaChainAll;
+import pasa.cbentley.jpasc.swing.panels.table.key.TablePanelPublicKeyJavaChainLocal;
 import pasa.cbentley.jpasc.swing.panels.table.key.TablePanelPublicKeyJavaChainWalletPrivate;
 import pasa.cbentley.jpasc.swing.panels.table.key.TablePanelPublicKeyJavaChainWalletPublic;
 import pasa.cbentley.swing.imytab.TabbedBentleyPanel;
@@ -29,6 +32,10 @@ public class TabsKeysExplorer extends TabbedBentleyPanel {
 
    private TablePanelPublicKeyJavaChainWalletPublic  tablePanelPublicKeyJavaChainWalletPublic;
 
+   private TablePanelPublicKeyJavaChainLocal         tablePanelPublicKeyJavaChainLocal;
+
+   private TablePanelAccountPublicKeyJava tablePanelAccountPublicKeyJava;
+
    public TabsKeysExplorer(PascalSwingCtx psc, IRootTabPane root) {
       super(psc.getSwingCtx(), "root_keys");
       this.psc = psc;
@@ -45,11 +52,22 @@ public class TabsKeysExplorer extends TabbedBentleyPanel {
       tablePanelPublicKeyJavaChainWalletPrivate = new TablePanelPublicKeyJavaChainWalletPrivate(psc, root);
       tablePanelPublicKeyJavaChainWalletPublic = new TablePanelPublicKeyJavaChainWalletPublic(psc, root);
       tablePanelPublicKeyJavaChainAll = new TablePanelPublicKeyJavaChainAll(psc, root);
-
+      tablePanelPublicKeyJavaChainLocal = new TablePanelPublicKeyJavaChainLocal(psc, root);
+      tablePanelAccountPublicKeyJava =  new TablePanelAccountPublicKeyJava(psc, root);
+      
       addMyTab(tablePanelPublicKeyJavaChainWalletPrivate);
       addMyTab(tablePanelPublicKeyJavaChainWalletPublic);
+      addMyTab(tablePanelPublicKeyJavaChainLocal);
       addMyTab(tablePanelPublicKeyJavaChainAll);
+      addMyTab(tablePanelAccountPublicKeyJava);
 
+   }
+
+   public void showPublicKeyJavaAccounts(PublicKeyJava pk) {
+      initCheck();
+      tablePanelAccountPublicKeyJava.setPublicKeyJava(pk);
+      tablePanelAccountPublicKeyJava.cmdTableRefresh();
+      showTab(tablePanelAccountPublicKeyJava);
    }
 
 }

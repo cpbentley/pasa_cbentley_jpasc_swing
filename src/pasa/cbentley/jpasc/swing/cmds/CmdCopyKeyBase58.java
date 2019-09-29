@@ -58,6 +58,13 @@ public class CmdCopyKeyBase58 extends CmdSwingAbstract<ICommandableKey> {
    }
 
    public void executeWith(PublicKey publicKey) {
-
+      if (publicKey != null) {
+         PascalSwingCtx psc = pcm.getPSC();
+         if(publicKey.getBase58PubKey() != null) {
+            psc.copyToClipboard(publicKey.getBase58PubKey(), "Base58 public key");
+         } else {
+            psc.getLog().consoleLogError("Base58 Key is null or empty");
+         }
+      }
    }
 }

@@ -23,7 +23,7 @@ import pasa.cbentley.swing.threads.WorkerStat;
  * @param <K>
  * @param <V>
  */
-public abstract class WorkerListTaskPage<K, V> extends WorkerListTask<K, V>  {
+public abstract class WorkerListTaskPage<K, V> extends WorkerListTask<K, V> {
 
    private ListTaskPage<V> taskPage;
 
@@ -37,18 +37,22 @@ public abstract class WorkerListTaskPage<K, V> extends WorkerListTask<K, V>  {
       taskPage = createTaskPage();
       return taskPage;
    }
+
    /**
     * Called in the worker thread
     */
    public void newDataAvailable(List<V> list) {
       //update the worker stat 
-       PagerAbstract<V> pager = taskPage.getPager();
-       WorkerStat ws = getWorkerStat();
-       ws.setEntriesTotal(pager.getCountTotalItems());
-       //the start of the pager gives the actual
-       ws.setEntriesCount(pager.getStart());
+      PagerAbstract<V> pager = taskPage.getPager();
+      if (pager != null) {
+         WorkerStat ws = getWorkerStat();
+         ws.setEntriesTotal(pager.getCountTotalItems());
+         //the start of the pager gives the actual
+         ws.setEntriesCount(pager.getStart());
+      }
       super.newDataAvailable(list);
    }
+
    //#mdebug
    public void toString(Dctx dc) {
       dc.root(this, "WorkerListTaskPage");
@@ -57,7 +61,7 @@ public abstract class WorkerListTaskPage<K, V> extends WorkerListTask<K, V>  {
    }
 
    private void toStringPrivate(Dctx dc) {
-      
+
    }
 
    public void toString1Line(Dctx dc) {

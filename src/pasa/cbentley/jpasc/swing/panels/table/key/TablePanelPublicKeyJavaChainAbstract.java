@@ -11,12 +11,14 @@ import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.swing.cmds.CmdCopyKeyBase58;
 import pasa.cbentley.jpasc.swing.cmds.CmdCopyKeyEncoded;
+import pasa.cbentley.jpasc.swing.cmds.CmdKeyChangeName;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperRefresh;
+import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountPublicKeyJava;
 import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountWalletKey;
 import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountWalletName;
-import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTablePublicKeyJavaChain;
+import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTablePublicKeyJavaAutoChain;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTablePublicKeyJavaAbstract;
 import pasa.cbentley.jpasc.swing.workers.table.key.WorkerTableKeyAbstract;
 import pasa.cbentley.jpasc.swing.workers.table.key.WorkerTableKeyChainAll;
@@ -47,7 +49,7 @@ public abstract class TablePanelPublicKeyJavaChainAbstract extends TablePanelPub
       super(psc, id, root);
    }
 
-   public void cmdChangeKeyName() {
+   public void cmdChangeKeyName(CmdKeyChangeName cmd) {
       psc.getLog().consoleLogDateRed("Change account name in reference wallet.");
    }
 
@@ -72,7 +74,7 @@ public abstract class TablePanelPublicKeyJavaChainAbstract extends TablePanelPub
     * We override for {@link TableModelPublicKeyJavaMyAssets}
     */
    protected ModelTablePublicKeyJavaAbstract createTableModel() {
-      return new ModelTablePublicKeyJavaChain(psc);
+      return new ModelTablePublicKeyJavaAutoChain(psc);
    }
 
    public void cmdShowKeyAccounts() {
@@ -95,8 +97,8 @@ public abstract class TablePanelPublicKeyJavaChainAbstract extends TablePanelPub
    
    public void cmdShowKeyAccountsNewWindow() {
       PublicKeyJava pk = this.getSelectedPublicKeyA();
-      TablePanelAccountWalletKey tab = new TablePanelAccountWalletKey(psc, root);
-      tab.setPublicKey(pk);
+      TablePanelAccountPublicKeyJava tab = new TablePanelAccountPublicKeyJava(psc, root);
+      tab.setPublicKeyJava(pk);
       psc.showInNewFrameRelToFrameRoot(tab);
    }
 
@@ -111,8 +113,8 @@ public abstract class TablePanelPublicKeyJavaChainAbstract extends TablePanelPub
    /**
     * Override because here we know the type of the model
     */
-   public ModelTablePublicKeyJavaChain getTableModel() {
-      return (ModelTablePublicKeyJavaChain) getBenTable().getModel();
+   public ModelTablePublicKeyJavaAbstract getTableModel() {
+      return (ModelTablePublicKeyJavaAbstract) getBenTable().getModel();
    }
 
    protected void subInitPanelNorth(JPanel north) {
@@ -122,8 +124,8 @@ public abstract class TablePanelPublicKeyJavaChainAbstract extends TablePanelPub
       panelHelperRefresh = new PanelHelperRefresh(psc, this);
       panelHelperLoadingStat.setCompProgressBefore(panelHelperRefresh);
       panelHelperLoadingStat.resetToSize(2); //2 stats here
-      panelHelperLoadingStat.set(STAT_INDEX_0_NUM_KEYS, "stat.keys", 4);
-      panelHelperLoadingStat.set(STAT_INDEX_1_NUM_ACCOUNTS, "stat.account", 6);
+      panelHelperLoadingStat.set(STAT_INDEX_0_NUM_KEYS, "stat.keys", 8);
+      panelHelperLoadingStat.set(STAT_INDEX_1_NUM_ACCOUNTS, "stat.account", 10);
       panelHelperLoadingStat.addToPanelSerially(south); //boilerplate for linking widgets
       south.add(panelHelperLoadingStat);
    }
@@ -133,7 +135,7 @@ public abstract class TablePanelPublicKeyJavaChainAbstract extends TablePanelPub
    }
 
    protected void subUpdateStatPanel() {
-      ModelTablePublicKeyJavaChain model = getTableModel();
+      ModelTablePublicKeyJavaAbstract model = getTableModel();
       panelHelperLoadingStat.setStat(STAT_INDEX_0_NUM_KEYS, model.getNumKeys());
       panelHelperLoadingStat.setStat(STAT_INDEX_1_NUM_ACCOUNTS, model.getNumAccounts());
    }

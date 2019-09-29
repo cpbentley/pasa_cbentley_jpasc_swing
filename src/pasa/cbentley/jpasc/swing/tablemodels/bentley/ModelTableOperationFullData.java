@@ -116,6 +116,7 @@ public class ModelTableOperationFullData extends ModelTableOperationAbstract {
          //return PascalUtils.getOperationTypeUserString(ot);
          case INDEX_SUBTYPE:
             OperationSubType sub = op.getSubType();
+            int value = sub.getValue();
             return sub;
          case INDEX_OP_DESCR:
             return op.getTypeDescriptor();

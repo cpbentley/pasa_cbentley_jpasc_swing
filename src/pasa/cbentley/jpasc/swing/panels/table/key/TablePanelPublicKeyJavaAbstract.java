@@ -19,6 +19,7 @@ import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.table.abstrakt.TablePanelAbstract;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTablePublicKeyJavaAbstract;
+import pasa.cbentley.jpasc.swing.workers.abstrakt.WorkerListTaskPage;
 import pasa.cbentley.jpasc.swing.workers.table.key.WorkerTableKeyAbstract;
 import pasa.cbentley.swing.ctx.SwingCtx;
 import pasa.cbentley.swing.imytab.IMyGui;
@@ -78,11 +79,11 @@ public abstract class TablePanelPublicKeyJavaAbstract extends TablePanelAbstract
     * @param popupMenu
     */
    public void addDefaultKeyMenuItems(BPopupMenu popupMenu) {
-      psc.getPascalBPopupMenuFactory().addKeyMenuItemsDefault(popupMenu, this);
+      psc.getPascalBPopupMenuFactory().addKeyMenuItemsShowNameCopy(popupMenu, this);
    }
 
    public void addKeyMenuItems(BPopupMenu popupMenu) {
-      psc.getPascalBPopupMenuFactory().addKeyMenuItems(popupMenu, this);
+      psc.getPascalBPopupMenuFactory().addKeyMenuItemsShowNameCopy(popupMenu, this);
    }
    
    public void cmdTableRefresh() {
@@ -95,6 +96,10 @@ public abstract class TablePanelPublicKeyJavaAbstract extends TablePanelAbstract
       }
    }
 
+   /**
+    * A Worker which extends {@link WorkerTableKeyAbstract} and thus
+    * {@link WorkerListTaskPage}
+    */
    protected abstract WorkerTableKeyAbstract createWorker();
 
    public void disposeTab() {

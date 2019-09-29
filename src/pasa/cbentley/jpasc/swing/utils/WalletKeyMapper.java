@@ -12,12 +12,19 @@ import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.event.BusEvent;
 import pasa.cbentley.core.src4.event.IEventConsumer;
 import pasa.cbentley.core.src4.logging.Dctx;
+import pasa.cbentley.jpasc.pcore.tools.KeyNameProvider;
 import pasa.cbentley.jpasc.swing.ctx.IEventsPascalSwing;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.workers.WorkerWalletMapping;
 import pasa.cbentley.swing.threads.IWorkerPanel;
 import pasa.cbentley.swing.threads.PanelSwingWorker;
 
+/**
+ * Update the {@link KeyNameProvider} with daemon wallet keys
+ * 
+ * @author Charles Bentley
+ *
+ */
 public class WalletKeyMapper implements IWorkerPanel, IEventsPascalSwing, IEventConsumer {
 
    private PascalSwingCtx psc;
@@ -47,7 +54,7 @@ public class WalletKeyMapper implements IWorkerPanel, IEventsPascalSwing, IEvent
          try {
             Map<String, String> ownerWallet = ((WorkerWalletMapping) worker).get();
             if (ownerWallet != null) {
-               psc.getPCtx().getPkNameStore().setWalletMapping(ownerWallet);
+               psc.getPCtx().getKeyNameProvider().getPkNameStorePrivate().setWalletMapping(ownerWallet);
             }
          } catch (InterruptedException e) {
             e.printStackTrace();

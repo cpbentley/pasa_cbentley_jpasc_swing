@@ -13,9 +13,10 @@ public interface ICommandableKey extends ICommandable {
     * Change the name of the key..
     * 
     * Depending on the kind of key.. if its a chain key, the cmd changes the key name alias
+    * @param cmd TODO
     * 
     */
-   public void cmdChangeKeyName();
+   public void cmdChangeKeyName(CmdKeyChangeName cmd);
 
    /**
     * Copy selected key base58 into the clipboard

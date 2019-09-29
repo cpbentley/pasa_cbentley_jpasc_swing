@@ -97,6 +97,7 @@ import pasa.cbentley.jpasc.swing.models.ModelProviderPublicJavaKeyPrivate;
 import pasa.cbentley.jpasc.swing.others.PascalSkinManager;
 import pasa.cbentley.jpasc.swing.others.PascalValueDefault;
 import pasa.cbentley.jpasc.swing.panels.funding.FundingManager;
+import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperChangeKeyName;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableOperationAbstract;
 import pasa.cbentley.jpasc.swing.utils.PascalSwingUtils;
 import pasa.cbentley.jpasc.swing.utils.WalletKeyMapper;
@@ -179,6 +180,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    private IntToColor                        intToColor;
 
+   private boolean                  isPrivateCtx;
+
    private ILogin                            login;
 
    private ModelProviderPublicJavaKey        modelProviderPublicJavaKey;
@@ -186,6 +189,10 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    private ModelProviderPublicJavaKeyPrivate modelProviderPublicJavaKeyPrivate;
 
    private PascalPageManager                 pageManager;
+
+   private PanelHelperChangeKeyName panelHelperChangeKeyName;
+
+   private PascalBPopupMenuFactory           pascalBPopupMenuFactory;
 
    private PascalCmdManager                  pascalCmdManager;
 
@@ -195,6 +202,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     * Could be null inside this class.
     */
    private PascalSkinManager                 pascalSkinManager;
+
+   private PascalSwingUtils                  pascalSwingUtils;
 
    /**
     * Never null
@@ -236,10 +245,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    private Object                            walletKeyMapper;
 
    private JLabel                            websitePascal;
-
-   private PascalSwingUtils                  pascalSwingUtils;
-
-   private PascalBPopupMenuFactory           pascalBPopupMenuFactory;
 
    /**
     * 
@@ -461,6 +466,11 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    }
 
+   public void copyToClipboard(String value, String title) {
+      getLog().consoleLogGreen(title + " copied to clipboard : " + value);
+      sc.copyStringToClipboard(value);
+   }
+
    public Image createImage(String path, String description) {
       ImageIcon ii = this.createImageIcon(path, description);
       return sc.getUtils().iconToImage(ii);
@@ -468,10 +478,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    public ImageIcon createImageIcon(String path, String description) {
       return sc.createImageIcon(path, description);
-   }
-
-   public PascalBPopupMenuFactory getPascalBPopupMenuFactory() {
-      return pascalBPopupMenuFactory;
    }
 
    public Color getAccountAgeColorDark(int age) {
@@ -882,6 +888,17 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       return rootPageManager.getPageStringFirst(id);
    }
 
+   public PanelHelperChangeKeyName getPanelHelperChangeKeyName() {
+      if (panelHelperChangeKeyName == null) {
+         panelHelperChangeKeyName = new PanelHelperChangeKeyName(this);
+      }
+      return panelHelperChangeKeyName;
+   }
+
+   public PascalBPopupMenuFactory getPascalBPopupMenuFactory() {
+      return pascalBPopupMenuFactory;
+   }
+
    /**
     * Returns the {@link PascalCoinClient}
     * @return
@@ -900,6 +917,10 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       return pascalSkinManager;
    }
 
+   public PascalSwingUtils getPascalSwingUtils() {
+      return pascalSwingUtils;
+   }
+
    public MenuBarPascalAbstract getPascMenuBar() {
       return pascalMenuBar;
    }
@@ -912,43 +933,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       return pc;
    }
 
-   public String getPrettyBytes(long size) {
-      String bytes = null;
-      if (size > 1000000) {
-         bytes = (size / 1000000) + "mb";
-      } else if (size > 1000) {
-         bytes = (size / 1000) + "kb";
-      } else {
-         bytes = size + " bytes";
-      }
-      return bytes;
-   }
-
-   public String getPrettyBytes(Long size) {
-      if (size == null) {
-         return "null";
-      } else {
-         return getPrettyBytes(size.longValue());
-      }
-   }
-
-   /**
-    * 
-    * @return
-    */
-   public JPopupMenu getProgressPopupMenu() {
-      JPopupMenu pmenu = new JPopupMenu();
-      return pmenu;
-   }
-
-   public Random getRandom() {
-      return r;
-   }
-
-   public Color getRed() {
-      return colorRed;
-   }
-
    //   public Account getSelectedAccount(ListAccountBasePanel lpane) {
    //      Account ac = null;
    //      int selRow = lpane.getJTable().getSelectedRow();
@@ -959,8 +943,16 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    //      return ac;
    //   }
 
-   public RootPageManager getRootPageManager() {
-      return rootPageManager;
+   public String getPrettyBytes(long size) {
+      String bytes = null;
+      if (size > 1000000) {
+         bytes = (size / 1000000) + "mb";
+      } else if (size > 1000) {
+         bytes = (size / 1000) + "kb";
+      } else {
+         bytes = size + " bytes";
+      }
+      return bytes;
    }
 
    //   public Operation getSelectedOperation(JTable table, TableModelOperation tableModel) {
@@ -992,6 +984,35 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    //      }
    //      return pk;
    //   }
+
+   public String getPrettyBytes(Long size) {
+      if (size == null) {
+         return "null";
+      } else {
+         return getPrettyBytes(size.longValue());
+      }
+   }
+
+   /**
+    * 
+    * @return
+    */
+   public JPopupMenu getProgressPopupMenu() {
+      JPopupMenu pmenu = new JPopupMenu();
+      return pmenu;
+   }
+
+   public Random getRandom() {
+      return r;
+   }
+
+   public Color getRed() {
+      return colorRed;
+   }
+
+   public RootPageManager getRootPageManager() {
+      return rootPageManager;
+   }
 
    public IRootTabPane getRootPrivateAssets() {
       return rootPanePrivateAssets;
@@ -1140,6 +1161,18 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    public boolean isModeRookie() {
       return getMode() == ITechUserMode.MODE_1_ROOKIE;
+   }
+
+   /**
+    * Should the UI display private data?
+    * 
+    * Otherwise UI should hide or display public data
+    * 
+    * 
+    * @return
+    */
+   public boolean isPrivateCtx() {
+      return isPrivateCtx;
    }
 
    public void openFile(PascalSwingCtx psc, File folder) {
@@ -1354,6 +1387,10 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       this.prefs = new PreferencesSpyLogger(uc, prefs);
    }
 
+   public void setPrivateCtx(boolean b) {
+      isPrivateCtx = b;
+   }
+
    public void setPrivateRoot(IRootTabPane privateAssets) {
       rootPanePrivateAssets = privateAssets;
    }
@@ -1540,32 +1577,5 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
          getLog().consoleLogGreen("Wallet fail to unlock! Probably wrong password");
          return false;
       }
-   }
-
-   public PascalSwingUtils getPascalSwingUtils() {
-      return pascalSwingUtils;
-   }
-
-   private boolean isPrivateCtx;
-
-   /**
-    * Should the UI display private data?
-    * 
-    * Otherwise UI should hide or display public data
-    * 
-    * 
-    * @return
-    */
-   public boolean isPrivateCtx() {
-      return isPrivateCtx;
-   }
-
-   public void setPrivateCtx(boolean b) {
-      isPrivateCtx = b;
-   }
-
-   public void copyToClipboard(String value, String title) {
-      getLog().consoleLogGreen(title + " copied to clipboard : " + value);
-      sc.copyStringToClipboard(value);
    }
 }

@@ -15,6 +15,12 @@ import pasa.cbentley.jpasc.pcore.utils.PascalCoinValue;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.swing.model.ModelTableBAbstractWithColModel;
 
+/**
+ * Base class for all model of {@link Account} with a Column Model
+ * 
+ * @author Charles Bentley
+ *
+ */
 public abstract class ModelTableAccountAbstract extends ModelTableBAbstractWithColModel<Account> {
 
    /**
@@ -109,13 +115,15 @@ public abstract class ModelTableAccountAbstract extends ModelTableBAbstractWithC
 
    public abstract int getColumnIndexAge();
 
+   public abstract int getColumnIndexChecksum();
+
    public abstract int getColumnIndexKey();
 
    public abstract int getColumnIndexOps();
-   public abstract int getColumnIndexChecksum();
-   public abstract int getColumnIndexSeller();
 
    public abstract int getColumnIndexPrice();
+
+   public abstract int getColumnIndexSeller();
 
    public int getNameCount() {
       return nameCount;
@@ -139,7 +147,7 @@ public abstract class ModelTableAccountAbstract extends ModelTableBAbstractWithC
 
    public String getPublicKeyName(Account a) {
       String pub = a.getEncPubkey();
-      return psc.getPCtx().getPkNameStore().getKeyName(pub);
+      return psc.getPCtx().getKeyNameProvider().getKeyName(pub);
    }
 
    public double getTotalBalanceCount() {

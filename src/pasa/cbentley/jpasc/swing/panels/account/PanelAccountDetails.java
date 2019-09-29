@@ -14,7 +14,6 @@ import java.text.DateFormat;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -42,6 +41,8 @@ import pasa.cbentley.swing.widgets.b.BButton;
 import pasa.cbentley.swing.widgets.b.BCheckBox;
 import pasa.cbentley.swing.widgets.b.BLabel;
 import pasa.cbentley.swing.widgets.b.BPanel;
+import pasa.cbentley.swing.widgets.b.BTextArea;
+import pasa.cbentley.swing.widgets.b.BTextField;
 import pasa.dekholm.riverlayout.RiverLayout;
 
 public class PanelAccountDetails extends PanelTabAbstractPascal implements DocumentListener, IMyTab, IMyGui, ActionListener, ICommandableRefresh {
@@ -101,6 +102,16 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
 
    private BLabel                       labName;
 
+   private BLabel                       labKeyNames;
+
+   private BLabel                       labKeyNamePrivate;
+
+   private BLabel                       labKeyNamePublic;
+
+   private BTextField                   textKeyNamePrivate;
+
+   private BTextField                   textKeyNamePublic;
+
    private BLabel                       labNumOperation;
 
    private BLabel                       labPrice;
@@ -115,9 +126,9 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
 
    private JTextField                   textAccount;
 
-   private JTextArea                    textAreaEncPubKey;
+   private BTextArea                    textAreaEncPubKey;
 
-   private JTextArea                    textAreaPubKey;
+   private BTextArea                    textAreaPubKey;
 
    private JTextField                   textBalance;
 
@@ -144,6 +155,8 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
    private JTextField                   textType;
 
    private BButton                      butRandom;
+
+   private BButton                      butChangeKeyNames;
 
    public PanelAccountDetails(PascalSwingCtx psc, IRootTabPane root) {
       this(psc, root, ID);
@@ -179,7 +192,27 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       } else if (src == butPublicKey58) {
          String value = textAreaPubKey.getText();
          psc.copyToClipboard(value, "Public key");
+      } else if (src == butChangeKeyNames) {
+         if(account != null) {
+            psc.getCmds().getCmdKeyChangeName().executeWith(account);
+            //update the names
+            privateUpdateKeyNames();
+         }
       }
+   }
+
+   private void privateUpdateKeyNames() {
+      String encKey = account.getEncPubkey();
+      String name = psc.getPCtx().getKeyNameProvider().getPkNameStorePublic().getKeyNameAdd(encKey);
+      textKeyNamePublic.setText(name);
+      if(psc.isPrivateCtx()) {
+          name = psc.getPCtx().getKeyNameProvider().getPkNameStorePrivate().getKeyName(encKey);
+         textKeyNamePrivate.setText(name);
+      } else {
+         textKeyNamePrivate.setText(sc.getResString("text.publicmodehidekeyname"));
+      }
+     
+      
    }
 
    /**
@@ -385,17 +418,39 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       container.add("tab", labLastOpTime);
       container.add("tab", textLastOpTime);
 
+      butChangeKeyNames = new BButton(sc, this, "but.changekeynames");
+      labKeyNamePrivate = new BLabel(sc, "text.keynameprivate");
+      labKeyNamePublic = new BLabel(sc, "text.keynamepublic");
+
+      textKeyNamePrivate = new BTextField(sc, 20);
+      textKeyNamePrivate.setKeyTip("text.keynameprivate.tip");
+      textKeyNamePrivate.setEnabled(false);
+
+      textKeyNamePublic = new BTextField(sc, 20);
+      textKeyNamePublic.setKeyTip("text.keynamepublic.tip");
+      textKeyNamePublic.setEnabled(false);
+
+      container.add("br", butChangeKeyNames);
+      container.add("tab", labKeyNamePrivate);
+      container.add("tab", textKeyNamePrivate);
+      container.add("tab", labKeyNamePublic);
+      container.add("tab", textKeyNamePublic);
+
       butPublicKey58 = new BButton(sc, this, "text.keybase58");
-      textAreaPubKey = new JTextArea(2, 100);
+      textAreaPubKey = new BTextArea(sc, 2, 100);
       textAreaPubKey.setLineWrap(true);
       textAreaPubKey.setEditable(false);
+      textAreaPubKey.setTextKeyTip("text.keybase58.tip");
+
       container.add("p", butPublicKey58);
       container.add("tab", textAreaPubKey);
 
       butEncPubKey = new BButton(sc, this, "text.keyencoded");
-      textAreaEncPubKey = new JTextArea(2, 100);
+      textAreaEncPubKey = new BTextArea(sc, 2, 100);
       textAreaEncPubKey.setLineWrap(true);
       textAreaEncPubKey.setEditable(false);
+      textAreaPubKey.setTextKeyTip("text.keyencoded.tip");
+
       container.add("p", butEncPubKey);
       container.add("tab", textAreaEncPubKey);
 
@@ -502,6 +557,8 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
          textLockBlock.setText(lockTillBlock.toString());
       }
 
+      privateUpdateKeyNames();
+      
       accountOperations.clear();
 
       accountOperations.showAccount(account);

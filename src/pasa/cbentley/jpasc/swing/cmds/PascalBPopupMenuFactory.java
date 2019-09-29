@@ -28,6 +28,16 @@ public class PascalBPopupMenuFactory {
       popupMenu.add(new BCMenuItem<ICommandableKey>(sc, keyActor, pcm.getCmdCopyKeyEncoded()));
    }
 
+   public void addKeyMenuItemsShowNameCopy(IMenuSwing popupMenu, ICommandableKey keyActor) {
+      popupMenu.add(new BCMenuItem<ICommandableKey>(sc, keyActor, pcm.getCmdShowKeyAccounts()));
+      popupMenu.add(new BCMenuItem<ICommandableKey>(sc, keyActor, pcm.getCmdShowKeyAccountsWin()));
+      popupMenu.addSeparator();
+      popupMenu.add(new BCMenuItem<ICommandableKey>(sc, keyActor, pcm.getCmdKeyChangeName()));
+      popupMenu.addSeparator();
+      popupMenu.add(new BCMenuItem<ICommandableKey>(sc, keyActor, pcm.getCmdCopyKeyBase58()));
+      popupMenu.add(new BCMenuItem<ICommandableKey>(sc, keyActor, pcm.getCmdCopyKeyEncoded()));
+   }
+   
    public void addKeyMenuItemsDefault(IMenuSwing popupMenu, ICommandableKey keyActor) {
       popupMenu.add(new BCMenuItem<ICommandableKey>(sc, keyActor, pcm.getCmdKeyChangeName()));
       popupMenu.addSeparator();

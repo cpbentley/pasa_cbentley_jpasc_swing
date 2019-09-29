@@ -142,8 +142,8 @@ public class TabsChainExplorer extends TabbedBentleyPanel implements IRootTabPan
     * @see IRootTabPane#showBlock(Block)
     */
    public void showBlock(Block ac) {
-      initCheck();
       //make sure operationpanel is init
+      initCheck();
       operationsPanel.showBlock(ac);
       showTab(operationsPanel);
    }
@@ -153,11 +153,13 @@ public class TabsChainExplorer extends TabbedBentleyPanel implements IRootTabPan
    }
 
    public void showPublicKeyJavaAccounts(PublicKeyJava pk) {
-      // TODO Auto-generated method stub
-
+      initCheck();
+      keysExplorer.showPublicKeyJavaAccounts(pk);
+      showTab(keysExplorer);
    }
 
    public void showPublicKeyAccounts(PublicKey pk) {
+      initCheck();
       accountExplorerPanel.showPublicKeyAccounts(pk);
    }
 

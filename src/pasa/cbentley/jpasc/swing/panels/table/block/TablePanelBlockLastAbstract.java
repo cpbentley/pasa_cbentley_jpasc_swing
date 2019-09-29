@@ -14,7 +14,7 @@ import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperRefresh;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableBlockAbstract;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableBlockFullData;
-import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTablePublicKeyJavaChain;
+import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTablePublicKeyJavaAutoChain;
 import pasa.cbentley.jpasc.swing.workers.abstrakt.WorkerListTaskPage;
 import pasa.cbentley.jpasc.swing.workers.table.block.WorkerTableBlocksInThePast;
 import pasa.cbentley.swing.model.ModelTableBAbstract;

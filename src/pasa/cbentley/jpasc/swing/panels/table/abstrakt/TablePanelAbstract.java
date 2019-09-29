@@ -20,6 +20,7 @@ import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.ITechPrefsPascalSwing;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperLoadingStat;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperRefresh;
+import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperTable;
 import pasa.cbentley.jpasc.swing.panels.table.key.TablePanelPublicKeyJavaAbstract;
 import pasa.cbentley.jpasc.swing.widgets.PanelPascal;
 import pasa.cbentley.jpasc.swing.workers.abstrakt.WorkerListTaskPage;
@@ -30,6 +31,7 @@ import pasa.cbentley.swing.table.AbstractTabTable;
 import pasa.cbentley.swing.threads.IWorkerPanel;
 import pasa.cbentley.swing.threads.PanelSwingWorker;
 import pasa.cbentley.swing.threads.WorkerStat;
+import pasa.cbentley.swing.widgets.b.BButton;
 import pasa.cbentley.swing.widgets.b.BCheckBox;
 
 /**
@@ -44,7 +46,6 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
     */
    private static final long        serialVersionUID = -7955180093657758280L;
 
-   protected BCheckBox              cbRowNumbers;
 
    /**
     * This flag tells Table to resize columns once the worker has finished.
@@ -73,6 +74,9 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
     */
    protected PanelHelperLoadingStat panelHelperLoadingStat;
 
+
+   private PanelHelperTable panelHelperTable;
+
    public TablePanelAbstract(PascalSwingCtx psc, String internalID) {
       super(psc.getSwingCtx(), internalID);
       this.psc = psc;
@@ -81,24 +85,7 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       isAutoResizeColumnsOnGuiUpdate = false;
       panelHelperLoadingStat = new PanelHelperLoadingStat(psc);
 
-      cbRowNumbers = new BCheckBox(sc, new ActionListener() {
-
-         public void actionPerformed(ActionEvent e) {
-
-//            JOptionPane jop = new JOptionPane();
-//            jop.setMessageType(JOptionPane.PLAIN_MESSAGE);
-//            jop.setMessage("Please wait...");
-//            JDialog dialog = jop.createDialog(null, "Message");
-//            dialog.setVisible(true);
-            
-            cmdToggleRowHeader();
-            
-//            dialog.dispose();
-            
-            //#debug
-            toDLog().pFlow("dialog diposed ",null,TablePanelAbstract.class,"actionPerformed",LVL_05_FINE,true);
-         }
-      }, "cb.rownumber");
+      panelHelperTable = new PanelHelperTable(psc, this);
    }
 
    protected void cmdClear() {
@@ -180,6 +167,7 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
          //do no update this if not initialized
          psc.setDefaultRenderers(getBenTable().getTable());
          setColumnRenderers();
+         setComparators(); // model.fireTableStructureChanged() in TableBentley
       }
       //TODO this is potentially very costly when many tables are active. so only update if visible
       //when no visible save guiUpdate for this componenent
@@ -190,13 +178,13 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       }
       //#debug
       toDLog().pFlow("end", this, TablePanelAbstract.class, "guiUpdate", LVL_04_FINER, true);
-     
+
    }
 
    private void initPanelNorth() {
       PanelPascal north = new PanelPascal(psc);
       north.setLayout(new FlowLayout(FlowLayout.LEFT));
-      north.add(cbRowNumbers); //by default first position
+      north.add(panelHelperTable); //by default first position
       subInitPanelNorth(north);
       this.add(north, BorderLayout.NORTH);
    }
@@ -214,7 +202,7 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       getBenTable().setDefSort(getDefSortColumnIndex());
       psc.setDefaultRenderers(getBenTable().getTable());
       setColumnRenderers();
-
+      setComparators();
       //the sub class decides what to put there
       initPanelNorth();
       //the sub class decides what to put there
@@ -254,13 +242,13 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       }
       //if table is empty we want to refresh it as it costs nothing to try again
       //and it might be the first time
-      if(getBenTable().getModel().getRowCount() == 0) {
+      if (getBenTable().getModel().getRowCount() == 0) {
          return true;
       }
-      
+
       //check if global manual refresh setting. it overrides everything
       boolean isManualRefresh = psc.getPascPrefs().getBoolean(ITechPrefsPascalSwing.PREF_GLOBAL_MANUAL_REFRESH, false);
-      if(isManualRefresh) {
+      if (isManualRefresh) {
          return false;
       }
 
@@ -345,6 +333,10 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       }
    }
 
+   public void setComparators() {
+
+   }
+
    public abstract void setColumnRenderers();
 
    protected void subDidRefreshTable() {
@@ -407,7 +399,6 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       //#debug
       toDLog().pFlow("", this, TablePanelAbstract.class, "tabLostFocus", ITechLvl.LVL_04_FINER, true);
 
-      
       if (workerTable != null) {
          //#debug
          toDLog().pFlow("workerTable is not null", workerTable, TablePanelAbstract.class, "tabLostFocus", ITechLvl.LVL_04_FINER, true);

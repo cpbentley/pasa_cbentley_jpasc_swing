@@ -390,7 +390,7 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
 
    public CmdKeyChangeName getCmdKeyChangeName() {
       if (cmdKeyChangeName == null) {
-         cmdKeyChangeName = new CmdKeyChangeName(this);
+         cmdKeyChangeName = new CmdKeyChangeName(psc);
       }
       return cmdKeyChangeName;
    }

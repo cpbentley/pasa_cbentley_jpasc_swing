@@ -146,7 +146,7 @@ public class WalletTotalAssets extends JPanel implements IMyGui, ICommandable, I
 
       this.setComponentPopupMenu(popupMenu);
 
-      psc.getEventBusPascal().addConsumer(this, PID_7_PRIVACY_CHANGES, EID_1_PRIVACY_CTX);
+      psc.getEventBusPascal().addConsumer(this, PID_7_PRIVACY_CHANGES, EID_7_PRIVACY_1_CTX);
    }
 
    /**

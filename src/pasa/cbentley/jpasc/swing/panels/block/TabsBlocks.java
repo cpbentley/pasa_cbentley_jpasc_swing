@@ -9,6 +9,7 @@ import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.core.TabsPascalSwing;
+import pasa.cbentley.jpasc.swing.panels.table.block.TablePanelBlockLast1000;
 import pasa.cbentley.jpasc.swing.panels.table.block.TablePanelBlockLast24h;
 import pasa.cbentley.jpasc.swing.panels.table.block.TablePanelBlockLast48h;
 import pasa.cbentley.jpasc.swing.panels.table.block.TablePanelBlockLastMonth;
@@ -39,6 +40,8 @@ public class TabsBlocks extends TabsPascalSwing implements IMyTab {
 
    private TablePanelBlockLastMonth tablePanelBlockLastMonth;
 
+   private TablePanelBlockLast1000 tablePanelBlockLast1000;
+
    public TabsBlocks(PascalSwingCtx psc, IRootTabPane root) {
       super(psc, "root_blocks");
       this.root = root;
@@ -66,13 +69,17 @@ public class TabsBlocks extends TabsPascalSwing implements IMyTab {
    public void initTabs() {
       tablePanelBlockLast24h = new TablePanelBlockLast24h(psc, root);
       tablePanelBlockLast48h = new TablePanelBlockLast48h(psc, root);
-      tablePanelBlockLastWeek = new TablePanelBlockLastWeek(psc, root);
-      tablePanelBlockLastMonth = new TablePanelBlockLastMonth(psc, root);
+      tablePanelBlockLast1000 = new TablePanelBlockLast1000(psc, root);
+      
+      //tablePanelBlockLastWeek = new TablePanelBlockLastWeek(psc, root);
+      //tablePanelBlockLastMonth = new TablePanelBlockLastMonth(psc, root);
 
       addMyTab(tablePanelBlockLast24h);
       addMyTab(tablePanelBlockLast48h);
-      addMyTab(tablePanelBlockLastWeek);
-      addMyTab(tablePanelBlockLastMonth);
+      addMyTab(tablePanelBlockLast1000);
+      
+      //addMyTab(tablePanelBlockLastWeek);
+      //addMyTab(tablePanelBlockLastMonth);
    }
 
    //#mdebug

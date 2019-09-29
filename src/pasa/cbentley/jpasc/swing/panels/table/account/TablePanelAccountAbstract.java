@@ -19,6 +19,7 @@ import pasa.cbentley.jpasc.swing.audio.PascalAudio;
 import pasa.cbentley.jpasc.swing.cellrenderers.CellRendereManager;
 import pasa.cbentley.jpasc.swing.cmds.CmdCopyKeyBase58;
 import pasa.cbentley.jpasc.swing.cmds.CmdCopyKeyEncoded;
+import pasa.cbentley.jpasc.swing.cmds.CmdKeyChangeName;
 import pasa.cbentley.jpasc.swing.cmds.ICommandableAccount;
 import pasa.cbentley.jpasc.swing.cmds.ICommandableKey;
 import pasa.cbentley.jpasc.swing.cmds.PascalCmdManager;
@@ -171,15 +172,10 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
     * 
     * otherwise
     */
-   public void cmdChangeKeyName() {
+   public void cmdChangeKeyName(CmdKeyChangeName cmd) {
       Account ac = this.getSelectedAccount();
       if (ac != null) {
-         String encodedPk = ac.getEncPubkey();
-         String name = JOptionPane.showInputDialog(psc.getFrameRoot(), "Local Name Database: What's the new name?");
-         //name is null if canceled
-         if (name != null) {
-            psc.getPCtx().getPkNameStore().setPkName(encodedPk, name);
-         }
+         cmd.executeWith(ac);
          //invalidate table model cache
          this.getTableModel().fireTableDataChanged();
          //request to show the tab for account details in the current ctx

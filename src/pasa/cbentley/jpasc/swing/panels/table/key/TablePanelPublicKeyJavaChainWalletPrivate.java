@@ -8,7 +8,7 @@ package pasa.cbentley.jpasc.swing.panels.table.key;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
-import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTablePublicKeyJavaChain;
+import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTablePublicKeyJavaAutoChain;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTablePublicKeyJavaAbstract;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTablePublicKeyJavaMyAssets;
 import pasa.cbentley.jpasc.swing.workers.table.key.WorkerTableKeyAbstract;

@@ -6,7 +6,9 @@
 package pasa.cbentley.jpasc.swing.workers.table.account;
 
 import pasa.cbentley.core.src4.logging.Dctx;
+import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.ListTaskAccountAbstract;
+import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.chain.ListTaskAccountPublicKeyJava;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.wallet.ListTaskAccountWalletPubKey;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableAccountAbstract;
@@ -17,9 +19,9 @@ import pasa.cbentley.swing.threads.IWorkerPanel;
  * @author Charles Bentley
  *
  */
-public class WorkerTableAccountWalletKey extends WorkerTableAccountAbstract {
+public class WorkerTableAccountJavaPublicKey extends WorkerTableAccountAbstract {
 
-   private String encPubKey;
+   private PublicKeyJava publicKeyJava;
 
    /**
     * Key cannot be null here
@@ -28,22 +30,15 @@ public class WorkerTableAccountWalletKey extends WorkerTableAccountAbstract {
     * @param tableModel
     * @param pk
     */
-   public WorkerTableAccountWalletKey(PascalSwingCtx psc, IWorkerPanel wp, ModelTableAccountAbstract tableModel) {
+   public WorkerTableAccountJavaPublicKey(PascalSwingCtx psc, IWorkerPanel wp, ModelTableAccountAbstract tableModel) {
       super(psc, wp, tableModel);
    }
 
    protected ListTaskAccountAbstract createTaskAccount() {
-      ListTaskAccountWalletPubKey task = new ListTaskAccountWalletPubKey(psc.getPCtx(), this, encPubKey);
+      ListTaskAccountPublicKeyJava task = new ListTaskAccountPublicKeyJava(psc.getPCtx(), this, publicKeyJava);
       return task;
    }
 
-   public String getEncPubKey() {
-      return encPubKey;
-   }
-
-   public void setEncPubKey(String encPubKey) {
-      this.encPubKey = encPubKey;
-   }
 
    //#mdebug
    public void toString(Dctx dc) {
@@ -60,6 +55,14 @@ public class WorkerTableAccountWalletKey extends WorkerTableAccountAbstract {
 
    private void toStringPrivate(Dctx dc) {
 
+   }
+
+   public PublicKeyJava getPublicKeyJava() {
+      return publicKeyJava;
+   }
+
+   public void setPublicKeyJava(PublicKeyJava publicKeyJava) {
+      this.publicKeyJava = publicKeyJava;
    }
 
    //#enddebug

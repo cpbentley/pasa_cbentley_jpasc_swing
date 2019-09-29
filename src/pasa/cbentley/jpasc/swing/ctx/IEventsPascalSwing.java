@@ -52,10 +52,12 @@ public interface IEventsPascalSwing extends IEventsPCore {
 
    public static final int EID_0_ANY                          = 0;
 
+   public static final int EID_7_PRIVACY_0_ANY                = 0;
+
    /**
     * When user decided to switch from private/public
     */
-   public static final int EID_1_PRIVACY_CTX                  = 1;
+   public static final int EID_7_PRIVACY_1_CTX                = 1;
 
    public static final int EID_7_ZZ_NUM                       = 2;
 

@@ -22,6 +22,8 @@ import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperRefresh;
 import pasa.cbentley.jpasc.swing.panels.table.abstrakt.TablePanelAbstract;
 import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountChainKey;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableOperationAbstract;
+import pasa.cbentley.jpasc.swing.utils.ComparatorOpType;
+import pasa.cbentley.jpasc.swing.utils.ComparatorOpTypeSub;
 import pasa.cbentley.jpasc.swing.widgets.PascalProgressBar;
 import pasa.cbentley.jpasc.swing.workers.table.operation.WorkerTableOperationAbstract;
 import pasa.cbentley.swing.threads.PanelSwingWorker;
@@ -173,6 +175,12 @@ public abstract class TablePanelOperationAbstract extends TablePanelAbstract<Ope
       super.panelSwingWorkerProcessed(worker, entryCount);
    }
 
+   public void setComparators() {
+      super.setComparators();
+      getBenTable().setComparator(getColumnIndexType(), new ComparatorOpType());
+      getBenTable().setComparator(getColumnIndexTypeSub(), new ComparatorOpTypeSub());
+   }
+   
    public void setColumnRenderers() {
       //then set specifics
       CellRendereManager crm = psc.getCellRendereManager();

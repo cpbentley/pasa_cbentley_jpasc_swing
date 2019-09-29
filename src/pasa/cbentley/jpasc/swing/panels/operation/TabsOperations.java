@@ -146,7 +146,7 @@ public class TabsOperations extends TabbedBentleyPanel implements IMyTab, Change
    public void showBlock(Block ac) {
       initCheck();
       tablePanelOperationByBlock.showBlock(ac);
-      setSelected(tablePanelOperationByBlock);
+      showTab(tablePanelOperationByBlock);
    }
 
    //#mdebug

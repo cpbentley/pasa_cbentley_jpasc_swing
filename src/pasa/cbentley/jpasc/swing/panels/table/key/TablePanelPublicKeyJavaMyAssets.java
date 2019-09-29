@@ -11,6 +11,7 @@ import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.swing.cmds.CmdCopyKeyBase58;
 import pasa.cbentley.jpasc.swing.cmds.CmdCopyKeyEncoded;
+import pasa.cbentley.jpasc.swing.cmds.CmdKeyChangeName;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperKeyCreator;
@@ -41,7 +42,7 @@ public class TablePanelPublicKeyJavaMyAssets extends TablePanelPublicKeyJavaAbst
       super(psc, KEY, root);
    }
 
-   public void cmdChangeKeyName() {
+   public void cmdChangeKeyName(CmdKeyChangeName cmd) {
       psc.getLog().consoleLogDateRed("Change account name in reference wallet.");
    }
 

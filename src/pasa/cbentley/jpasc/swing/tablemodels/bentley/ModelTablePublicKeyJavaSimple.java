@@ -38,9 +38,11 @@ public class ModelTablePublicKeyJavaSimple extends ModelTablePublicKeyJavaAbstra
       columnModel.setString(INDEX_BASE58, "base58value");
 
    }
+
    protected void computeStats(PublicKeyJava a, int row) {
-      
+
    }
+
    public int getColumnIndexKeyName() {
       return INDEX_NAME;
    }
@@ -48,7 +50,15 @@ public class ModelTablePublicKeyJavaSimple extends ModelTablePublicKeyJavaAbstra
    public int getColumnIndexNumAccount() {
       return -1;
    }
-   
+
+   public int getNumKeys() {
+      return 0;
+   }
+
+   public int getNumAccounts() {
+      return 0;
+   }
+
    public Object getValueAt(int row, int col) {
       PublicKeyJava a = getRow(row);
       if (a == null) {
