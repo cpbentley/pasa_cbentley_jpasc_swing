@@ -5,9 +5,9 @@
  */
 package pasa.cbentley.jpasc.swing.interfaces;
 
-import pasa.cbentley.core.src4.interfaces.ITech;
+import pasa.cbentley.core.src4.interfaces.IPrefs;
 
-public interface ITechPrefsPascalSwing extends ITech {
+public interface IPrefsPascalSwing extends IPrefs {
 
    /**
     * Use this and concat the id
