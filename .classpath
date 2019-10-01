@@ -10,11 +10,11 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/pasa_cbentley_byteobjects_src4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/pasa_cbentley_swing_gif"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/pasa_cbentley_swing_images"/>
-	<classpathentry kind="lib" path="libs/timingframework-classic-1.1.jar"/>
+	<classpathentry kind="lib" path="libs/timingframework-classic-1.1.jar" sourcepath="libs/timingframework-classic-1.1-src.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/pasa_cbentley_core_src8"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/pasa_cbentley_jpasc_pcore"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/pasa_dbolet_jpascalcoin_v3"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/pasa_jtattoo"/>
-	<classpathentry kind="lib" path="libs/jorbis-lgpl-0.0.17.jar"/>
+	<classpathentry kind="lib" path="libs/jorbis-lgpl-0.0.17.jar" sourcepath="libs/jorbis-lgpl-0.0.17-src.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
