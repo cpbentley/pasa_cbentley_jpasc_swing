@@ -9,7 +9,6 @@ import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.ListTaskAccountAbstract;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.chain.ListTaskAccountPublicKeyJava;
-import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.wallet.ListTaskAccountWalletPubKey;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableAccountAbstract;
 import pasa.cbentley.swing.threads.IWorkerPanel;
@@ -39,6 +38,13 @@ public class WorkerTableAccountJavaPublicKey extends WorkerTableAccountAbstract 
       return task;
    }
 
+   public PublicKeyJava getPublicKeyJava() {
+      return publicKeyJava;
+   }
+
+   public void setPublicKeyJava(PublicKeyJava publicKeyJava) {
+      this.publicKeyJava = publicKeyJava;
+   }
 
    //#mdebug
    public void toString(Dctx dc) {
@@ -55,14 +61,6 @@ public class WorkerTableAccountJavaPublicKey extends WorkerTableAccountAbstract 
 
    private void toStringPrivate(Dctx dc) {
 
-   }
-
-   public PublicKeyJava getPublicKeyJava() {
-      return publicKeyJava;
-   }
-
-   public void setPublicKeyJava(PublicKeyJava publicKeyJava) {
-      this.publicKeyJava = publicKeyJava;
    }
 
    //#enddebug
