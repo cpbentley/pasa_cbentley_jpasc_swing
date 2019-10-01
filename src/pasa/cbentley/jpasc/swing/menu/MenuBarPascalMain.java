@@ -41,7 +41,7 @@ import pasa.cbentley.core.src4.interfaces.IPrefs;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
-import pasa.cbentley.jpasc.swing.interfaces.ITechPrefsPascalSwing;
+import pasa.cbentley.jpasc.swing.interfaces.IPrefsPascalSwing;
 import pasa.cbentley.jpasc.swing.interfaces.ITechUserMode;
 import pasa.cbentley.jpasc.swing.interfaces.IWizardNoob;
 import pasa.cbentley.swing.IconFamily;
@@ -254,23 +254,23 @@ public class MenuBarPascalMain extends MenuBarPascalAbstract implements ActionLi
       }
       //Settings
       else if (src == jmiSoundNone) {
-         psc.getCmds().cmdToggleSounds(ITechPrefsPascalSwing.PREF_PLAY_SOUND_0_NONE);
+         psc.getCmds().cmdToggleSounds(IPrefsPascalSwing.PREF_PLAY_SOUND_0_NONE);
       } else if (src == jmiSoundClassic) {
-         psc.getCmds().cmdToggleSounds(ITechPrefsPascalSwing.PREF_PLAY_SOUND_1_CLASSIC);
+         psc.getCmds().cmdToggleSounds(IPrefsPascalSwing.PREF_PLAY_SOUND_1_CLASSIC);
       } else if (src == jmiIconClassic) {
-         psc.applyIconSettings(ITechPrefsPascalSwing.PREF_TAB_ICONS_1_CLASSIC);
+         psc.applyIconSettings(IPrefsPascalSwing.PREF_TAB_ICONS_1_CLASSIC);
          psc.guiUpdate();
       } else if (src == jmiIconGems) {
-         psc.applyIconSettings(ITechPrefsPascalSwing.PREF_TAB_ICONS_2_GEMS);
+         psc.applyIconSettings(IPrefsPascalSwing.PREF_TAB_ICONS_2_GEMS);
          psc.guiUpdate();
       } else if (src == jmiIconNone) {
-         psc.applyIconSettings(ITechPrefsPascalSwing.PREF_TAB_ICONS_0_NONE);
+         psc.applyIconSettings(IPrefsPascalSwing.PREF_TAB_ICONS_0_NONE);
          psc.guiUpdate();
       } else if (src == jmiEffectsNone) {
-         psc.getCmds().cmdToggleCellEffects(ITechPrefsPascalSwing.PREF_EFFECTS_0_NONE);
+         psc.getCmds().cmdToggleCellEffects(IPrefsPascalSwing.PREF_EFFECTS_0_NONE);
          psc.guiUpdate();
       } else if (src == jmiEffectsOriginal) {
-         psc.getCmds().cmdToggleCellEffects(ITechPrefsPascalSwing.PREF_EFFECTS_1_ORIGINAL);
+         psc.getCmds().cmdToggleCellEffects(IPrefsPascalSwing.PREF_EFFECTS_1_ORIGINAL);
          psc.guiUpdate();
       } else if (src == jmiSoundVolume) {
          psc.getCmds().cmdChangeVolume();
@@ -331,7 +331,7 @@ public class MenuBarPascalMain extends MenuBarPascalAbstract implements ActionLi
    }
 
    public void applyMode(IPrefs prefs) {
-      int modeID = prefs.getInt(ITechPrefsPascalSwing.PREF_MODE, ITechUserMode.MODE_1_ROOKIE);
+      int modeID = prefs.getInt(IPrefsPascalSwing.PREF_MODE, ITechUserMode.MODE_1_ROOKIE);
       switch (modeID) {
          case ITechUserMode.MODE_1_ROOKIE:
             modeRookie.setSelected(true);
@@ -354,30 +354,30 @@ public class MenuBarPascalMain extends MenuBarPascalAbstract implements ActionLi
     * @param prefs
     */
    public void applyPref(IPrefs prefs) {
-      int soundID = prefs.getInt(ITechPrefsPascalSwing.PREF_PLAY_SOUND, 0);
-      if (soundID == ITechPrefsPascalSwing.PREF_PLAY_SOUND_0_NONE) {
+      int soundID = prefs.getInt(IPrefsPascalSwing.PREF_PLAY_SOUND, 0);
+      if (soundID == IPrefsPascalSwing.PREF_PLAY_SOUND_0_NONE) {
          jmiSoundNone.setSelected(true);
-      } else if (soundID == ITechPrefsPascalSwing.PREF_PLAY_SOUND_1_CLASSIC) {
+      } else if (soundID == IPrefsPascalSwing.PREF_PLAY_SOUND_1_CLASSIC) {
          jmiSoundClassic.setSelected(true);
       }
 
-      int iconsID = prefs.getInt(ITechPrefsPascalSwing.PREF_TAB_ICONS, 0);
-      if (iconsID == ITechPrefsPascalSwing.PREF_TAB_ICONS_0_NONE) {
+      int iconsID = prefs.getInt(IPrefsPascalSwing.PREF_TAB_ICONS, 0);
+      if (iconsID == IPrefsPascalSwing.PREF_TAB_ICONS_0_NONE) {
          jmiIconNone.setSelected(true);
-      } else if (iconsID == ITechPrefsPascalSwing.PREF_TAB_ICONS_1_CLASSIC) {
+      } else if (iconsID == IPrefsPascalSwing.PREF_TAB_ICONS_1_CLASSIC) {
          jmiIconClassic.setSelected(true);
-      } else if (iconsID == ITechPrefsPascalSwing.PREF_TAB_ICONS_2_GEMS) {
+      } else if (iconsID == IPrefsPascalSwing.PREF_TAB_ICONS_2_GEMS) {
          jmiIconGems.setSelected(true);
       }
 
-      int rowEffectsID = prefs.getInt(ITechPrefsPascalSwing.PREF_EFFECTS, 0);
-      if (rowEffectsID == ITechPrefsPascalSwing.PREF_EFFECTS_0_NONE) {
+      int rowEffectsID = prefs.getInt(IPrefsPascalSwing.PREF_EFFECTS, 0);
+      if (rowEffectsID == IPrefsPascalSwing.PREF_EFFECTS_0_NONE) {
          jmiEffectsNone.setSelected(true);
-      } else if (rowEffectsID == ITechPrefsPascalSwing.PREF_EFFECTS_1_ORIGINAL) {
+      } else if (rowEffectsID == IPrefsPascalSwing.PREF_EFFECTS_1_ORIGINAL) {
          jmiEffectsOriginal.setSelected(true);
       }
 
-      jmiDebugMissing.setSelected(prefs.getBoolean(ITechPrefsPascalSwing.PREF_DEBUG_TRANSLATION, true));
+      jmiDebugMissing.setSelected(prefs.getBoolean(IPrefsPascalSwing.PREF_DEBUG_TRANSLATION, true));
 
       applyMode(prefs);
 
