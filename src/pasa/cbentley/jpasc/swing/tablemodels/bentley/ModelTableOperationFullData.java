@@ -94,6 +94,9 @@ public class ModelTableOperationFullData extends ModelTableOperationAbstract {
 
    public Object getValueAt(int row, int col) {
       Operation op = getRow(row);
+      if (op == null) {
+         return null;
+      }
       switch (col) {
          case INDEX_TIME:
             long time = op.getTime();
@@ -109,26 +112,35 @@ public class ModelTableOperationFullData extends ModelTableOperationAbstract {
          case INDEX_ACCOUNT:
             return op.getAccount();
          case INDEX_CKS:
-            return psc.getPCtx().calculateChecksum(op.getAccount());
+            int intValue = op.getAccount();
+            return psc.getPCtx().calculateChecksum(intValue);
          case INDEX_TYPE:
             OperationType ot = op.getType();
             return ot;
          //return PascalUtils.getOperationTypeUserString(ot);
          case INDEX_SUBTYPE:
             OperationSubType sub = op.getSubType();
-            int value = sub.getValue();
             return sub;
          case INDEX_OP_DESCR:
             return op.getTypeDescriptor();
          case INDEX_AMOUNT:
-            return 0 - op.getAmount();
+            if (op.getAmount() != null) {
+               return 0d - op.getAmount();
+            }
+            return 0d;
          case INDEX_FEE:
             //option as positive instead of negative
-            return 0 - op.getFee();
+            if (op.getFee() != null) {
+               return 0d - op.getFee();
+            }
+            return 0d;
          case INDEX_BALANCE:
             return op.getBalance();
          case INDEX_PAYLOAD:
             String hexString = op.getPayLoad();
+            if (hexString == null) {
+               return null;
+            }
             byte[] bytes = psc.getPCtx().getPU().hexStringToByteArray(hexString);
             try {
                String str = new String(bytes, "UTF-8");
