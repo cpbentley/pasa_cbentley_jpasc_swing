@@ -29,7 +29,7 @@ import pasa.cbentley.jpasc.pcore.utils.AddressValidationResult;
 import pasa.cbentley.jpasc.pcore.utils.PascalCoinDouble;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
-import pasa.cbentley.jpasc.swing.interfaces.ITechPrefsPascalSwing;
+import pasa.cbentley.jpasc.swing.interfaces.IPrefsPascalSwing;
 import pasa.cbentley.jpasc.swing.panels.core.PanelTabAbstractPascal;
 import pasa.cbentley.jpasc.swing.panels.table.operation.TablePanelOperationByAccount;
 import pasa.cbentley.swing.IconFamily;
@@ -269,7 +269,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
    }
 
    private String getAccountPrefKey() {
-      return ITechPrefsPascalSwing.UI_EXPLORER_ACCOUNT + getTabInternalID();
+      return IPrefsPascalSwing.UI_EXPLORER_ACCOUNT + getTabInternalID();
    }
 
    public void guiUpdate() {
@@ -591,7 +591,10 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
             }
          }
       });
-      accountOperations.tabGainFocus();
+      boolean isManualRefresh = psc.getPascPrefs().getBoolean(IPrefsPascalSwing.PREF_GLOBAL_MANUAL_REFRESH, false);
+      if (!isManualRefresh) {
+         accountOperations.tabGainFocus();
+      }
    }
 
    public void tabLostFocus() {

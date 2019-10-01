@@ -153,12 +153,14 @@ public class PasswordDialog extends JOptionPane implements ComponentListener {
 
    private boolean doOK() {
       char[] ar = jpassword.getPassword();
-      boolean b = psc.unlock(ar);
+      boolean isUnlocked = psc.unlock(ar);
+      //clear password asap from memory
       for (int i = 0; i < ar.length; i++) {
          ar[i] = ' ';
       }
-      jpassword.setText(""); //clear password asap
-      if (b) {
+      jpassword.setText(""); //clear password asap from GUI
+      psc.getUCtx().getMem().softGC(); //garbage collect any objects
+      if (isUnlocked) {
          //check if 
          
          if (!radioLockNever.isSelected()) {
@@ -175,7 +177,7 @@ public class PasswordDialog extends JOptionPane implements ComponentListener {
             timer.schedule(new AutoLock(psc), times * DateUtils.MILLIS_IN_A_MINUTE);
          }
       }
-      return b;
+      return isUnlocked;
    }
 
 }

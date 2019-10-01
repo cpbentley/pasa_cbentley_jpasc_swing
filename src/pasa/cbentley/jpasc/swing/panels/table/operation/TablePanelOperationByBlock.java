@@ -20,7 +20,7 @@ import com.github.davidbolet.jpascalcoin.api.model.Block;
 import pasa.cbentley.jpasc.pcore.filter.predicates.BlockPredicate;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
-import pasa.cbentley.jpasc.swing.interfaces.ITechPrefsPascalSwing;
+import pasa.cbentley.jpasc.swing.interfaces.IPrefsPascalSwing;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableOperationAbstract;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableOperationFullData;
 import pasa.cbentley.jpasc.swing.workers.WorkerBlockFinder;
@@ -125,10 +125,10 @@ public class TablePanelOperationByBlock extends TablePanelOperationAbstract impl
       if (block == null) {
          //this should never happens.. check must be made on top
          psc.getLog().consoleLogError("Block field '" + textBlock.getText() + "'. It is not a valid block number. Going with a default");
-         int blockInt = psc.getSwingCtx().getPrefs().getInt(ITechPrefsPascalSwing.UI_BLOCK_NUMBER, 0);
+         int blockInt = psc.getSwingCtx().getPrefs().getInt(IPrefsPascalSwing.UI_BLOCK_NUMBER, 0);
          block = new Integer(blockInt);
       }
-      psc.getSwingCtx().getPrefs().putInt(ITechPrefsPascalSwing.UI_BLOCK_NUMBER, block.intValue());
+      psc.getSwingCtx().getPrefs().putInt(IPrefsPascalSwing.UI_BLOCK_NUMBER, block.intValue());
       WorkerTableOperationByBlock worker = new WorkerTableOperationByBlock(psc, getTableModel(), block, this);
       return worker;
    }
@@ -146,7 +146,7 @@ public class TablePanelOperationByBlock extends TablePanelOperationAbstract impl
       labBlock = new JLabel("Block");
       textBlock = new JTextField(10);
 
-      int block = psc.getSwingCtx().getPrefs().getInt(ITechPrefsPascalSwing.UI_BLOCK_NUMBER, 0);
+      int block = psc.getSwingCtx().getPrefs().getInt(IPrefsPascalSwing.UI_BLOCK_NUMBER, 0);
       textBlock.setText(String.valueOf(block));
 
       butRefresh = new BButton(sc, this, "but.refresh");

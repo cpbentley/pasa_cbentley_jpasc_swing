@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
-import pasa.cbentley.jpasc.swing.interfaces.ITechPrefsPascalSwing;
+import pasa.cbentley.jpasc.swing.interfaces.IPrefsPascalSwing;
 import pasa.cbentley.swing.IconFamily;
 import pasa.cbentley.swing.imytab.IMyTab;
 
@@ -47,7 +47,7 @@ public class PanelWhaleWatchAmountPoloniex extends PanelWhaleWatchPasaAmountSent
       }
       Double num = Double.valueOf(val);
       //save to preferences
-      getSwingCtx().getPrefs().putDouble(ITechPrefsPascalSwing.UI_WHALE_PRICE, num.doubleValue());
+      getSwingCtx().getPrefs().putDouble(IPrefsPascalSwing.UI_WHALE_PRICE, num.doubleValue());
       return num;
    }
 
@@ -62,7 +62,7 @@ public class PanelWhaleWatchAmountPoloniex extends PanelWhaleWatchPasaAmountSent
       labPriceWhale = new JLabel("Price Minimum");
       textPriceWhale = new JTextField(10);
 
-      double d = getSwingCtx().getPrefs().getDouble(ITechPrefsPascalSwing.UI_WHALE_PRICE, 100.0d);
+      double d = getSwingCtx().getPrefs().getDouble(IPrefsPascalSwing.UI_WHALE_PRICE, 100.0d);
       textPriceWhale.setText(String.valueOf(d));
 
       north.add(labPriceWhale);

@@ -20,7 +20,7 @@ import com.github.davidbolet.jpascalcoin.api.model.Operation;
 
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
-import pasa.cbentley.jpasc.swing.interfaces.ITechPrefsPascalSwing;
+import pasa.cbentley.jpasc.swing.interfaces.IPrefsPascalSwing;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableOperationAbstract;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableOperationFullData;
 import pasa.cbentley.jpasc.swing.workers.table.operation.WorkerTableOperationAbstract;
@@ -84,10 +84,10 @@ public class TablePanelOperationByAccount extends TablePanelOperationAbstract im
       Integer account = psc.getIntegerFromTextField(textAccount);
       if (account == null) {
          psc.getLog().consoleLogError("Account is invalid. Using previous account instead");
-         Integer oldAccount = psc.getSwingCtx().getPrefs().getInt(ITechPrefsPascalSwing.UI_ACCOUNT_NUMBER, 1000);
+         Integer oldAccount = psc.getSwingCtx().getPrefs().getInt(IPrefsPascalSwing.UI_ACCOUNT_NUMBER, 1000);
          account = oldAccount;
       }
-      psc.getSwingCtx().getPrefs().putInt(ITechPrefsPascalSwing.UI_ACCOUNT_NUMBER, account.intValue());
+      psc.getSwingCtx().getPrefs().putInt(IPrefsPascalSwing.UI_ACCOUNT_NUMBER, account.intValue());
       return new WorkerTableOperationByAccounts(psc, getTableModel(), this, account);
    }
 
@@ -106,7 +106,7 @@ public class TablePanelOperationByAccount extends TablePanelOperationAbstract im
 
          labAccount = new JLabel("Account");
 
-         int block = psc.getSwingCtx().getPrefs().getInt(ITechPrefsPascalSwing.UI_ACCOUNT_NUMBER, 0);
+         int block = psc.getSwingCtx().getPrefs().getInt(IPrefsPascalSwing.UI_ACCOUNT_NUMBER, 0);
          textAccount.setText(String.valueOf(block));
 
          butRefresh = new JButton("Refresh");

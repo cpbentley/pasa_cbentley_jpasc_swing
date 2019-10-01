@@ -88,7 +88,7 @@ import pasa.cbentley.jpasc.swing.cmds.PascalPageManager;
 import pasa.cbentley.jpasc.swing.interfaces.IHelpManager;
 import pasa.cbentley.jpasc.swing.interfaces.ILogin;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
-import pasa.cbentley.jpasc.swing.interfaces.ITechPrefsPascalSwing;
+import pasa.cbentley.jpasc.swing.interfaces.IPrefsPascalSwing;
 import pasa.cbentley.jpasc.swing.interfaces.ITechUserMode;
 import pasa.cbentley.jpasc.swing.interfaces.IWizardNoob;
 import pasa.cbentley.jpasc.swing.menu.MenuBarPascalAbstract;
@@ -278,6 +278,11 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       pascalEventsTopology[PID_6_KEY_LOCAL_OPERATION] = EID_6_ZZ_NUM;
       pascalEventsTopology[PID_7_PRIVACY_CHANGES] = EID_7_ZZ_NUM;
       eventBusPascal = new EventBusArray(getUCtx(), this, pascalEventsTopology);
+      
+      eventBusPascal.setExecutor(sc.getSwingExecutor());
+      //same for our core pascal context who can't set itself since it doesn not its GUI context
+      pc.getEventBusPCore().setExecutor(sc.getSwingExecutor());
+      
       //setup the linkage for handling block events
       swingBlockEvent = new SwingBlockEventAdapter(this);
       pc.getRPCConnection().addBlockListener(swingBlockEvent);
@@ -329,11 +334,11 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     * @param themeID
     */
    public void applyIconSettings(int themeID) {
-      if (themeID == ITechPrefsPascalSwing.PREF_TAB_ICONS_0_NONE) {
+      if (themeID == IPrefsPascalSwing.PREF_TAB_ICONS_0_NONE) {
          sc.setTabIcons(null);
       } else {
          String title = "classic";
-         if (themeID == ITechPrefsPascalSwing.PREF_TAB_ICONS_2_GEMS) {
+         if (themeID == IPrefsPascalSwing.PREF_TAB_ICONS_2_GEMS) {
             title = "gems";
          }
          String[] suffix = new String[6];
@@ -349,21 +354,21 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    }
 
    public void applyPrefs(IPrefs prefs) {
-      int soundMode = prefs.getInt(ITechPrefsPascalSwing.PREF_PLAY_SOUND, ITechPrefsPascalSwing.PREF_PLAY_SOUND_1_CLASSIC);
-      if (soundMode != ITechPrefsPascalSwing.PREF_PLAY_SOUND_0_NONE) {
+      int soundMode = prefs.getInt(IPrefsPascalSwing.PREF_PLAY_SOUND, IPrefsPascalSwing.PREF_PLAY_SOUND_1_CLASSIC);
+      if (soundMode != IPrefsPascalSwing.PREF_PLAY_SOUND_0_NONE) {
          getAudio().setEnableAudio(true);
       } else {
          getAudio().setEnableAudio(false);
       }
 
-      int tabIconTheme = prefs.getInt(ITechPrefsPascalSwing.PREF_TAB_ICONS, ITechPrefsPascalSwing.PREF_TAB_ICONS_1_CLASSIC);
+      int tabIconTheme = prefs.getInt(IPrefsPascalSwing.PREF_TAB_ICONS, IPrefsPascalSwing.PREF_TAB_ICONS_1_CLASSIC);
       applyIconSettings(tabIconTheme);
 
-      int themeCellEffect = prefs.getInt(ITechPrefsPascalSwing.PREFS_CELL_EFFECT, 1);
+      int themeCellEffect = prefs.getInt(IPrefsPascalSwing.PREFS_CELL_EFFECT, 1);
       this.themeCellEffect = themeCellEffect;
 
       //saved to prefs when changed
-      this.isPrivateCtx = prefs.getBoolean(ITechPrefsPascalSwing.PREFS_PRIVATE_CTX, true);
+      this.isPrivateCtx = prefs.getBoolean(IPrefsPascalSwing.PREFS_PRIVATE_CTX, true);
    }
 
    /**
@@ -459,7 +464,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
             pref += data[i];
             pref += ';';
          }
-         getUIPref().put(ITechPrefsPascalSwing.PREF_PAGE_ROOT, pref);
+         getUIPref().put(IPrefsPascalSwing.PREF_PAGE_ROOT, pref);
       }
 
       pc.exit();
@@ -1132,7 +1137,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    }
 
    public boolean isIgnoreCellEffects() {
-      return themeCellEffect == ITechPrefsPascalSwing.PREF_EFFECTS_0_NONE;
+      return themeCellEffect == IPrefsPascalSwing.PREF_EFFECTS_0_NONE;
    }
 
    public boolean isModeAboveNormal() {
@@ -1355,7 +1360,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    public void setMode(int mode) {
       currentMode = mode;
-      getPascPrefs().putInt(ITechPrefsPascalSwing.PREF_MODE, mode);
+      getPascPrefs().putInt(IPrefsPascalSwing.PREF_MODE, mode);
 
       if (currentMode == ITechUserMode.MODE_1_ROOKIE) {
          getLog().consoleLog("Mode set to Rookie");
@@ -1569,6 +1574,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    //#enddebug
 
    public boolean unlock(char[] ar) {
+      //string be will cleared
       boolean b = pc.getRPCConnection().unlock(new String(ar));
       if (b) {
          getLog().consoleLogGreen("Wallet is unlocked");

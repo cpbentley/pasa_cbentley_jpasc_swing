@@ -5,6 +5,8 @@
  */
 package pasa.cbentley.jpasc.swing.cmds;
 
-public interface ICommandableOperation {
+import pasa.cbentley.core.src4.interfaces.ICommandable;
+
+public interface ICommandableOperation extends ICommandable {
 
 }

@@ -32,7 +32,12 @@ import pasa.cbentley.swing.widgets.b.BPopupMenu;
  */
 public class TablePanelAccountPublicKeyJava extends TablePanelAccountAbstract implements IMyTab {
 
-   public static final String KEY = "list_account_pkjava";
+   /**
+    * 
+    */
+   private static final long  serialVersionUID = -2019545956569117458L;
+
+   public static final String KEY              = "list_account_pkjava";
 
    private PublicKeyJava      pk;
 
@@ -45,27 +50,31 @@ public class TablePanelAccountPublicKeyJava extends TablePanelAccountAbstract im
       this.pk = pk;
       //check if key is wallet key
       boolean isWalletKey = psc.getPCtx().getKeyNameProvider().getPkNameStorePrivate().hasWalletKey(pk.getEncPubKey());
-      if(isWalletKey) {
+      if (isWalletKey) {
          pk.setWalletKey(true);
       }
       //
    }
 
    protected WorkerTableAccountAbstract createWorker() {
-      if(pk.isWalletKey()) {
+      if (pk == null) {
+         pk = new PublicKeyJava(psc.getPCtx());
+         pk.setEncPubKey("emptykey");
+      }
+      if (pk.isWalletKey()) {
          WorkerTableAccountWalletKey worker = new WorkerTableAccountWalletKey(psc, this, getTableModel());
          //make sure the pubkey has been fetched
          String encPubKey = pk.getEncPubKey();
-         if(encPubKey == null) {
+         if (encPubKey == null) {
             String base58 = pk.getBase58PubKey();
-            if(base58 == null) {
+            if (base58 == null) {
                throw new IllegalArgumentException("Key without data");
             }
          }
          worker.setEncPubKey(pk.getEncPubKey());
          return worker;
       } else {
-         WorkerTableAccountJavaPublicKey worker = new WorkerTableAccountJavaPublicKey(psc,this,getTableModel());
+         WorkerTableAccountJavaPublicKey worker = new WorkerTableAccountJavaPublicKey(psc, this, getTableModel());
          worker.setPublicKeyJava(pk);
          return worker;
       }

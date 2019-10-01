@@ -66,7 +66,6 @@ public abstract class TablePanelPublicKeyJavaChainAbstract extends TablePanelPub
          TablePanelAccountWalletName tab = new TablePanelAccountWalletName(psc, root);
          tab.setPublicKey(pk);
          psc.showInNewFrameRelToFrameRoot(tab);
-
       }
    }
 

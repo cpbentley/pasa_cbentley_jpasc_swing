@@ -128,6 +128,7 @@ public class WalletTotalAssets extends JPanel implements IMyGui, ICommandable, I
       psc.getEventBusPascal().addConsumer(this, PID_2_BLOCK, EID_2_BLOCK_1_NEW_BLOCK);
       psc.getEventBusPascal().addConsumer(this, PID_3_USER_OPERATION, EID_3_USER_OPERATION_0_ANY);
       psc.getEventBusPascal().addConsumer(this, PID_5_CONNECTIONS, EID_5_CONNECTIONS_1_CONNECTED);
+      psc.getEventBusPascal().addConsumer(this, PID_5_CONNECTIONS, EID_5_CONNECTIONS_2_DISCONNECTED);
 
       this.addMouseListener(this);
 

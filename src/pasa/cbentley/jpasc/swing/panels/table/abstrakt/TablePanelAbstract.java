@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.jpasc.swing.cmds.ICmdIDs;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
-import pasa.cbentley.jpasc.swing.interfaces.ITechPrefsPascalSwing;
+import pasa.cbentley.jpasc.swing.interfaces.IPrefsPascalSwing;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperLoadingStat;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperRefresh;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperTable;
@@ -247,7 +247,7 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       }
 
       //check if global manual refresh setting. it overrides everything
-      boolean isManualRefresh = psc.getPascPrefs().getBoolean(ITechPrefsPascalSwing.PREF_GLOBAL_MANUAL_REFRESH, false);
+      boolean isManualRefresh = psc.getPascPrefs().getBoolean(IPrefsPascalSwing.PREF_GLOBAL_MANUAL_REFRESH, false);
       if (isManualRefresh) {
          return false;
       }

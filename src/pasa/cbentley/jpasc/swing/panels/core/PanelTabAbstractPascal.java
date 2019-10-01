@@ -7,10 +7,11 @@ package pasa.cbentley.jpasc.swing.panels.core;
 
 import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.logging.Dctx;
+import pasa.cbentley.jpasc.swing.ctx.IEventsPascalSwing;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.swing.imytab.AbstractMyTab;
 
-public abstract class PanelTabAbstractPascal extends AbstractMyTab {
+public abstract class PanelTabAbstractPascal extends AbstractMyTab implements IEventsPascalSwing {
 
    /**
     * 

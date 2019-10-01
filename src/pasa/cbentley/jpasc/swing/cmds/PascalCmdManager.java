@@ -28,7 +28,7 @@ import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.jpasc.swing.audio.PascalAudio;
 import pasa.cbentley.jpasc.swing.audio.SoundPlay;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
-import pasa.cbentley.jpasc.swing.interfaces.ITechPrefsPascalSwing;
+import pasa.cbentley.jpasc.swing.interfaces.IPrefsPascalSwing;
 import pasa.cbentley.jpasc.swing.widgets.HelpDialog;
 import pasa.cbentley.swing.cmd.CmdSwingAbstract;
 import pasa.cbentley.swing.ctx.SwingCtx;
@@ -58,6 +58,16 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
 
    private CmdShowBlockOperations          cmdBlockShowOperationsWin;
 
+   private CmdConnectConnect     cmdConnectConnect;
+
+   private CmdConnectDisconnect  cmdConnectDisconnect;
+
+   private CmdConnectTestNetwork cmdConnectTestNetwork;
+
+   private CmdCopyKeyBase58                cmdCopyKeyBase58;
+
+   private CmdCopyKeyEncoded               cmdCopyKeyEncoded;
+
    private CmdKeyChangeName                cmdKeyChangeName;
 
    private CmdShowAccountInInspector       cmdShowAccountInInspectorTab;
@@ -76,6 +86,8 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
 
    private CmdShowKeyAccounts              cmdShowKeyAccountsWin;
 
+   private CmdTogglePrivacyCtx             cmdTogglePrivacyCtx;
+
    private int                             currentMode;
 
    private HelpDialog                      frameHelpDialog;
@@ -83,12 +95,6 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
    private boolean                         isPlaySounds;
 
    private final PascalSwingCtx            psc;
-
-   private CmdTogglePrivacyCtx             cmdTogglePrivacyCtx;
-
-   private CmdCopyKeyBase58                cmdCopyKeyBase58;
-
-   private CmdCopyKeyEncoded               cmdCopyKeyEncoded;
 
    public PascalCmdManager(PascalSwingCtx psc) {
       this.psc = psc;
@@ -104,10 +110,6 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
          toDLog().pTest("Unknown Class " + o, this, PascalCmdManager.class, "callBack", LVL_05_FINE, true);
          System.exit(0);
       }
-   }
-
-   public SwingCtx getSwingCtx() {
-      return psc.getSwingCtx();
    }
 
    public void cmdChangeLanguage(String lang, String country) {
@@ -138,10 +140,12 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
    public void cmdExit() {
 
       //save pref
+      //save active frame prefs
+      psc.getSwingCtx().cmdExit();
 
       //for each frame, save history
       //TODO later
-      psc.getUIPref().putInt(ITechPrefsPascalSwing.PREF_FRAME_NUM, 0);
+      psc.getUIPref().putInt(IPrefsPascalSwing.PREF_FRAME_NUM, 0);
       //store preference for all running
 
       psc.cmdExit();
@@ -273,9 +277,9 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
    }
 
    public void cmdToggleCellEffects(int effectID) {
-      psc.getUIPref().putInt(ITechPrefsPascalSwing.PREF_EFFECTS, effectID);
+      psc.getUIPref().putInt(IPrefsPascalSwing.PREF_EFFECTS, effectID);
       psc.setCellEffect(effectID);
-      if (effectID == ITechPrefsPascalSwing.PREF_EFFECTS_0_NONE) {
+      if (effectID == IPrefsPascalSwing.PREF_EFFECTS_0_NONE) {
          psc.getLog().consoleLog("Table cells effects disabled");
       } else {
          psc.getLog().consoleLog("Table cells effects enabled");
@@ -292,8 +296,8 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
     * @param value
     */
    public void cmdToggleSounds(int value) {
-      psc.getUIPref().putInt(ITechPrefsPascalSwing.PREF_PLAY_SOUND, value);
-      boolean isPlaySounds = value != ITechPrefsPascalSwing.PREF_PLAY_SOUND_0_NONE;
+      psc.getUIPref().putInt(IPrefsPascalSwing.PREF_PLAY_SOUND, value);
+      boolean isPlaySounds = value != IPrefsPascalSwing.PREF_PLAY_SOUND_0_NONE;
       psc.getAudio().setEnableAudio(isPlaySounds);
       if (isPlaySounds) {
          psc.getLog().consoleLog("Audio enabled");
@@ -303,10 +307,10 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
    }
 
    public void cmdToggleTabIcons(int value) {
-      psc.getUIPref().putInt(ITechPrefsPascalSwing.PREF_TAB_ICONS, value);
+      psc.getUIPref().putInt(IPrefsPascalSwing.PREF_TAB_ICONS, value);
       psc.applyIconSettings(value);
       psc.getSwingCtx().guiUpdate();
-      boolean isIconsShown = value != ITechPrefsPascalSwing.PREF_TAB_ICONS_0_NONE;
+      boolean isIconsShown = value != IPrefsPascalSwing.PREF_TAB_ICONS_0_NONE;
       if (isIconsShown) {
          psc.getLog().consoleLog("Tab Icons enabled");
       } else {
@@ -388,6 +392,60 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
       return cmdBlockShowOperationsWin;
    }
 
+   public CmdConnectConnect getCmdConnectConnect() {
+      if (cmdConnectConnect == null) {
+         cmdConnectConnect = new CmdConnectConnect(this);
+      }
+      return cmdConnectConnect;
+   }
+
+   private CmdLockUnlock cmdUnlock;
+
+   public CmdLockUnlock getCmdLockUnlock() {
+      if (cmdUnlock == null) {
+         cmdUnlock = new CmdLockUnlock(this);
+      }
+      return cmdUnlock;
+   }
+
+   private CmdLockLock cmdLock;
+
+   public CmdLockLock getCmdLockLock() {
+      if (cmdLock == null) {
+         cmdLock = new CmdLockLock(this);
+      }
+      return cmdLock;
+   }
+
+   
+   public CmdConnectDisconnect getCmdConnectDisconnect() {
+      if (cmdConnectDisconnect == null) {
+         cmdConnectDisconnect = new CmdConnectDisconnect(this);
+      }
+      return cmdConnectDisconnect;
+   }
+
+   public CmdConnectTestNetwork getCmdConnectTestNet() {
+      if (cmdConnectTestNetwork == null) {
+         cmdConnectTestNetwork = new CmdConnectTestNetwork(this);
+      }
+      return cmdConnectTestNetwork;
+   }
+
+   public CmdCopyKeyBase58 getCmdCopyKeyBase58() {
+      if (cmdCopyKeyBase58 == null) {
+         cmdCopyKeyBase58 = new CmdCopyKeyBase58(this);
+      }
+      return cmdCopyKeyBase58;
+   }
+
+   public CmdCopyKeyEncoded getCmdCopyKeyEncoded() {
+      if (cmdCopyKeyEncoded == null) {
+         cmdCopyKeyEncoded = new CmdCopyKeyEncoded(this);
+      }
+      return cmdCopyKeyEncoded;
+   }
+
    public CmdKeyChangeName getCmdKeyChangeName() {
       if (cmdKeyChangeName == null) {
          cmdKeyChangeName = new CmdKeyChangeName(psc);
@@ -416,32 +474,11 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
       return cmdShowAccountSellerInInspectorTab;
    }
 
-   public CmdTogglePrivacyCtx getCmdTogglePrivacyCtx() {
-      if (cmdTogglePrivacyCtx == null) {
-         cmdTogglePrivacyCtx = new CmdTogglePrivacyCtx(this);
-      }
-      return cmdTogglePrivacyCtx;
-   }
-
    public CmdSwingAbstract<ICommandableAccount> getCmdShowAccountSellerInInspectorWin() {
       if (cmdShowAccountSellerInInspectorWindow == null) {
          cmdShowAccountSellerInInspectorWindow = new CmdShowAccountSellerInInspector(this, SHOW_TYPE_1_NEW_WIN);
       }
       return cmdShowAccountSellerInInspectorWindow;
-   }
-
-   public CmdCopyKeyEncoded getCmdCopyKeyEncoded() {
-      if (cmdCopyKeyEncoded == null) {
-         cmdCopyKeyEncoded = new CmdCopyKeyEncoded(this);
-      }
-      return cmdCopyKeyEncoded;
-   }
-
-   public CmdCopyKeyBase58 getCmdCopyKeyBase58() {
-      if (cmdCopyKeyBase58 == null) {
-         cmdCopyKeyBase58 = new CmdCopyKeyBase58(this);
-      }
-      return cmdCopyKeyBase58;
    }
 
    public CmdShowKeyAccounts getCmdShowKeyAccounts() {
@@ -472,20 +509,27 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
       return cmdShowAccountKeyAccountsWin;
    }
 
-   public String getKeyInNewWindowCap() {
-      return "cmd.show.newwindow.cap";
-   }
-
-   public String getKeyInTabCap() {
-      return "cmd.show.tab.cap";
+   public CmdTogglePrivacyCtx getCmdTogglePrivacyCtx() {
+      if (cmdTogglePrivacyCtx == null) {
+         cmdTogglePrivacyCtx = new CmdTogglePrivacyCtx(this);
+      }
+      return cmdTogglePrivacyCtx;
    }
 
    public String getKeyInNewWindow() {
       return "cmd.new.window";
    }
 
+   public String getKeyInNewWindowCap() {
+      return "cmd.show.newwindow.cap";
+   }
+
    public String getKeyInTab() {
       return "cmd.tab";
+   }
+
+   public String getKeyInTabCap() {
+      return "cmd.show.tab.cap";
    }
 
    public PascalSwingCtx getPSC() {
@@ -494,6 +538,10 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
 
    public String getStringFromKey(String key) {
       return psc.getSwingCtx().getResString(key);
+   }
+
+   public SwingCtx getSwingCtx() {
+      return psc.getSwingCtx();
    }
 
    //#mdebug
@@ -521,4 +569,5 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
       return psc.getUCtx();
    }
    //#enddebug
+
 }

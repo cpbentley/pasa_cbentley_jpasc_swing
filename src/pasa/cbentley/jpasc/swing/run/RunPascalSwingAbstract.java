@@ -96,7 +96,6 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
     * 
     */
    public void cmdExit() {
-      frame.savePrefs();
       psc.getCmds().cmdExit();
    }
 

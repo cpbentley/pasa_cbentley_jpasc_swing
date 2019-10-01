@@ -58,15 +58,6 @@ public class PanelTabLoginConsole extends PanelTabAbstractPascal implements IMyG
    }
 
    /**
-    * Call this after the panel has been configured.
-    */
-   public void loginAuto() {
-      panelLogin.initCheck();
-      //try to connect to default paremeters
-      psc.getCmds().cmdConnectInitJPascalCoin();
-   }
-
-   /**
     * Updates Gui and
     * Calls {@link IMyGui#guiUpdate()}
     * on all children that are {@link IMyGui}.

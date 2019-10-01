@@ -17,7 +17,7 @@ import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
 
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
-import pasa.cbentley.jpasc.swing.interfaces.ITechPrefsPascalSwing;
+import pasa.cbentley.jpasc.swing.interfaces.IPrefsPascalSwing;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperKeyGlobal;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableOperationAbstract;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableOperationFullData;
@@ -99,7 +99,7 @@ public class TablePanelOperationByKey extends TablePanelOperationAbstract implem
    protected WorkerTableOperationAbstract createWorker() {
       PublicKey pk = getSelectedKey();
       if (pk != null) {
-         psc.getSwingCtx().getPrefs().put(ITechPrefsPascalSwing.UI_PK_STRING, pk.getEncPubKey());
+         psc.getSwingCtx().getPrefs().put(IPrefsPascalSwing.UI_PK_STRING, pk.getEncPubKey());
       } else {
          psc.getLog().consoleLogError("BlocPublicKey is null. Listing Pending instead");
          return new WorkerTableOperationPending(psc, getTableModel(), this);

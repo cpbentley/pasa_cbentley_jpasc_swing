@@ -34,7 +34,7 @@ public class TabsKeysExplorer extends TabbedBentleyPanel {
 
    private TablePanelPublicKeyJavaChainLocal         tablePanelPublicKeyJavaChainLocal;
 
-   private TablePanelAccountPublicKeyJava tablePanelAccountPublicKeyJava;
+   private TablePanelAccountPublicKeyJava            tablePanelAccountPublicKeyJava;
 
    public TabsKeysExplorer(PascalSwingCtx psc, IRootTabPane root) {
       super(psc.getSwingCtx(), "root_keys");
@@ -53,8 +53,8 @@ public class TabsKeysExplorer extends TabbedBentleyPanel {
       tablePanelPublicKeyJavaChainWalletPublic = new TablePanelPublicKeyJavaChainWalletPublic(psc, root);
       tablePanelPublicKeyJavaChainAll = new TablePanelPublicKeyJavaChainAll(psc, root);
       tablePanelPublicKeyJavaChainLocal = new TablePanelPublicKeyJavaChainLocal(psc, root);
-      tablePanelAccountPublicKeyJava =  new TablePanelAccountPublicKeyJava(psc, root);
-      
+      tablePanelAccountPublicKeyJava = new TablePanelAccountPublicKeyJava(psc, root);
+
       addMyTab(tablePanelPublicKeyJavaChainWalletPrivate);
       addMyTab(tablePanelPublicKeyJavaChainWalletPublic);
       addMyTab(tablePanelPublicKeyJavaChainLocal);

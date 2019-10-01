@@ -16,27 +16,22 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import com.github.davidbolet.jpascalcoin.api.client.PascalCoinClient;
-import com.github.davidbolet.jpascalcoin.api.client.PascalCoinClientImpl;
 import com.github.davidbolet.jpascalcoin.api.constants.PascalCoinConstants;
 
 import pasa.cbentley.core.src4.event.BusEvent;
 import pasa.cbentley.core.src4.event.IEventConsumer;
 import pasa.cbentley.core.src4.utils.ColorUtils;
-import pasa.cbentley.jpasc.pcore.client.PascalClientDummy;
 import pasa.cbentley.jpasc.pcore.ctx.PCoreCtx;
 import pasa.cbentley.jpasc.pcore.interfaces.IBlockListener;
 import pasa.cbentley.jpasc.pcore.network.RPCConnection;
-import pasa.cbentley.jpasc.pcore.ping.PingLogger;
-import pasa.cbentley.jpasc.swing.ctx.IEventsPascalSwing;
+import pasa.cbentley.jpasc.swing.cmds.CmdConnectConnect;
+import pasa.cbentley.jpasc.swing.cmds.CmdConnectDisconnect;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.ILogin;
 import pasa.cbentley.jpasc.swing.widgets.WalletTotalAssets;
 import pasa.cbentley.swing.IconFamily;
 import pasa.cbentley.swing.ctx.SwingCtx;
-import pasa.cbentley.swing.imytab.AbstractMyTab;
 import pasa.cbentley.swing.panels.MemoryPanelProgressBar;
-import pasa.cbentley.swing.widgets.b.BButton;
 import pasa.cbentley.swing.widgets.b.BButtonToggle;
 
 /**
@@ -57,201 +52,135 @@ public class PanelTabLogin extends PanelTabAbstractPascal implements ActionListe
    /**
     * 
     */
-   private static final long serialVersionUID = -2208648402397333414L;
+   private static final long      serialVersionUID = -2208648402397333414L;
 
-   private BButtonToggle     buttonConnect;
+   private BButtonToggle          butConnect;
 
-   private BButtonToggle     buttonLock;
+   private BButtonToggle          butLock;
 
+   private boolean                isConfigShowBlockInfo;
 
-   private JLabel            labWaitingTitle;
+   private JLabel                 labWaitingTitle;
 
-   private JLabel            loginBlockNumLab;
+   private JLabel                 loginBlockNumLab;
 
-   private JTextField        loginIPField;
+   private JTextField             loginIPField;
 
-   private JLabel            loginLabIP;
+   private JLabel                 loginLabIP;
 
-   private JTextField        loginPortField;
+   private JTextField             loginPortField;
 
-   private JLabel            loginPortLab;
+   private JLabel                 loginPortLab;
 
-   private JLabel            loginTimingLab;
+   private JLabel                 loginTimingLab;
 
-   private JLabel            loginTimingLabElapsed;
-
-   private WalletTotalAssets walletTotalAssets;
-
-   private PingLogger        pingerLogger;
+   private JLabel                 loginTimingLabElapsed;
 
    private PanelCtxHelperAbstract panelCtxHelperAbstract;
-   
+
+   private WalletTotalAssets      walletTotalAssets;
+
    public PanelTabLogin(PascalSwingCtx psc) {
       super(psc, "login_pasc");
       psc.setLogin(this);
       psc.addBlockListener(this);
-      psc.getEventBusPascal().addConsumer(this, IEventsPascalSwing.EID_4_WALLET_LOCK_0_ANY, IEventsPascalSwing.PID_4_WALLET_LOCK);
+
+      psc.getEventBusPascal().addConsumer(this, PID_4_WALLET_LOCK, EID_4_WALLET_LOCK_0_ANY);
+      psc.getEventBusPascal().addConsumer(this, PID_5_CONNECTIONS, EID_5_CONNECTIONS_0_ANY);
    }
 
    public void actionPerformed(ActionEvent e) {
-      if (e.getSource() == buttonConnect) {
+      if (e.getSource() == butConnect) {
          cmdToggleConnect();
-      } else if (e.getSource() == buttonLock) {
-         cmdLock();
+      } else if (e.getSource() == butLock) {
+         cmdToggleLock();
          //the command is managed state by itself
       }
    }
 
    public void cmdConnect() {
-      //TODO check if option with ip is enabled
-      cmdConnectDefault();
+      CmdConnectConnect cmdConnect = psc.getCmds().getCmdConnectConnect();
+      cmdConnect.executeWith(null); //no
    }
+
+   public void cmdDisconnect() {
+      CmdConnectDisconnect cmdConnectDisconnect = psc.getCmds().getCmdConnectDisconnect();
+      cmdConnectDisconnect.executeWith(null);
+   }
+
+   //   /**
+   //    * Method for connecting to remote
+   //    * password is in clear.. 
+   //    */
+   //   public void cmdConnectComplex() {
+   //      String ip = this.loginIPField.getText();
+   //      Short port = PascalCoinConstants.DEFAULT_MAINNET_RPC_PORT;
+   //      try {
+   //         port = Short.valueOf(this.loginPortField.getText());
+   //      } catch (NumberFormatException e) {
+   //         e.printStackTrace();
+   //         //print message to console
+   //      }
+   //      PCoreCtx pc = psc.getPCtx();
+   //      RPCConnection rpc = pc.getRPCConnection();
+   //
+   //      //by default we do a localhost connection.
+   //
+   //      //TODO connection through unified through CORE
+   //      //construct a client to try to connect to
+   //      //problem with exceptions.. is that its not friendly with user interface
+   //      //we check for nulls anyways... So create a special function for just testing
+   //      //connection. that function returns an exception
+   //      //PascalCoinClient client = new PascalCoinClientImplEx(ip, port);
+   //      PascalCoinClient client = new PascalCoinClientImpl(ip, port);
+   //      try {
+   //         Integer blockCount = client.getBlockCount();
+   //         if (blockCount != null) {
+   //            psc.getLog().consoleLog(ip + ":" + port + " Found Wallet Node with #" + blockCount + " blocks");
+   //            this.loginBlockNumLab.setText("Block " + blockCount);
+   //            setButtonConnectStateAsConnected();
+   //            Color green = this.psc.getGreen();
+   //            this.loginPortField.setForeground(green);
+   //            this.loginIPField.setForeground(green);
+   //            //starts a task the ping for connection checking the block count and playing a sound when a new block is found
+   //
+   //            BusEvent be = psc.getEventBusPascal().createEvent(PID_5_CONNECTIONS, EID_5_CONNECTIONS_1_CONNECTED, null);
+   //            //be.setUserEvent(); we don't know here
+   //            psc.getEventBusPascal().putOnBus(be);
+   //
+   //            psc.getAudio().playAudio("/sounds/CarPassingBy.wav");
+   //         } else {
+   //            Color red = this.psc.getRed();
+   //            this.loginIPField.setForeground(red);
+   //            this.loginPortField.setForeground(red);
+   //            psc.getLog().consoleLogError(ip + ":" + port + " Connection failed");
+   //            client = new PascalClientDummy(psc.getPCtx());
+   //            psc.getAudio().playAudio("/sounds/boing.wav");
+   //         }
+   //      } catch (Exception e) {
+   //         e.printStackTrace();
+   //         psc.getLog().consoleLogError("Error while connecting");
+   //      }
+   //
+   //      boolean isLocked = pc.getRPCConnection().isLocked();
+   //      buttonLock.setSelected(isLocked);
+   //
+   //      pc.getRPCConnection().startPinging(); //start pinging the client
+   //
+   //      //refresh all active tabs ?
+   //      psc.getSwingCtx().updateAllVisibleTabs();
+   //   }
 
    /**
-    * TODO avoid double connection
+    * Local cmd to check for state and update the button
     */
-   public void cmdConnectDefault() {
-      PCoreCtx pc = psc.getPCtx();
-      RPCConnection rpc = pc.getRPCConnection();
-      if (!rpc.isConnected()) {
-         boolean isSuccess = rpc.connectLocalhost();
-         if (isSuccess) {
-            BusEvent be = psc.getEventBusPascal().createEvent(IEventsPascalSwing.PID_5_CONNECTIONS, IEventsPascalSwing.EID_5_CONNECTIONS_1_CONNECTED, null);
-            //be.setUserEvent(); we don't know here
-            psc.getEventBusPascal().putOnBus(be);
-            setButtonConnectStateAsConnected();
-
-            buttonLock.setEnabled(true);
-            boolean isLocked = rpc.isLocked();
-
-            setButtonLockState(isLocked);
-            rpc.addBlockListener(this);
-         }
-      } else {
-
-      }
-
-      if (pingerLogger == null) {
-         pingerLogger = new PingLogger(pc);
-      }
-      //rpc.startPinging();
-   }
-
    public void cmdLockStateUpdate() {
       PCoreCtx pc = psc.getPCtx();
       RPCConnection rpc = pc.getRPCConnection();
       if (rpc.isConnected()) {
          boolean isLocked = rpc.isDaemonLocked();
+         psc.getLog().consoleLog("Wallet lock state update isLocked=" + isLocked);
          setButtonLockState(isLocked);
-      }
-   }
-
-   private void setButtonLockState(boolean isLocked) {
-      if (isLocked) {
-         setButtonLockStateAsLocked();
-      } else {
-         setButtonLockStateAsUnlocked();
-      }
-   }
-
-   /**
-    * TODO avoid double connection
-    */
-   public void cmdConnectComplex() {
-      String ip = this.loginIPField.getText();
-      Short port = PascalCoinConstants.DEFAULT_MAINNET_RPC_PORT;
-      try {
-         port = Short.valueOf(this.loginPortField.getText());
-      } catch (NumberFormatException e) {
-         e.printStackTrace();
-         //print message to console
-      }
-      PCoreCtx pc = psc.getPCtx();
-      RPCConnection rpc = pc.getRPCConnection();
-
-      //by default we do a localhost connection.
-
-      //TODO connection through unified through CORE
-      //construct a client to try to connect to
-      //problem with exceptions.. is that its not friendly with user interface
-      //we check for nulls anyways... So create a special function for just testing
-      //connection. that function returns an exception
-      //PascalCoinClient client = new PascalCoinClientImplEx(ip, port);
-      PascalCoinClient client = new PascalCoinClientImpl(ip, port);
-      try {
-         Integer blockCount = client.getBlockCount();
-         if (blockCount != null) {
-            psc.getLog().consoleLog(ip + ":" + port + " Found Wallet Node with #" + blockCount + " blocks");
-            this.loginBlockNumLab.setText("Block " + blockCount);
-            setButtonConnectStateAsConnected();
-            Color green = this.psc.getGreen();
-            this.loginPortField.setForeground(green);
-            this.loginIPField.setForeground(green);
-            //starts a task the ping for connection checking the block count and playing a sound when a new block is found
-
-            BusEvent be = psc.getEventBusPascal().createEvent(IEventsPascalSwing.PID_5_CONNECTIONS, IEventsPascalSwing.EID_5_CONNECTIONS_1_CONNECTED, null);
-            //be.setUserEvent(); we don't know here
-            psc.getEventBusPascal().putOnBus(be);
-
-            psc.getAudio().playAudio("/sounds/CarPassingBy.wav");
-         } else {
-            Color red = this.psc.getRed();
-            this.loginIPField.setForeground(red);
-            this.loginPortField.setForeground(red);
-            psc.getLog().consoleLogError(ip + ":" + port + " Connection failed");
-            client = new PascalClientDummy(psc.getPCtx());
-            psc.getAudio().playAudio("/sounds/boing.wav");
-         }
-      } catch (Exception e) {
-         e.printStackTrace();
-         psc.getLog().consoleLogError("Error while connecting");
-      }
-
-      boolean isLocked = pc.getRPCConnection().isLocked();
-      buttonLock.setSelected(isLocked);
-
-      pc.getRPCConnection().startPinging(); //start pinging the client
-
-      //refresh all active tabs ?
-      psc.getSwingCtx().updateAllVisibleTabs();
-
-   }
-
-   public void cmdDisconnect() {
-      PCoreCtx pc = psc.getPCtx();
-      RPCConnection rpc = pc.getRPCConnection();
-      rpc.disconnect();
-      setButtonConnectStateAsDisconnected();
-      //set lock button in lock mode and disabled
-      setButtonLockStateAsLocked();
-      buttonLock.setEnabled(false);
-   }
-
-   private void cmdLock() {
-      RPCConnection con = psc.getPCtx().getRPCConnection();
-      if (con.isConnected()) {
-         if (con.isLocked()) {
-            boolean isUnlocked = psc.askToUnlock("Enter the Daemon Wallet Password", "", psc.getFrameRoot());
-
-            //old method
-            //            String pwd = JOptionPane.showInputDialog(psc.getFrameRoot(), "Enter the Wallet Password");
-            //            boolean b = con.unlock(pwd);
-            if (isUnlocked) {
-               setButtonLockStateAsUnlocked();
-               psc.getLog().consoleLogGreen("Wallet is unlocked");
-            } else {
-               psc.getLog().consoleLogGreen("Wallet fail to unlock! Probably wrong password");
-            }
-         } else {
-            boolean b = con.lock();
-            if (b) {
-               setButtonLockStateAsLocked();
-            } else {
-               psc.getLog().consoleLogGreen("Wallet fail to lock!");
-            }
-         }
-      } else {
-         psc.getLog().consoleLogError("You must be connected in order to lock/unlock a wallet");
       }
    }
 
@@ -265,21 +194,72 @@ public class PanelTabLogin extends PanelTabAbstractPascal implements ActionListe
       }
    }
 
+   private void cmdToggleLock() {
+      if (isLockedVisually()) {
+         //visually the button is lock
+         psc.getCmds().getCmdLockUnlock().executeWith(null);
+      } else {
+         psc.getCmds().getCmdLockLock().executeWith(null);
+      }
+   }
+
+   private boolean isLockedVisually() {
+      return butLock.isSelected();
+   }
+   
    public void consumeEvent(BusEvent e) {
       //we must be in GUI thread
-      if (e.getProducerID() == IEventsPascalSwing.PID_4_WALLET_LOCK) {
+      if (e.getProducerID() == PID_4_WALLET_LOCK) {
          int eid = e.getEventID();
-         if (eid == IEventsPascalSwing.EID_4_WALLET_LOCK_1_LOCKED) {
-            setButtonLockStateAsLocked();
+         if (eid == EID_4_WALLET_LOCK_1_LOCKED) {
+            eventWalletLocked();
             e.setActed();
-         } else if (eid == IEventsPascalSwing.EID_4_WALLET_LOCK_2_UNLOCKED) {
-            setButtonLockStateAsUnlocked();
+         } else if (eid == EID_4_WALLET_LOCK_2_UNLOCKED) {
+            
+            eventWalletUnlocked();
+            e.setActed();
+         }
+      } else if (e.getProducerID() == PID_5_CONNECTIONS) {
+         int eid = e.getEventID();
+         if (eid == EID_5_CONNECTIONS_1_CONNECTED) {
+            eventConnected();
+            e.setActed();
+         } else if (eid == EID_5_CONNECTIONS_2_DISCONNECTED) {
+            eventDisconnected();
             e.setActed();
          }
       }
    }
 
+   private void eventWalletUnlocked() {
+      setButtonLockStateAsUnlocked();      
+   }
+
+   private void eventWalletLocked() {
+      setButtonLockStateAsLocked();      
+   }
+
    public void disposeTab() {
+   }
+
+   private void eventConnected() {
+      RPCConnection rpc = psc.getPCtx().getRPCConnection();
+      rpc.addBlockListener(this);
+      setButtonConnectStateAsConnected();
+      butLock.setEnabled(true);
+      boolean isLocked = rpc.isLocked();
+      setButtonLockState(isLocked);
+   }
+
+   private void eventDisconnected() {
+      setButtonConnectStateAsDisconnected();
+      //set lock button in lock mode and disabled
+      setButtonLockStateAsLocked();
+      butLock.setEnabled(false);
+   }
+
+   public PanelCtxHelperAbstract getPanelCtxHelperAbstract() {
+      return panelCtxHelperAbstract;
    }
 
    public void guiUpdate() {
@@ -329,26 +309,25 @@ public class PanelTabLogin extends PanelTabAbstractPascal implements ActionListe
          this.add(loginPortField);
       }
 
-      buttonConnect = new BButtonToggle(sc, this);
-      buttonConnect.setTextKeys("but.connect", "but.disconnect");
-      buttonConnect.setIcon("connect", "action", IconFamily.ICON_SIZE_1_SMALL);
+      butConnect = new BButtonToggle(sc, this);
+      butConnect.setTextKeys("but.connect", "but.disconnect");
+      butConnect.setIcon("connect", "action", IconFamily.ICON_SIZE_1_SMALL);
 
-      buttonLock = new BButtonToggle(sc, this);
-      buttonLock.setTextKeys("but.lock", "but.unlock");
-      buttonLock.setIcon("lock", "action", IconFamily.ICON_SIZE_1_SMALL);
-      buttonLock.addMouseListener(this);
+      butLock = new BButtonToggle(sc, this);
+      butLock.setTextKeys("but.lock", "but.unlock");
+      butLock.setIcon("lock", "action", IconFamily.ICON_SIZE_1_SMALL);
+      butLock.addMouseListener(this);
 
-      
-      this.add(buttonConnect);
-      this.add(buttonLock);
+      this.add(butConnect);
+      this.add(butLock);
 
       this.add(mem);
 
-      if(panelCtxHelperAbstract != null) {
+      if (panelCtxHelperAbstract != null) {
          this.add(panelCtxHelperAbstract);
          panelCtxHelperAbstract.init();
       }
-      
+
       if (isConfigShowBlockInfo) {
          this.add(loginBlockNumLab);
          this.add(loginTimingLab);
@@ -357,7 +336,33 @@ public class PanelTabLogin extends PanelTabAbstractPascal implements ActionListe
       }
    }
 
-   private boolean isConfigShowBlockInfo;
+   public boolean isConfigShowBlockInfo() {
+      return isConfigShowBlockInfo;
+   }
+
+   public void mouseClicked(MouseEvent e) {
+   }
+
+   public void mouseEntered(MouseEvent e) {
+   }
+
+   public void mouseExited(MouseEvent e) {
+   }
+
+   public void mousePressed(MouseEvent e) {
+      Object src = e.getSource();
+      if (src == butLock) {
+         if (e.getButton() == MouseEvent.BUTTON3) {
+            cmdLockStateUpdate();
+         }
+         if (e.getButton() == MouseEvent.BUTTON2) {
+            cmdLockStateUpdate();
+         }
+      }
+   }
+
+   public void mouseReleased(MouseEvent e) {
+   }
 
    public void pingDisconnect() {
       setButtonConnectStateAsDisconnected();
@@ -395,64 +400,43 @@ public class PanelTabLogin extends PanelTabAbstractPascal implements ActionListe
    }
 
    private void setButtonConnectStateAsConnected() {
-      buttonConnect.setSelected(true);
+      butConnect.setSelected(true);
    }
 
    private void setButtonConnectStateAsDisconnected() {
-      buttonConnect.setSelected(false);
+      butConnect.setSelected(false);
+   }
+
+   private void setButtonLockState(boolean isLocked) {
+      if (isLocked) {
+         setButtonLockStateAsLocked();
+      } else {
+         setButtonLockStateAsUnlocked();
+      }
    }
 
    /**
     * Apply GUI state for a lock state
     */
    private void setButtonLockStateAsLocked() {
-      buttonLock.setSelected(true);
+      butLock.setSelected(true);
    }
 
    private void setButtonLockStateAsUnlocked() {
-      buttonLock.setSelected(false);
-   }
-
-   public void tabGainFocus() {
-   }
-
-   public void tabLostFocus() {
-   }
-
-   public void mouseClicked(MouseEvent e) {
-   }
-
-   public void mousePressed(MouseEvent e) {
-      Object src = e.getSource();
-      if (src == buttonLock) {
-         if (e.getButton() == MouseEvent.BUTTON3) {
-            cmdLockStateUpdate();
-         }
-      }
-   }
-
-   public void mouseReleased(MouseEvent e) {
-   }
-
-   public void mouseEntered(MouseEvent e) {
-   }
-
-   public void mouseExited(MouseEvent e) {
-   }
-
-   public boolean isConfigShowBlockInfo() {
-      return isConfigShowBlockInfo;
+      butLock.setSelected(false);
    }
 
    public void setConfigShowBlockInfo(boolean isConfigShowBlockInfo) {
       this.isConfigShowBlockInfo = isConfigShowBlockInfo;
    }
 
-   public PanelCtxHelperAbstract getPanelCtxHelperAbstract() {
-      return panelCtxHelperAbstract;
-   }
-
    public void setPanelCtxHelperAbstract(PanelCtxHelperAbstract panelCtxHelperAbstract) {
       this.panelCtxHelperAbstract = panelCtxHelperAbstract;
+   }
+
+   public void tabGainFocus() {
+   }
+
+   public void tabLostFocus() {
    }
 }
