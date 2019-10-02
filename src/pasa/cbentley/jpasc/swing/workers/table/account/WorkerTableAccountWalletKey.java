@@ -36,6 +36,9 @@ public class WorkerTableAccountWalletKey extends WorkerTableAccountAbstract {
       ListTaskAccountWalletPubKey task = new ListTaskAccountWalletPubKey(psc.getPCtx(), this, encPubKey);
       return task;
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    public String getEncPubKey() {
       return encPubKey;

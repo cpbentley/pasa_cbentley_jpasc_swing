@@ -34,6 +34,10 @@ public class WorkerTableAccountChainRange extends WorkerTableAccountAbstract {
       return new ListTaskAccountChainRange(psc.getPCtx(), this, rangeStart, rangeEnd);
    }
 
+   public String getNameForUser() {
+      return "Account Chain Range["+rangeStart + ", "+ rangeEnd+"]";
+   }
+
    public int getRangeEnd() {
       return rangeEnd;
    }

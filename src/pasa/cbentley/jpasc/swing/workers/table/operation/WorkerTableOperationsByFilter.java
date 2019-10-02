@@ -29,6 +29,9 @@ public class WorkerTableOperationsByFilter extends WorkerTableOperationAbstract 
    protected ListTaskOperationAbstract createTaskPage() {
       return new ListTaskOperationByFilter(psc.getPCtx(), this, listBlocks, filter);
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    //#mdebug
    public void toString(Dctx dc) {

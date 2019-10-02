@@ -34,6 +34,9 @@ public class WorkerTableAccountWalletNames extends WorkerTableAccountAbstractNam
       }
       return listTaskAccountWallet;
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    //#mdebug
    public void toString(Dctx dc) {

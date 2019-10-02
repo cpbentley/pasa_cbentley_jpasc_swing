@@ -28,6 +28,9 @@ public class WorkerTableAccountWalletMinMaxBalance extends WorkerTableAccountAbs
       ListTaskAccountWalletBalance task = new ListTaskAccountWalletBalance(psc.getPCtx(), this, min, max);
       return task;
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
  
    //#mdebug

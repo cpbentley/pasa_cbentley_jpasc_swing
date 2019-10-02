@@ -25,6 +25,9 @@ public class WorkerTableKeyLocal extends WorkerTableKeyAbstract {
       ListTaskPublicKeyJavaLocal task = new ListTaskPublicKeyJavaLocal(psc.getPCtx(), this);
       return task;
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    //#mdebug
    public void toString(Dctx dc) {

@@ -27,6 +27,10 @@ public class WorkerTableAccountChainMinMaxBalance extends WorkerTableAccountAbst
       return new ListTaskAccountChainBalanceMinMax(psc.getPCtx(), this, min, max);
    }
 
+   public String getNameForUser() {
+      return "Account Min Max Balance";
+   }
+
    //#mdebug
    public void toString(Dctx dc) {
       dc.root(this, "WorkerTableAccountChainMinMaxBalance");

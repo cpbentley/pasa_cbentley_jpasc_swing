@@ -45,6 +45,10 @@ public class WorkerTableAccountJavaPublicKey extends WorkerTableAccountAbstract 
    public void setPublicKeyJava(PublicKeyJava publicKeyJava) {
       this.publicKeyJava = publicKeyJava;
    }
+   
+   public String getNameForUser() {
+      return "Account Key "+ ((publicKeyJava != null) ? publicKeyJava.getName() : "");
+   }
 
    //#mdebug
    public void toString(Dctx dc) {

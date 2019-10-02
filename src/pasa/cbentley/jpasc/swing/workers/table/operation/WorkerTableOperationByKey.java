@@ -26,6 +26,9 @@ public class WorkerTableOperationByKey extends WorkerTableOperationAbstract {
    protected ListTaskOperationAbstract createTaskPage() {
       return new ListTaskOperationByKey(psc.getPCtx(), this, pk);
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    //#mdebug
    public void toString(Dctx dc) {

@@ -30,6 +30,9 @@ public class WorkerTableKeyChainAll extends WorkerTableKeyAbstract {
       task.setComputeNumAccounts(true);
       return task;
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    /**
     * Only add rows if new. otherwise. update

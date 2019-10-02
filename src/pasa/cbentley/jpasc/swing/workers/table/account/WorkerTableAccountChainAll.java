@@ -27,6 +27,10 @@ public class WorkerTableAccountChainAll extends WorkerTableAccountAbstract {
       return new ListTaskAccountChain(psc.getPCtx(), this);
    }
 
+   public String getNameForUser() {
+      return "Account Chain All";
+   }
+
    //#mdebug
    public void toString(Dctx dc) {
       dc.root(this, "WorkerTableAccountChainAll");

@@ -27,6 +27,9 @@ public class WorkerTableOperationByPredicate extends WorkerTableOperationAbstrac
       //use task of the core framework
       return new ListTaskOperationByBlockPredicate(psc.getPCtx(), this, predicate);
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    //#mdebug
    public void toString(Dctx dc) {

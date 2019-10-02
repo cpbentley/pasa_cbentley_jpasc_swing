@@ -25,6 +25,9 @@ public class WorkerTableOperationByBlock extends WorkerTableOperationAbstract {
       //use task of the core framework
       return new ListTaskOperationBlock(psc.getPCtx(), this, block);
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    //#mdebug
    public void toString(Dctx dc) {

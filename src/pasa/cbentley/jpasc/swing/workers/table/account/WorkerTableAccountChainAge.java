@@ -27,6 +27,10 @@ public class WorkerTableAccountChainAge extends WorkerTableAccountAbstractMinMax
       return new ListTaskAccountChainAge(psc.getPCtx(), this, min, max);
    }
 
+   public String getNameForUser() {
+      return "Account Chain Age";
+   }
+
    //#mdebug
    public void toString(Dctx dc) {
       dc.root(this, "WorkerTableAccountChainAge");

@@ -8,6 +8,8 @@ package pasa.cbentley.jpasc.swing.workers.abstrakt;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.SwingWorker;
+
 import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.listlisteners.IListListener;
@@ -57,6 +59,17 @@ public abstract class WorkerListTask<K, V> extends PanelSwingWorker<K, V> implem
       publicList(list);
    }
 
+   
+   /**
+    * 
+    * {@link SwingWorker#cancel(boolean)} will interrupt our thread.
+    * If the thread is stuck in a low level io task, that's good.
+    * If the thread is simply doing work, we want to cleanly let it
+    * stop at the next isContinue() check.
+    * 
+    * Its not possible to override cancel, so cancel must be avoided
+    * and {@link PanelSwingWorker}
+    */
    @Override
    protected K doInBackground() {
       task = createTask();

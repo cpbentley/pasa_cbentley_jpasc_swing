@@ -28,6 +28,9 @@ public class WorkerTableBlocksInThePast extends WorkerTableBlockAbstract {
       //use task of the core framework
       return new ListTaskBlockInThePast(psc.getPCtx(), this, blockInThePastNum);
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    //#mdebug
    public void toString(Dctx dc) {

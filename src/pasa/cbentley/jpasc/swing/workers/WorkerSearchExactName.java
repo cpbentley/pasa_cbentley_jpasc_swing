@@ -34,6 +34,9 @@ public class WorkerSearchExactName extends PanelSwingWorker<Account, Boolean> {
    public Account getAccount() {
       return account;
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    public WorkerSearchExactName(SwingCtx sc, IWorkerPanel wp, IRootTabPane root, String name) {
       super(sc, wp);

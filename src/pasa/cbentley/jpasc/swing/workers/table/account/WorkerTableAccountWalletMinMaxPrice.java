@@ -32,6 +32,9 @@ public class WorkerTableAccountWalletMinMaxPrice extends WorkerTableAccountAbstr
       ListTaskAccountWalletPriceMinMax task = new ListTaskAccountWalletPriceMinMax(psc.getPCtx(), this, min, max);
       return task;
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    //#mdebug
    public void toString(Dctx dc) {

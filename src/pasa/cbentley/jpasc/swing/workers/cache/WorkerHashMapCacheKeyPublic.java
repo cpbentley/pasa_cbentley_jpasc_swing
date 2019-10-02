@@ -5,6 +5,8 @@
  */
 package pasa.cbentley.jpasc.swing.workers.cache;
 
+import pasa.cbentley.core.src4.ctx.UCtx;
+import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src5.interfaces.INameable;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJavaNamer;
@@ -33,5 +35,30 @@ public class WorkerHashMapCacheKeyPublic extends WorkerHashMapCacheAbstract<Hash
    protected INameable<PublicKeyJava> getNameable(PublicKeyJava v) {
       return new PublicKeyJavaNamer(v);
    }
+
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
+
+   
+   //#mdebug
+   public void toString(Dctx dc) {
+      dc.root(this, "WorkerHashMapCacheKeyPublic");
+      toStringPrivate(dc);
+      super.toString(dc.sup());
+   }
+
+   private void toStringPrivate(Dctx dc) {
+      
+   }
+
+   public void toString1Line(Dctx dc) {
+      dc.root1Line(this, "WorkerHashMapCacheKeyPublic");
+      toStringPrivate(dc);
+      super.toString1Line(dc.sup1Line());
+   }
+
+   //#enddebug
+   
 
 }

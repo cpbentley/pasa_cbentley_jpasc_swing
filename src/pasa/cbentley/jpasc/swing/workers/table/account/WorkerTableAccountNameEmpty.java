@@ -21,6 +21,11 @@ public class WorkerTableAccountNameEmpty extends WorkerTableAccountAbstract {
    protected ListTaskAccountAbstract createTaskAccount() {
       return new ListTaskAccountWalletNameNull(psc.getPCtx(), this);
    }
+   
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
+
 
    //#mdebug
    public void toString(Dctx dc) {

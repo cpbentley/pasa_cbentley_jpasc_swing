@@ -25,6 +25,9 @@ public class WorkerTableBlocksRange extends WorkerTableBlockAbstract {
       this.blockStart = blockStart;
       this.blockEnd = blockEnd;
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    protected ListTaskPage<Block> createTaskPage() {
       //use task of the core framework

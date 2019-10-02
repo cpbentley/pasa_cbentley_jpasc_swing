@@ -28,6 +28,10 @@ public class WorkerTableAccountChainKey extends WorkerTableAccountAbstract {
       return task;
    }
 
+   public String getNameForUser() {
+      return "Account Key";
+   }
+   
    //#mdebug
    public void toString(Dctx dc) {
       dc.root(this, "WorkerTableAccountChainAll");

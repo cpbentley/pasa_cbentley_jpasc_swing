@@ -27,6 +27,10 @@ public class WorkerTableAccountChainMinMaxPrice extends WorkerTableAccountAbstra
       return new ListTaskAccountChainPriceMinMax(psc.getPCtx(), this, min, max);
    }
 
+   public String getNameForUser() {
+      return "Account Min Max Price";
+   }
+
    //#mdebug
    public void toString(Dctx dc) {
       dc.root(this, "WorkerTableAccountChainMinMaxPrice");

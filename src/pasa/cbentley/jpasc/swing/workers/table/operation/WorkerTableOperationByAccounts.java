@@ -25,6 +25,9 @@ public class WorkerTableOperationByAccounts extends WorkerTableOperationAbstract
       //use task of the core framework
       return new ListTaskOperationByAccount(psc.getPCtx(), this, account);
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    //#mdebug
    public void toString(Dctx dc) {

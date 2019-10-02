@@ -23,6 +23,9 @@ public class WorkerTableOperationPending extends WorkerTableOperationAbstract {
       //use task of the core framework
       return new ListTaskOperationPending(psc.getPCtx(), this);
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    //#mdebug
    public void toString(Dctx dc) {

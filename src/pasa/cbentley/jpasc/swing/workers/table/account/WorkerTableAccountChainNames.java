@@ -32,6 +32,10 @@ public class WorkerTableAccountChainNames extends WorkerTableAccountAbstractName
       return listTaskAccountChain;
    }
 
+   public String getNameForUser() {
+      return "Account Names";
+   }
+
    //#mdebug
    public void toString(Dctx dc) {
       dc.root(this, "WorkerTableAccountChainNames");

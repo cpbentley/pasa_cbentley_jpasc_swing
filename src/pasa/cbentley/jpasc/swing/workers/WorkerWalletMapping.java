@@ -37,4 +37,9 @@ public class WorkerWalletMapping extends PanelSwingWorker<Map<String, String>, V
       }
       return ownerWallet;
    }
+   
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
+
 }

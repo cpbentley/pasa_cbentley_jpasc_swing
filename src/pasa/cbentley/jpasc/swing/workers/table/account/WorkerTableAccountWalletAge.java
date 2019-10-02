@@ -27,6 +27,9 @@ public class WorkerTableAccountWalletAge extends WorkerTableAccountAbstractMinMa
       ListTaskAccountWalletAge task = new ListTaskAccountWalletAge(psc.getPCtx(), this, min, max);
       return task;
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    //#mdebug
    public void toString(Dctx dc) {

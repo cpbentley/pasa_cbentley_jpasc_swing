@@ -35,6 +35,9 @@ public class WorkerTopAccountDonators extends PanelSwingWorker<ModelTableAccount
       this.psc = psc;
       this.tableModel = tableModel;
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    @Override
    protected ModelTableAccountAbstract doInBackground() {

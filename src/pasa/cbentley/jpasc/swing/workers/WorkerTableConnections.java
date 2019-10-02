@@ -45,6 +45,9 @@ public class WorkerTableConnections extends PanelSwingWorker<ModelTableConnectio
       }
       return tableModel;
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    @Override
    protected void process(List<Connection> chunks) {

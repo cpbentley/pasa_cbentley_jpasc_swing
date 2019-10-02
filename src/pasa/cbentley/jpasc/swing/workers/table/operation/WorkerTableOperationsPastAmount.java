@@ -31,6 +31,9 @@ public class WorkerTableOperationsPastAmount extends WorkerTableOperationAbstrac
       FilterOperationAmountAbs filter = new FilterOperationAmountAbs(psc.getPCtx(), amount);
       return new ListTaskOperationByFilter(psc.getPCtx(), this, listBlocks, filter);
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    //#mdebug
    public void toString(Dctx dc) {

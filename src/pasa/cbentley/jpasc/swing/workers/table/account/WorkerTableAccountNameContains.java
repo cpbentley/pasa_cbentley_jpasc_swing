@@ -35,6 +35,10 @@ public class WorkerTableAccountNameContains extends WorkerTableAccountAbstract {
       return new ListTaskAccountWalletNameAcceptor(psc.getPCtx(), this, acceptor);
    }
 
+   public String getNameForUser() {
+      return "AccountNameContains";
+   }
+
    //#mdebug
    public void toString(Dctx dc) {
       dc.root(this, "WorkerTableAccountNameContains");

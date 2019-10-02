@@ -45,7 +45,10 @@ public class WorkerBlockFinder extends PanelSwingWorker<String, Block> implement
    public void newObjectfail(Block object, PPredicate predicate) {
 
    }
-   
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
+
    public Block getBlockFound() {
       return blockFound;
    }

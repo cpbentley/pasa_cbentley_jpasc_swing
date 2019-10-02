@@ -25,6 +25,9 @@ public class WorkerTableKeyWalletPublic extends WorkerTableKeyAbstract {
       task.setComputeNumAccounts(true);
       return task;
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    //#mdebug
    public void toString(Dctx dc) {

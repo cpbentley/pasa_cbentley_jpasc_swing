@@ -24,6 +24,9 @@ public class WorkerTableWhaleWatchAmount extends WorkerTableWhaleWatchAbstract {
       this.amount = amount;
       this.listBlocks = listBlocks;
    }
+   public String getNameForUser() {
+      return this.getClass().getSimpleName();
+   }
 
    protected ListTaskOperationAbstract createTaskPage() {
       //use task of the core framework
