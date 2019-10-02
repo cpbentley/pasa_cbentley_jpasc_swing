@@ -36,6 +36,8 @@ public class PascalProgressBar extends JProgressBar implements IStringable, Mous
 
    private String             stringKeyDone;
 
+   private String             stringKeyCanceled;
+
    private String             stringKeyScanning;
 
    private String             stringKeyActive;
@@ -49,6 +51,7 @@ public class PascalProgressBar extends JProgressBar implements IStringable, Mous
 
       stringKeyScanning = "progress.scanning";
       stringKeyDone = "progress.done";
+      stringKeyCanceled = "progress.canceled";
       stringKeyActive = stringKeyDone;
 
       this.addMouseListener(this);
@@ -88,8 +91,17 @@ public class PascalProgressBar extends JProgressBar implements IStringable, Mous
 
    public void setStateToDone() {
       actionStopItem.setEnabled(false);
-      this.setValue(this.getMaximum());
+      this.setMaximum(100);
+      this.setValue(100);
       stringKeyActive = stringKeyDone;
+      guiUpdate();
+   }
+
+   public void setStateToCanceled() {
+      actionStopItem.setEnabled(false);
+      this.setMaximum(100);
+      this.setValue(100);
+      stringKeyActive = stringKeyCanceled;
       guiUpdate();
    }
 

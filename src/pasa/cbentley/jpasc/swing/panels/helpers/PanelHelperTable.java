@@ -11,30 +11,39 @@ import pasa.cbentley.swing.widgets.b.BCheckBox;
 
 public class PanelHelperTable extends PanelPascal implements ActionListener {
 
-   protected BCheckBox              cbRowNumbers;
+   protected BCheckBox                cbRowNumbers;
 
-   protected BButton                butFit;
+   protected BButton                  butFit;
 
    protected final TablePanelAbstract table;
+
+   private BCheckBox                  cbTaskKeptFocusOut;
 
    public PanelHelperTable(PascalSwingCtx psc, TablePanelAbstract table) {
       super(psc);
       this.table = table;
       butFit = new BButton(sc, this, "but.fit");
-      
+
       cbRowNumbers = new BCheckBox(sc, this, "cb.rownumber");
-      
+
+      cbTaskKeptFocusOut = new BCheckBox(sc, this, "cb.keeptaskwhentablosefocus");
+
       this.add(cbRowNumbers);
       this.add(butFit);
+      this.add(cbTaskKeptFocusOut);
    }
 
    public void actionPerformed(ActionEvent e) {
       Object src = e.getSource();
-      if(src == cbRowNumbers) {
+      if (src == cbRowNumbers) {
          cmdToggleRow();
-      } else if(src == butFit) {
+      } else if (src == butFit) {
          table.cmdFit();
       }
+   }
+
+   public boolean isTaskKeptWhenFocusOut() {
+      return cbTaskKeptFocusOut.isSelected();
    }
    
    public void cmdToggleRow() {

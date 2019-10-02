@@ -34,10 +34,10 @@ public class PanelHelperLoadingStat extends PanelPascal {
 
    public PanelHelperLoadingStat(PascalSwingCtx psc) {
       super(psc);
-      
+
       progressBar = new PascalProgressBar(psc);
       progressBar.setStringPainted(true);
-      
+
       entries = new IntToObjects(psc.getUCtx());
    }
 
@@ -113,17 +113,24 @@ public class PanelHelperLoadingStat extends PanelPascal {
    }
 
    public void setStateStat(WorkerStat ws) {
-      
+
       progressBar.setMaximum(ws.getEntriesTotal());
       progressBar.setValue(ws.getEntriesDone());
    }
-   
+
    public void setStateCount(int count) {
       progressBar.setValue(count);
    }
 
+   /**
+    * Clean the progress bar for good UX
+    */
    public void setStateDone() {
       progressBar.setStateToDone();
+   }
+
+   public void setStateCanceled() {
+      progressBar.setStateToCanceled();
    }
 
    public void setStateScanning() {

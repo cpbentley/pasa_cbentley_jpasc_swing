@@ -271,6 +271,15 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
    public void panelSwingWorkerCancelled(PanelSwingWorker tableBlockSwingWorker) {
       //#debug
       toDLog().pWork("", this, TablePanelAbstract.class, "panelSwingWorkCancelled", ITechLvl.LVL_05_FINE, true);
+      
+      getTableModelAbstract().computeStatsGlobal();
+      subUpdateStatPanel();
+      this.workerTable = null;
+      panelHelperLoadingStat.setStateCanceled();
+      panelHelperLoadingStat.setWorker(null);
+      if (isAutoResizeColumns) {
+         super.resizeTableColumns();
+      }
    }
 
    /**
@@ -285,6 +294,7 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
       subUpdateStatPanel();
       this.workerTable = null;
       panelHelperLoadingStat.setStateDone();
+      panelHelperLoadingStat.setWorker(null);
       if (isAutoResizeColumns) {
          super.resizeTableColumns();
       }
@@ -392,7 +402,7 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
     * 
     * IF key MAJ key is pressed when lost focus occurs and command ctx
     * 
-    * works with {@link TablePanelAbstract#tabWillBeHiddenByAnotherTab(IMyTab)} to disable or not
+    * works with {@link TablePanelAbstract#shouldTabBeHiddenByAnotherTab(IMyTab)} to disable or not
     * the current running task.
     */
    public void tabLostFocus() {
@@ -403,30 +413,25 @@ public abstract class TablePanelAbstract<T> extends AbstractTabTable<T> implemen
          //#debug
          toDLog().pFlow("workerTable is not null", workerTable, TablePanelAbstract.class, "tabLostFocus", ITechLvl.LVL_04_FINER, true);
 
-         //pause it if supports exists until tab gets back
-         //worker.pause();
-         boolean b = workerTable.cancel(true);
+         if(panelHelperTable.isTaskKeptWhenFocusOut()) {
+            sc.getLog().consoleLog("Task "+ workerTable.getNameForUser() + " keeps running");
+         } else {
+            //pause it if supports exists until tab gets back
+            //worker.pause();
+            boolean b = workerTable.cancel(true);
 
-         //#debug
-         toDLog().pWork("Worker was not null. Cancel method returns " + b, this, TablePanelAbstract.class, "tabLostFocus", ITechLvl.LVL_05_FINE, true);
-         workerTable = null;
+            //#debug
+            toDLog().pWork("Worker was not null. Cancel method returns " + b, this, TablePanelAbstract.class, "tabLostFocus", ITechLvl.LVL_05_FINE, true);
+            workerTable = null;
+         }
       }
    }
 
-   public boolean tabWillBeHiddenByAnotherTab(IMyTab newSelectedTab) {
+   public boolean shouldTabBeHiddenByAnotherTab(IMyTab newSelectedTab) {
       //check if its ok to be hidden and user really wants to hide the stand in the current state
-
       if (workerTable != null) {
          //depends on saved settings
-         JOptionPane jop = new JOptionPane();
-         jop.setMessageType(JOptionPane.PLAIN_MESSAGE);
-         jop.setMessage("Please wait...");
-         JDialog dialog = jop.createDialog(null, "Message");
-         dialog.setVisible(true);
-
-         int returnValue = 0;
-         returnValue = JOptionPane.showConfirmDialog(this, "Data Task is running for this task. Abort it?", "Abort task on this tab?", JOptionPane.YES_NO_OPTION);
-         return false;
+         return true;
       }
       return true;
    }
