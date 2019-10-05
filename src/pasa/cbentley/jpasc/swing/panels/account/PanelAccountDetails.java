@@ -68,6 +68,8 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
 
    private BButton                      butFindAccount;
 
+   private BButton                      butShowAccountOperations;
+
    private BButton                      butNext;
 
    private BButton                      butPrev;
@@ -193,7 +195,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
          String value = textAreaPubKey.getText();
          psc.copyToClipboard(value, "Public key");
       } else if (src == butChangeKeyNames) {
-         if(account != null) {
+         if (account != null) {
             psc.getCmds().getCmdKeyChangeName().executeWith(account);
             //update the names
             privateUpdateKeyNames();
@@ -205,14 +207,13 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       String encKey = account.getEncPubkey();
       String name = psc.getPCtx().getKeyNameProvider().getPkNameStorePublic().getKeyNameAdd(encKey);
       textKeyNamePublic.setText(name);
-      if(psc.isPrivateCtx()) {
-          name = psc.getPCtx().getKeyNameProvider().getPkNameStorePrivate().getKeyName(encKey);
+      if (psc.isPrivateCtx()) {
+         name = psc.getPCtx().getKeyNameProvider().getPkNameStorePrivate().getKeyName(encKey);
          textKeyNamePrivate.setText(name);
       } else {
          textKeyNamePrivate.setText(sc.getResString("text.publicmodehidekeyname"));
       }
-     
-      
+
    }
 
    /**
@@ -400,24 +401,6 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
 
       container.add("tab", cbIsPrivate);
 
-      labNumOperation = new BLabel(sc, "text.operationsnum");
-      textNumOperations = new JTextField(10);
-      textNumOperations.setEditable(false);
-      container.add("br", labNumOperation);
-      container.add("tab", textNumOperations);
-
-      labLastBlock = new BLabel(sc, "text.lastblock");
-      textLastBlock = new JTextField(10);
-      textLastBlock.setEditable(false);
-      container.add("tab", labLastBlock);
-      container.add("tab", textLastBlock);
-
-      labLastOpTime = new BLabel(sc, "text.lastoperation");
-      textLastOpTime = new JTextField(30);
-      textLastOpTime.setEnabled(false);
-      container.add("tab", labLastOpTime);
-      container.add("tab", textLastOpTime);
-
       butChangeKeyNames = new BButton(sc, this, "but.changekeynames");
       labKeyNamePrivate = new BLabel(sc, "text.keynameprivate");
       labKeyNamePublic = new BLabel(sc, "text.keynamepublic");
@@ -453,6 +436,24 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
 
       container.add("p", butEncPubKey);
       container.add("tab", textAreaEncPubKey);
+
+      labNumOperation = new BLabel(sc, "text.operationsnum");
+      textNumOperations = new JTextField(10);
+      textNumOperations.setEditable(false);
+      container.add("br", labNumOperation);
+      container.add("tab", textNumOperations);
+
+      labLastBlock = new BLabel(sc, "text.lastblock");
+      textLastBlock = new JTextField(10);
+      textLastBlock.setEditable(false);
+      container.add("tab", labLastBlock);
+      container.add("tab", textLastBlock);
+
+      labLastOpTime = new BLabel(sc, "text.lastoperation");
+      textLastOpTime = new JTextField(30);
+      textLastOpTime.setEnabled(false);
+      container.add("tab", labLastOpTime);
+      container.add("tab", textLastOpTime);
 
       //container.add("p hfill", tableBen.getScrollPane());
       container.add("p hfill", accountOperations);
@@ -558,7 +559,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       }
 
       privateUpdateKeyNames();
-      
+
       accountOperations.clear();
 
       accountOperations.showAccount(account);
