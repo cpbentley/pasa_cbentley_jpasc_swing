@@ -35,15 +35,29 @@ import javax.swing.plaf.basic.BasicLabelUI;
  */
 public class VerticalLabelUI extends BasicLabelUI {
 
-   private boolean clockwise = false;
+   private final static VerticalLabelUI SAFE_VERTICAL_LABEL_UI = new VerticalLabelUI();
+
+   protected static VerticalLabelUI     verticalLabelUI        = new VerticalLabelUI();
+
+   /**
+    * @see ComponentUI#createUI(javax.swing.JComponent) 
+    */
+   public static ComponentUI createUI(JComponent c) {
+      if (System.getSecurityManager() != null) {
+         return SAFE_VERTICAL_LABEL_UI;
+      } else {
+         return verticalLabelUI;
+      }
+   }
+
+   private boolean clockwise     = false;
+
+   Rectangle       verticalIconR = new Rectangle();
+
+   Rectangle       verticalTextR = new Rectangle();
+
    // see comment in BasicLabelUI
-   Rectangle verticalViewR = new Rectangle();
-   Rectangle verticalIconR = new Rectangle();
-   Rectangle verticalTextR = new Rectangle();
-   protected static VerticalLabelUI verticalLabelUI =
-         new VerticalLabelUI();
-   private final static VerticalLabelUI SAFE_VERTICAL_LABEL_UI =
-         new VerticalLabelUI();
+   Rectangle       verticalViewR = new Rectangle();
 
    /**
     * Constructs a <code>VerticalLabelUI</code> with the default anticlockwise
@@ -61,15 +75,15 @@ public class VerticalLabelUI extends BasicLabelUI {
       this.clockwise = clockwise;
    }
 
-   /**
-    * @see ComponentUI#createUI(javax.swing.JComponent) 
-    */
-   public static ComponentUI createUI(JComponent c) {
-      if (System.getSecurityManager() != null) {
-         return SAFE_VERTICAL_LABEL_UI;
-      } else {
-         return verticalLabelUI;
+   private Rectangle copyRectangle(Rectangle from, Rectangle to) {
+      if (to == null) {
+         to = new Rectangle();
       }
+      to.x = from.x;
+      to.y = from.y;
+      to.width = from.width;
+      to.height = from.height;
+      return to;
    }
 
    /**
@@ -91,59 +105,9 @@ public class VerticalLabelUI extends BasicLabelUI {
     * @see ComponentUI#getBaselineResizeBehavior(javax.swing.JComponent)
     */
    @Override
-   public Component.BaselineResizeBehavior getBaselineResizeBehavior(
-         JComponent c) {
+   public Component.BaselineResizeBehavior getBaselineResizeBehavior(JComponent c) {
       super.getBaselineResizeBehavior(c);
       return Component.BaselineResizeBehavior.OTHER;
-   }
-
-   /**
-    * Transposes the view rectangles as appropriate for a vertical view
-    * before invoking the super method and copies them after they have been
-    * altered by {@link SwingUtilities#layoutCompoundLabel(FontMetrics, String,
-    * Icon, int, int, int, int, Rectangle, Rectangle, Rectangle, int)}
-    */
-   @Override
-   protected String layoutCL(JLabel label, FontMetrics fontMetrics,
-         String text, Icon icon, Rectangle viewR, Rectangle iconR,
-         Rectangle textR) {
-
-      verticalViewR = transposeRectangle(viewR, verticalViewR);
-      verticalIconR = transposeRectangle(iconR, verticalIconR);
-      verticalTextR = transposeRectangle(textR, verticalTextR);
-
-      text = super.layoutCL(label, fontMetrics, text, icon,
-            verticalViewR, verticalIconR, verticalTextR);
-
-      viewR = copyRectangle(verticalViewR, viewR);
-      iconR = copyRectangle(verticalIconR, iconR);
-      textR = copyRectangle(verticalTextR, textR);
-      return text;
-   }
-
-   /**
-    * Transforms the Graphics for vertical rendering and invokes the
-    * super method.
-    */
-   @Override
-   public void paint(Graphics g, JComponent c) {
-      Graphics2D g2 = (Graphics2D) g.create();
-      if (clockwise) {
-         g2.rotate(Math.PI / 2, c.getSize().width / 2, c.getSize().width / 2);
-      } else {
-         g2.rotate(-Math.PI / 2, c.getSize().height / 2, c.getSize().height / 2);
-      }
-      super.paint(g2, c);
-   }
-
-   /**
-    * Returns a Dimension appropriate for vertical rendering
-    * 
-    * @see ComponentUI#getPreferredSize(javax.swing.JComponent)
-    */
-   @Override
-   public Dimension getPreferredSize(JComponent c) {
-      return transposeDimension(super.getPreferredSize(c));
    }
 
    /**
@@ -166,6 +130,52 @@ public class VerticalLabelUI extends BasicLabelUI {
       return transposeDimension(super.getMinimumSize(c));
    }
 
+   /**
+    * Returns a Dimension appropriate for vertical rendering
+    * 
+    * @see ComponentUI#getPreferredSize(javax.swing.JComponent)
+    */
+   @Override
+   public Dimension getPreferredSize(JComponent c) {
+      return transposeDimension(super.getPreferredSize(c));
+   }
+
+   /**
+    * Transposes the view rectangles as appropriate for a vertical view
+    * before invoking the super method and copies them after they have been
+    * altered by {@link SwingUtilities#layoutCompoundLabel(FontMetrics, String,
+    * Icon, int, int, int, int, Rectangle, Rectangle, Rectangle, int)}
+    */
+   @Override
+   protected String layoutCL(JLabel label, FontMetrics fontMetrics, String text, Icon icon, Rectangle viewR, Rectangle iconR, Rectangle textR) {
+
+      verticalViewR = transposeRectangle(viewR, verticalViewR);
+      verticalIconR = transposeRectangle(iconR, verticalIconR);
+      verticalTextR = transposeRectangle(textR, verticalTextR);
+
+      text = super.layoutCL(label, fontMetrics, text, icon, verticalViewR, verticalIconR, verticalTextR);
+
+      viewR = copyRectangle(verticalViewR, viewR);
+      iconR = copyRectangle(verticalIconR, iconR);
+      textR = copyRectangle(verticalTextR, textR);
+      return text;
+   }
+
+   /**
+    * Transforms the Graphics for vertical rendering and invokes the
+    * super method.
+    */
+   @Override
+   public void paint(Graphics g, JComponent c) {
+      Graphics2D g2 = (Graphics2D) g.create();
+      if (clockwise) {
+         g2.rotate(Math.PI / 2, c.getSize().width / 2, c.getSize().width / 2);
+      } else {
+         g2.rotate(-Math.PI / 2, c.getSize().height / 2, c.getSize().height / 2);
+      }
+      super.paint(g2, c);
+   }
+
    private Dimension transposeDimension(Dimension from) {
       return new Dimension(from.height, from.width + 2);
    }
@@ -178,17 +188,6 @@ public class VerticalLabelUI extends BasicLabelUI {
       to.y = from.x;
       to.width = from.height;
       to.height = from.width;
-      return to;
-   }
-
-   private Rectangle copyRectangle(Rectangle from, Rectangle to) {
-      if (to == null) {
-         to = new Rectangle();
-      }
-      to.x = from.x;
-      to.y = from.y;
-      to.width = from.width;
-      to.height = from.height;
       return to;
    }
 }
