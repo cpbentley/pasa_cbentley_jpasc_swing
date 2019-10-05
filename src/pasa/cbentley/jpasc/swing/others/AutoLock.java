@@ -18,7 +18,7 @@ import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
  * @author Charles Bentley
  *
  */
-public class AutoLock extends TimerTask {
+public class AutoLock extends TimerTask implements IEventsPascalSwing {
 
    private PascalSwingCtx psc;
 
@@ -32,9 +32,9 @@ public class AutoLock extends TimerTask {
          psc.getSwingCtx().publishUILog(IUserLog.consoleLogGreen, "Wallet was auto locked");
          //send an event.. but we are on another thread..not our problem.. consumer requires
          IEventBus pascalBus = psc.getEventBusPascal();
-         BusEvent be = pascalBus.createEvent(IEventsPascalSwing.PID_4_WALLET_LOCK, IEventsPascalSwing.EID_4_WALLET_LOCK_1_LOCKED, this);
+         BusEvent be = pascalBus.createEvent(PID_4_WALLET_LOCK, EID_4_WALLET_LOCK_1_LOCKED, this);
          //call the event sending in the UI thread
-         psc.getSwingCtx().publishUIEvent(be, pascalBus);
+         be.putOnBusMainLater(be);
       } else {
          psc.getSwingCtx().publishUILog(IUserLog.consoleLogError, "Wallet failed to auto lock ");
       }
