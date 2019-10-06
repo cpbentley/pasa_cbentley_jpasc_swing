@@ -39,6 +39,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -87,8 +88,8 @@ import pasa.cbentley.jpasc.swing.cmds.PascalCmdManager;
 import pasa.cbentley.jpasc.swing.cmds.PascalPageManager;
 import pasa.cbentley.jpasc.swing.interfaces.IHelpManager;
 import pasa.cbentley.jpasc.swing.interfaces.ILogin;
-import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.interfaces.IPrefsPascalSwing;
+import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.interfaces.ITechUserMode;
 import pasa.cbentley.jpasc.swing.interfaces.IWizardNoob;
 import pasa.cbentley.jpasc.swing.menu.MenuBarPascalAbstract;
@@ -116,6 +117,7 @@ import pasa.cbentley.swing.imytab.PageStrings;
 import pasa.cbentley.swing.imytab.RootPageManager;
 import pasa.cbentley.swing.imytab.TabIconSettings;
 import pasa.cbentley.swing.imytab.TabPage;
+import pasa.cbentley.swing.skin.main.SwingSkinManager;
 import pasa.cbentley.swing.widgets.b.BLabel;
 import pasa.cbentley.swing.window.CBentleyFrame;
 
@@ -166,8 +168,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    private FilterIntOrEmpty                  filterInteger;
 
-   private CBentleyFrame                     frameRoot;
-
    private FundingManager                    funders;
 
    protected final SwingGifCtx               gifc;
@@ -180,7 +180,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    private IntToColor                        intToColor;
 
-   private boolean                  isPrivateCtx;
+   private boolean                           isPrivateCtx;
 
    private ILogin                            login;
 
@@ -190,7 +190,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    private PascalPageManager                 pageManager;
 
-   private PanelHelperChangeKeyName panelHelperChangeKeyName;
+   private PanelHelperChangeKeyName          panelHelperChangeKeyName;
 
    private PascalBPopupMenuFactory           pascalBPopupMenuFactory;
 
@@ -201,7 +201,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    /**
     * Could be null inside this class.
     */
-   private PascalSkinManager                 pascalSkinManager;
+   private SwingSkinManager                  swingSkinManager;
 
    private PascalSwingUtils                  pascalSwingUtils;
 
@@ -278,11 +278,11 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       pascalEventsTopology[PID_6_KEY_LOCAL_OPERATION] = EID_6_ZZ_NUM;
       pascalEventsTopology[PID_7_PRIVACY_CHANGES] = EID_7_ZZ_NUM;
       eventBusPascal = new EventBusArray(getUCtx(), this, pascalEventsTopology);
-      
+
       eventBusPascal.setExecutor(sc.getSwingExecutor());
       //same for our core pascal context who can't set itself since it doesn not its GUI context
       pc.getEventBusPCore().setExecutor(sc.getSwingExecutor());
-      
+
       //setup the linkage for handling block events
       swingBlockEvent = new SwingBlockEventAdapter(this);
       pc.getRPCConnection().addBlockListener(swingBlockEvent);
@@ -447,12 +447,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     */
    public void cmdExit() {
 
-      //save current UI state
-      if (frameRoot != null) {
-         frameRoot.savePrefs(getUIPref());
-      }
-      if (pascalSkinManager != null) {
-         pascalSkinManager.prefsSave();
+      if (swingSkinManager != null) {
+         swingSkinManager.prefsSave();
       }
       //store current page
       if (backForwardManager.getCurrentTab() != null) {
@@ -466,8 +462,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
          }
          getUIPref().put(IPrefsPascalSwing.PREF_PAGE_ROOT, pref);
       }
-
-      pc.exit();
 
    }
 
@@ -760,7 +754,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    }
 
    public CBentleyFrame getFrameRoot() {
-      return frameRoot;
+      return sc.getFrameMain();
    }
 
    public FundingManager getFundingManager() {
@@ -914,12 +908,12 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    /**
     * Sets the selected Icon to /icons/yantra16.png TODO remove hard code
-    * Must have been set with {@link PascalSwingCtx#setPascalSkinManager(PascalSkinManager)}
+    * Must have been set with {@link PascalSwingCtx#setSwingSkinManager(PascalSkinManager)}
     * It must be created before the creation of any swing components
     * @return
     */
-   public PascalSkinManager getPascalSkinManager() {
-      return pascalSkinManager;
+   public SwingSkinManager getPascalSkinManager() {
+      return swingSkinManager;
    }
 
    public PascalSwingUtils getPascalSwingUtils() {
@@ -934,10 +928,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       return prefs;
    }
 
-   public PCoreCtx getPCtx() {
-      return pc;
-   }
-
    //   public Account getSelectedAccount(ListAccountBasePanel lpane) {
    //      Account ac = null;
    //      int selRow = lpane.getJTable().getSelectedRow();
@@ -948,16 +938,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    //      return ac;
    //   }
 
-   public String getPrettyBytes(long size) {
-      String bytes = null;
-      if (size > 1000000) {
-         bytes = (size / 1000000) + "mb";
-      } else if (size > 1000) {
-         bytes = (size / 1000) + "kb";
-      } else {
-         bytes = size + " bytes";
-      }
-      return bytes;
+   public PCoreCtx getPCtx() {
+      return pc;
    }
 
    //   public Operation getSelectedOperation(JTable table, TableModelOperation tableModel) {
@@ -989,6 +971,18 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    //      }
    //      return pk;
    //   }
+
+   public String getPrettyBytes(long size) {
+      String bytes = null;
+      if (size > 1000000) {
+         bytes = (size / 1000000) + "mb";
+      } else if (size > 1000) {
+         bytes = (size / 1000) + "kb";
+      } else {
+         bytes = size + " bytes";
+      }
+      return bytes;
+   }
 
    public String getPrettyBytes(Long size) {
       if (size == null) {
@@ -1116,8 +1110,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    public void guiUpdate() {
       sc.guiUpdate();
 
-      if (pascalSkinManager != null) {
-         pascalSkinManager.guiUpdate(sc.getResBund());
+      if (swingSkinManager != null) {
+         swingSkinManager.guiUpdate();
       }
 
       if (modelProviderPublicJavaKey != null) {
@@ -1184,7 +1178,10 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       String version = System.getProperty("java.version");
       double ver = getVersion() * 10;
       if (ver < 18) {
-         JOptionPane.showMessageDialog(psc.getFrameRoot(), "This feature does not work well with this Java version " + version, "", JOptionPane.ERROR_MESSAGE);
+
+         //get the frame
+         JFrame frame = psc.getSwingCtx().getFrameMain();
+         JOptionPane.showMessageDialog(frame, "This feature does not work well with this Java version " + version, "", JOptionPane.ERROR_MESSAGE);
          return;
       }
 
@@ -1384,8 +1381,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     * Set a skin manager. otherwise get will lazy create one.
     * @param lfModule
     */
-   public void setPascalSkinManager(PascalSkinManager lfModule) {
-      this.pascalSkinManager = lfModule;
+   public void setSwingSkinManager(SwingSkinManager lfModule) {
+      this.swingSkinManager = lfModule;
    }
 
    public void setPrefs(IPrefs prefs) {
@@ -1398,10 +1395,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    public void setPrivateRoot(IRootTabPane privateAssets) {
       rootPanePrivateAssets = privateAssets;
-   }
-
-   public void setRootFrame(CBentleyFrame rootFrame) {
-      this.frameRoot = rootFrame;
    }
 
    public void setRootRPC(IRootTabPane pane) {
@@ -1425,7 +1418,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     * @param tab
     */
    public void showInNewFrameRelToFrameRoot(IMyTab tab) {
-      getSwingCtx().showInNewFrame(tab, frameRoot);
+      getSwingCtx().showInNewFrame(tab, getFrameRoot());
    }
 
    public void showMessageErrorForUI(JComponent c, Object message) {

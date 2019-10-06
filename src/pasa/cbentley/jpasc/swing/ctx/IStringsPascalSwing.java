@@ -7,7 +7,8 @@ package pasa.cbentley.jpasc.swing.ctx;
 
 public interface IStringsPascalSwing {
 
-   String FULLSCREEN_CANCEL = "fullscreen_cancel";
-   String FULLSCREEN_GO = "fullscreen_go";
+   public static final String FULLSCREEN_CANCEL = "fullscreen_cancel";
+
+   public static final String FULLSCREEN_GO     = "fullscreen_go";
 
 }

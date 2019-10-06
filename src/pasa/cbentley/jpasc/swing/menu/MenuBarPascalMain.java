@@ -638,9 +638,6 @@ public class MenuBarPascalMain extends MenuBarPascalAbstract implements ActionLi
     * Called when language has changed
     */
    public void guiUpdate() {
-      SwingCtx sc = psc.getSwingCtx();
-      psc.getPascalSkinManager().guiUpdate(sc.getResBund());
-
       super.guiUpdate();
    }
 

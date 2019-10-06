@@ -51,11 +51,11 @@ public class PanelHelperChangeKeyName extends PanelPascal implements ActionListe
 
       riverCenter.raddBr(labKeyPrivate);
       riverCenter.raddTab(textKeyPrivate);
-      
+
       riverCenter.raddBr(butClear);
       riverCenter.raddTab(butPrivateToPub);
       riverCenter.raddTab(butPubToPrivate);
-      
+
       riverCenter.raddBr(labKeyPublic);
       riverCenter.raddTab(textKeyPublic);
 
@@ -79,6 +79,14 @@ public class PanelHelperChangeKeyName extends PanelPascal implements ActionListe
 
    public void setKeyPrivate(String str) {
       textKeyPrivate.setText(str);
+   }
+
+   public void setKeyPrivateEnabled(boolean isEnabled) {
+      if(isEnabled) {
+         textKeyPrivate.setEditable(true);
+      } else {
+         textKeyPrivate.setEditable(false);
+      }
    }
 
    public void setupForKey(String encPubKey) {

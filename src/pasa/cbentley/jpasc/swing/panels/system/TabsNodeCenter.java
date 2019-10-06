@@ -9,6 +9,7 @@ import pasa.cbentley.jpasc.swing.audio.PascalAudio;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.swing.imytab.TabbedBentleyPanel;
+import pasa.cbentley.swing.panels.PreferenceTab;
 
 public class TabsNodeCenter extends TabbedBentleyPanel {
    public static final String   ID               = "root_node";

@@ -36,7 +36,7 @@ import pasa.cbentley.swing.dialogs.JOptionPaneWithSlider;
 import pasa.cbentley.swing.imytab.IMyTab;
 import pasa.cbentley.swing.window.CBentleyFrame;
 
-public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
+public class PascalCmdManager implements IStringable, ITechShow {
 
    private CmdAccountSendFrom              cmdAccountSendFrom;
 
@@ -100,17 +100,6 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
       this.psc = psc;
    }
 
-   public void callBack(Object o) {
-      //which call back ?
-      if (o instanceof SoundPlay) {
-         System.exit(0);
-      } else {
-
-         //#debug
-         toDLog().pTest("Unknown Class " + o, this, PascalCmdManager.class, "callBack", LVL_05_FINE, true);
-         System.exit(0);
-      }
-   }
 
    public void cmdChangeLanguage(String lang, String country) {
       psc.getSwingCtx().updateLocale(lang, country);
@@ -147,18 +136,6 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
       //TODO later
       psc.getUIPref().putInt(IPrefsPascalSwing.PREF_FRAME_NUM, 0);
       //store preference for all running
-
-      psc.cmdExit();
-
-      //wait for sound to play and then exit
-      try {
-         //wrap in a try in case whatever happens. Audio might be buggy.
-         //we have no idea
-         psc.getAudio().playAudioRandom(PascalAudio.SOUNDS_BYE, this);
-      } catch (Error e) {
-         e.printStackTrace();
-         doEffectiveExit();
-      }
 
    }
 
@@ -316,10 +293,6 @@ public class PascalCmdManager implements IStringable, ICallBack, ITechShow {
       } else {
          psc.getLog().consoleLog("Tab Icons disabled");
       }
-   }
-
-   private void doEffectiveExit() {
-      System.exit(0);
    }
 
    public CmdAccountSendFrom getCmdAccountSendFrom() {

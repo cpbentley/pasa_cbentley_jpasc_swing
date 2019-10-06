@@ -5,9 +5,9 @@
  */
 package pasa.cbentley.jpasc.swing.interfaces;
 
-import pasa.cbentley.core.src4.interfaces.IPrefs;
+import pasa.cbentley.core.src4.interfaces.ITechPrefs;
 
-public interface IPrefsPascalSwing extends IPrefs {
+public interface IPrefsPascalSwing extends ITechPrefs {
 
    /**
     * Use this and concat the id
@@ -51,6 +51,8 @@ public interface IPrefsPascalSwing extends IPrefs {
    public static final String PREF_MODE                     = "settings.mode";
 
    public static final String PREF_                         = "settings.mode";
+
+   public static final String PREF_AGREE_PREFIX             = "agree";
 
    public static final int    PREF_EFFECTS_0_NONE           = 0;
 

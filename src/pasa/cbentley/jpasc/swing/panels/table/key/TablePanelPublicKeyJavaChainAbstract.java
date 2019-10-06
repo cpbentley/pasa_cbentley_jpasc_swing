@@ -50,7 +50,10 @@ public abstract class TablePanelPublicKeyJavaChainAbstract extends TablePanelPub
    }
 
    public void cmdChangeKeyName(CmdKeyChangeName cmd) {
-      psc.getLog().consoleLogDateRed("Change account name in reference wallet.");
+      PublicKeyJava pk = this.getSelectedPublicKeyA();
+      if (pk != null) {
+         cmd.executeWith(pk);
+      }
    }
 
    public void cmdShowKeyAccountNames() {

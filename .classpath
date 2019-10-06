@@ -16,5 +16,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/pasa_dbolet_jpascalcoin_v3"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/pasa_jtattoo"/>
 	<classpathentry kind="lib" path="libs/jorbis-lgpl-0.0.17.jar" sourcepath="libs/jorbis-lgpl-0.0.17-src.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/pasa_cbentley_swing_skin"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

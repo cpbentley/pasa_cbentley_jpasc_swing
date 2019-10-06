@@ -9,6 +9,9 @@ import javax.swing.JOptionPane;
 
 import com.github.davidbolet.jpascalcoin.api.model.Account;
 
+import pasa.cbentley.jpasc.pcore.ctx.PCoreCtx;
+import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
+import pasa.cbentley.jpasc.pcore.tools.KeyNameProvider;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperChangeKeyName;
 import pasa.cbentley.swing.cmd.CmdSwingAbstract;
@@ -44,34 +47,51 @@ public class CmdKeyChangeName extends CmdSwingAbstract<ICommandableKey> {
 
    }
 
+   public void executeWith(PublicKeyJava pkJava) {
+      String encodedPk = pkJava.getEncPubKey();
+      executeWith(encodedPk);
+   }
+
+   public void executeWith(String encodedPk) {
+      PanelHelperChangeKeyName panel = psc.getPanelHelperChangeKeyName();
+      //set current
+      PCoreCtx pc = psc.getPCtx();
+      KeyNameProvider keyNameProvider = pc.getKeyNameProvider();
+      String name = keyNameProvider.getPkNameStorePublic().getKeyNameAdd(encodedPk);
+      panel.setKeyPublic(name);
+      if (psc.isPrivateCtx()) {
+         name = keyNameProvider.getPkNameStorePrivate().getKeyName(encodedPk);
+         panel.setKeyPrivate(name);
+         if(keyNameProvider.getPkNameStorePrivate().isPrivateWallet(encodedPk)) {
+            panel.setKeyPrivateEnabled(false);
+         } else {
+            panel.setKeyPrivateEnabled(true);
+         }
+      } else {
+         panel.setKeyPrivate(sc.getResString("text.publicmodehidekeyname"));
+         panel.setKeyPrivateEnabled(false);
+      }
+
+      panel.guiUpdate();
+
+      int result = JOptionPane.showConfirmDialog(psc.getFrameRoot(), panel, "Local Name Database: What's the new name?", JOptionPane.OK_CANCEL_OPTION);
+      //name is null if canceled
+      if (result == JOptionPane.OK_OPTION) {
+         //only set private name if private context
+         if (psc.isPrivateCtx()) {
+            String namePriv = panel.getKeyPrivate();
+            keyNameProvider.getPkNameStorePrivate().setPkName(encodedPk, namePriv);
+         }
+         String namePub = panel.getKeyPublic();
+         keyNameProvider.getPkNameStorePublic().setPkName(encodedPk, namePub);
+         keyNameProvider.cmdSave();
+      }
+   }
+
    public void executeWith(Account ac) {
       if (ac != null) {
          String encodedPk = ac.getEncPubkey();
-         PanelHelperChangeKeyName panel = psc.getPanelHelperChangeKeyName();
-         //set current
-         String name = psc.getPCtx().getKeyNameProvider().getPkNameStorePublic().getKeyNameAdd(encodedPk);
-         panel.setKeyPublic(name);
-         if (psc.isPrivateCtx()) {
-            name = psc.getPCtx().getKeyNameProvider().getPkNameStorePrivate().getKeyName(encodedPk);
-            panel.setKeyPrivate(name);
-         } else {
-            panel.setKeyPrivate(sc.getResString("text.publicmodehidekeyname"));
-         }
-
-         panel.guiUpdate();
-
-         int result = JOptionPane.showConfirmDialog(psc.getFrameRoot(), panel, "Local Name Database: What's the new name?", JOptionPane.OK_CANCEL_OPTION);
-         //name is null if canceled
-         if (result == JOptionPane.OK_OPTION) {
-            //only set private name if private context
-            if (psc.isPrivateCtx()) {
-               String namePriv = panel.getKeyPrivate();
-               psc.getPCtx().getKeyNameProvider().getPkNameStorePrivate().setPkName(encodedPk, namePriv);
-            }
-            String namePub = panel.getKeyPublic();
-            psc.getPCtx().getKeyNameProvider().getPkNameStorePublic().setPkName(encodedPk, namePub);
-            psc.getPCtx().getKeyNameProvider().cmdSave();
-         }
+         executeWith(encodedPk);
       }
    }
 }

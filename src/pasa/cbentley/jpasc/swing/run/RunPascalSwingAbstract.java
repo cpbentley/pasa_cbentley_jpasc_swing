@@ -36,6 +36,8 @@ import pasa.cbentley.swing.ctx.SwingCtx;
 import pasa.cbentley.swing.gif.ctx.SwingGifCtx;
 import pasa.cbentley.swing.images.ctx.ImgCtx;
 import pasa.cbentley.swing.run.RunSwingAbstract;
+import pasa.cbentley.swing.skin.ctx.SwingSkinCtx;
+import pasa.cbentley.swing.skin.main.SwingSkinManager;
 import pasa.cbentley.swing.window.CBentleyFrame;
 
 /**
@@ -53,10 +55,13 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
 
    protected final PascalSwingCtx psc;
 
+   protected final SwingSkinCtx ssc;
+
    public RunPascalSwingAbstract() {
       this.imgc = new ImgCtx(sc);
       this.gifc = new SwingGifCtx(sc, imgc);
       this.pc = new PCoreCtx(uc, c5);
+      this.ssc=new SwingSkinCtx(sc);
       this.psc = new PascalSwingCtx(pc, sc, gifc);
    }
 
@@ -66,6 +71,7 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
    protected final void addI18n(List<String> list) {
       psc.addI18NKey(list);
       pc.addI18NKey(list);
+      ssc.addI18NKey(list);
       gifc.addI18NKey(list);
 
       addI18nPascal(list);
@@ -104,10 +110,10 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
     */
    protected void initSkinner() {
       //load the look and feel before any Swing component
-      PascalSkinManager pascalSkinManager = new PascalSkinManager(psc);
+      SwingSkinManager pascalSkinManager = new SwingSkinManager(ssc);
       ImageIcon icon = psc.createImageIcon("/icons/look/yantra16.png", "");
       pascalSkinManager.setIconSelected(icon);
-      psc.setPascalSkinManager(pascalSkinManager);
+      psc.setSwingSkinManager(pascalSkinManager);
    }
 
    /**
