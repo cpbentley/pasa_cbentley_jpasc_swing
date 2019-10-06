@@ -113,6 +113,7 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
       SwingSkinManager pascalSkinManager = new SwingSkinManager(ssc);
       ImageIcon icon = psc.createImageIcon("/icons/look/yantra16.png", "");
       pascalSkinManager.setIconSelected(icon);
+      pascalSkinManager.prefsInit();
       psc.setSwingSkinManager(pascalSkinManager);
    }
 

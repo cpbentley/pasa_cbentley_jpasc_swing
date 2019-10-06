@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.util.Date;
 
 import pasa.cbentley.core.src4.ctx.UCtx;
+import pasa.cbentley.core.src4.helpers.UserLogJournal;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IUserLog;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
@@ -24,7 +25,7 @@ public class CentralLogger implements IUserLog {
 
    private PanelTabConsoleAbstract consolePanel;
 
-   private PascalSwingCtx       psc;
+   private PascalSwingCtx          psc;
 
    public CentralLogger(PascalSwingCtx psc, PanelTabConsoleAbstract cp) {
       this.psc = psc;
@@ -62,6 +63,12 @@ public class CentralLogger implements IUserLog {
       consolePanel.appendToPaneAsLine(str, psc.getGreen());
    }
 
+   public void processOld(IUserLog log) {
+      if (log instanceof UserLogJournal) {
+         UserLogJournal userLog = (UserLogJournal) log;
+      }
+   }
+
    //#mdebug
    public String toString() {
       return Dctx.toString(this);
@@ -71,16 +78,16 @@ public class CentralLogger implements IUserLog {
       dc.root(this, "CentralLogger");
    }
 
-   public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
-   }
-
    public String toString1Line() {
       return Dctx.toString1Line(this);
    }
 
    public void toString1Line(Dctx dc) {
       dc.root1Line(this, "CentralLogger");
+   }
+
+   public UCtx toStringGetUCtx() {
+      return psc.getUCtx();
    }
 
    //#enddebug
