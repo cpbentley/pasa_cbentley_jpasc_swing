@@ -55,13 +55,13 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
 
    protected final PascalSwingCtx psc;
 
-   protected final SwingSkinCtx ssc;
+   protected final SwingSkinCtx   ssc;
 
    public RunPascalSwingAbstract() {
       this.imgc = new ImgCtx(sc);
       this.gifc = new SwingGifCtx(sc, imgc);
       this.pc = new PCoreCtx(uc, c5);
-      this.ssc=new SwingSkinCtx(sc);
+      this.ssc = new SwingSkinCtx(sc);
       this.psc = new PascalSwingCtx(pc, sc, gifc);
    }
 
@@ -132,7 +132,6 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
       return panelLoginConsole;
    }
 
-
    //#mdebug
    public void toString(Dctx dc) {
       dc.root(this, "RunPascalSwingAbstract");
@@ -147,7 +146,7 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
    }
 
    private void toStringPrivate(Dctx dc) {
-      
+
    }
 
    public void toString1Line(Dctx dc) {
@@ -157,7 +156,5 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
    }
 
    //#enddebug
-   
-
 
 }
