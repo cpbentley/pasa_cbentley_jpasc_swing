@@ -37,7 +37,7 @@ public class PanelHelperKeyWallet extends PanelHelperKeyAbstract {
    }
 
    protected ComboModelMapPublicKeyJava createModel() {
-      return psc.getModelProviderPublicJavaKeyPrivate().createPublicKeyJavaPrivateWildcards();
+      return psc.getModelProviderPublicJavaKeyPrivate().createModelPublicKeyJavaWildcards();
    }
 
 

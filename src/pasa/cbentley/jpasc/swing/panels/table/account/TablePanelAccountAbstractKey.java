@@ -10,6 +10,7 @@ import javax.swing.SortOrder;
 
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
+import pasa.cbentley.jpasc.pcore.filter.SetFilterKey;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.ICommandableNameList;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
@@ -76,7 +77,8 @@ public abstract class TablePanelAccountAbstractKey extends TablePanelAccountAbst
    protected void setWorkerData(WorkerTableAccountAbstract worker) {
       if (panelKeyHelper != null) {
          //depending on the key, set a special key filter on the worker
-         worker.setFilterSet(panelKeyHelper.getFilterSet());
+         SetFilterKey filterSet = panelKeyHelper.getFilterSet();
+         worker.setFilterSet(filterSet);
       }
    }
 

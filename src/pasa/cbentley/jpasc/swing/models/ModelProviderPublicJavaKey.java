@@ -132,7 +132,6 @@ public class ModelProviderPublicJavaKey implements IWorkerPanel, IMyGui, IEventC
    public HashMapCacheKeys getCacheKeyPrivate(ICacheLoadingListener<INameable<PublicKeyJava>, PublicKeyJava> lis) {
       if (cacheKeyPrivate == null) {
          cacheKeyPrivate = new HashMapCacheKeys(psc);
-         cacheKeyPrivate.setCacheLoadingListener(lis);
          //populate the cache
          workerPrivate = new WorkerHashMapCacheKeyPrivate(psc, this, cacheKeyPrivate);
          //define task to be done at execution in UI thread
@@ -160,7 +159,6 @@ public class ModelProviderPublicJavaKey implements IWorkerPanel, IMyGui, IEventC
                if (workerPrivate == null) {
                   //there is an error
                }
-               cacheKeyPrivate.setCacheLoadingListener(cacheKeyPrivateAll);
             }
          } else {
             getCacheKeyPrivate(cacheKeyPrivateAll);
@@ -248,8 +246,6 @@ public class ModelProviderPublicJavaKey implements IWorkerPanel, IMyGui, IEventC
    public void panelSwingWorkerDone(PanelSwingWorker worker) {
       if (worker == workerPrivate) {
          //cascade notify private HashMapCacheKeys
-         cacheKeyPrivate.notifyFinishLoading();
-
 
          processFoundSinglesPrivate();
          workerPrivate = null;

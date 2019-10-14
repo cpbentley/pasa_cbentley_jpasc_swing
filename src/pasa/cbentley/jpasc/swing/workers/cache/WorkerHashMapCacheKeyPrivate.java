@@ -5,7 +5,6 @@
  */
 package pasa.cbentley.jpasc.swing.workers.cache;
 
-import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src5.interfaces.INameable;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
@@ -18,6 +17,9 @@ import pasa.cbentley.swing.threads.IWorkerPanel;
 
 /**
  * Fill a combo model with {@link PublicKeyJavaNamer}
+ * 
+ * this is kinda advanced. We want a Hashmap
+ * 
  * @author Charles Bentley
  *
  */

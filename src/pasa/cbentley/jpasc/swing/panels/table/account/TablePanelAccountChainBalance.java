@@ -46,10 +46,11 @@ public class TablePanelAccountChainBalance extends TablePanelAccountAbstractMinM
    }
 
    protected PanelHelperMinMaxDouble createPanelMinMaxDouble() {
-      PanelHelperMinMaxDouble panel = new PanelHelperMinMaxDouble(psc, this, "balance");
+      PanelHelperMinMaxDouble panel = new PanelHelperMinMaxDouble(psc, this, "balance", this);
       panel.setNullIfEmpty();
       return panel;
    }
+   
    
    protected void subPopulatePopMenu(BPopupMenu menu) {
       super.addDefaultAccountMenuItemsNoSendNoKey(menu);

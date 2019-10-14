@@ -6,7 +6,6 @@
 package pasa.cbentley.jpasc.swing.panels.table.account;
 
 import javax.swing.JPanel;
-import javax.swing.SortOrder;
 
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
@@ -14,7 +13,6 @@ import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperMinMaxDouble;
 import pasa.cbentley.jpasc.swing.workers.table.account.WorkerTableAccountAbstractMinMaxDouble;
 import pasa.cbentley.swing.imytab.IMyTab;
-import pasa.cbentley.swing.threads.PanelSwingWorker;
 import pasa.cbentley.swing.widgets.b.BPopupMenu;
 
 /**
@@ -28,7 +26,7 @@ public abstract class TablePanelAccountAbstractMinMaxDouble extends TablePanelAc
    /**
     * 
     */
-   private static final long   serialVersionUID = -3040964171971420256L;
+   private static final long         serialVersionUID = -3040964171971420256L;
 
    protected PanelHelperMinMaxDouble panelMinMaxDouble;
 
@@ -42,28 +40,27 @@ public abstract class TablePanelAccountAbstractMinMaxDouble extends TablePanelAc
       super(psc, id, root);
    }
 
-   /**
-    * Override must not call super.
-    */
-   protected void subPopulatePopMenu(BPopupMenu menu) {
-      super.addDefaultAccountMenuItems(menu);
-   }
-
-   protected void subInitPanelNorth(JPanel north) {
-      super.subInitPanelNorth(north); //adds panel refresh
-      //also want an integer min max
-      north.add(getPanelMinMaxDouble());
-   }
-   
    protected abstract PanelHelperMinMaxDouble createPanelMinMaxDouble();
 
+   public Double getDoubleMax() {
+      return panelMinMaxDouble.getMaxDouble();
+   }
+
+   public Double getDoubleMin() {
+      return panelMinMaxDouble.getMinDouble();
+   }
+
+   /**
+    * Return non null {@link PanelHelperMinMaxDouble}
+    * @return
+    */
    public PanelHelperMinMaxDouble getPanelMinMaxDouble() {
       if (panelMinMaxDouble == null) {
          panelMinMaxDouble = createPanelMinMaxDouble();
       }
       return panelMinMaxDouble;
    }
-   
+
    public void setDoubleMaxNoRefresh(String value) {
       tableRefreshDisable();
       getPanelMinMaxDouble().setMax(value);
@@ -75,7 +72,7 @@ public abstract class TablePanelAccountAbstractMinMaxDouble extends TablePanelAc
       getPanelMinMaxDouble().setMin(value);
       tableRefreshEnable();
    }
-   
+
    protected void setWorkerData(WorkerTableAccountAbstractMinMaxDouble worker) {
       super.setWorkerData(worker);
       if (panelMinMaxDouble != null) {
@@ -83,13 +80,18 @@ public abstract class TablePanelAccountAbstractMinMaxDouble extends TablePanelAc
          worker.setMax(getDoubleMax());
       }
    }
-   
-   public Double getDoubleMax() {
-      return panelMinMaxDouble.getMaxDouble();
+
+   protected void subInitPanelNorth(JPanel north) {
+      super.subInitPanelNorth(north); //adds panel refresh
+      //also want an integer min max
+      north.add(getPanelMinMaxDouble());
    }
 
-   public Double getDoubleMin() {
-      return panelMinMaxDouble.getMinDouble();
+   /**
+    * Override must not call super.
+    */
+   protected void subPopulatePopMenu(BPopupMenu menu) {
+      super.addDefaultAccountMenuItems(menu);
    }
 
    //#mdebug

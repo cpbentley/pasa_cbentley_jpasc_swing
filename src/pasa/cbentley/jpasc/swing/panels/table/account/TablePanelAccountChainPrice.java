@@ -81,7 +81,7 @@ public class TablePanelAccountChainPrice extends TablePanelAccountAbstractMinMax
    }
 
    protected PanelHelperMinMaxDouble createPanelMinMaxDouble() {
-      PanelHelperMinMaxDouble panel = new PanelHelperMinMaxDouble(psc, this, "price");
+      PanelHelperMinMaxDouble panel = new PanelHelperMinMaxDouble(psc, this, "price",this);
       panel.setNullIfEmpty();
       return panel;
    }

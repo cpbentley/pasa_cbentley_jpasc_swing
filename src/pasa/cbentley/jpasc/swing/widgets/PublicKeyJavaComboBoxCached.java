@@ -38,14 +38,18 @@ public class PublicKeyJavaComboBoxCached extends JComboBox<String> implements IS
    public PublicKeyJavaComboBoxCached(PascalSwingCtx psc, ActionListener al, ComboModelMapPublicKeyJava model) {
       this.psc = psc;
       this.addActionListener(al);
-      this.comboModel = model;
-      this.setModel(model);
+      setModelCombo(model);
    }
 
    protected void fireActionEvent() {
       if (isFireEvents) {
          super.fireActionEvent();
       }
+   }
+
+   public void setModelCombo(ComboModelMapPublicKeyJava model) {
+      this.comboModel = model;
+      this.setModel(model);
    }
 
    public ComboModelMapPublicKeyJava getModelKey() {
@@ -81,7 +85,7 @@ public class PublicKeyJavaComboBoxCached extends JComboBox<String> implements IS
       //strategy
       //see position on screen
       //compute size of one row
-      this.setMaximumRowCount(15);
+      this.setMaximumRowCount(25);
    }
 
    public boolean setSelectedEncPubKey(String encPubKey) {
@@ -116,6 +120,10 @@ public class PublicKeyJavaComboBoxCached extends JComboBox<String> implements IS
          return true;
       }
       return false;
+   }
+
+   public void setSelectedKeyIndexWithEvent(int index) {
+      setSelectedIndex(index);
    }
 
    public void setSelectedKeyWithEvent(String publicKeyName) {

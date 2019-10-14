@@ -37,7 +37,7 @@ public class PanelHelperKeyChain extends PanelHelperKeyAbstract {
     * @return
     */
    protected ComboModelMapPublicKeyJava createModel() {
-      return psc.getModelProviderPublicJavaKeyPrivate().createPublicKeyJavaPrivateWildcards();
+      return psc.getModelProviderPublicJavaKeyPrivate().createModelPublicKeyJavaWildcards();
    }
 
 

@@ -34,7 +34,7 @@ public class TablePanelAccountWalletAge extends TablePanelAccountAbstractMinMaxI
    }
 
    protected PanelHelperMinMaxInteger createPanelMinMaxInteger() {
-      PanelHelperMinMaxInteger panel = new PanelHelperMinMaxInteger(psc, this, "blockage");
+      PanelHelperMinMaxInteger panel = new PanelHelperMinMaxInteger(psc, this, "blockage",this);
       panel.setNullIfEmpty();
       return panel;
    }

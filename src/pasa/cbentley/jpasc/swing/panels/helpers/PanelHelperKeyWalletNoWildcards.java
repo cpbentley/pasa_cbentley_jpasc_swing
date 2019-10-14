@@ -34,7 +34,7 @@ public class PanelHelperKeyWalletNoWildcards extends PanelHelperKeyAbstract {
    }
 
    protected ComboModelMapPublicKeyJava createModel() {
-      return psc.getModelProviderPublicJavaKeyPrivate().createPublicKeyJavaPrivate();
+      return psc.getModelProviderPublicJavaKeyPrivate().createModelPublicKeyJava();
    }
 
    

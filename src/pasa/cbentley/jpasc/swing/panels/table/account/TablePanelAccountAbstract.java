@@ -6,12 +6,11 @@
 package pasa.cbentley.jpasc.swing.panels.table.account;
 
 import java.awt.BorderLayout;
+import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.github.davidbolet.jpascalcoin.api.model.Account;
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
 
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.domain.java.AccountJava;
@@ -34,6 +33,7 @@ import pasa.cbentley.jpasc.swing.workers.table.account.WorkerTableAccountAbstrac
 import pasa.cbentley.swing.ctx.SwingCtx;
 import pasa.cbentley.swing.imytab.IMyGui;
 import pasa.cbentley.swing.imytab.IMyTab;
+import pasa.cbentley.swing.interfaces.IStringPrefIDable;
 import pasa.cbentley.swing.threads.PanelSwingWorker;
 import pasa.cbentley.swing.widgets.b.BCMenuItem;
 import pasa.cbentley.swing.widgets.b.BMenuItem;
@@ -55,7 +55,7 @@ import pasa.cbentley.swing.widgets.b.BPopupMenu;
  * @author Charles Bentley
  *
  */
-public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Account> implements IMyTab, IMyGui, ICommandableAccount, ICommandableKey {
+public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Account> implements IMyTab, IMyGui, ICommandableAccount, ICommandableKey, IStringPrefIDable {
 
    /**
     * 
@@ -465,6 +465,16 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
    public boolean removeAccountFromModel(Account ac) {
       if (isInitialized()) {
          return getBenTable().getModel().removeRow(ac);
+      }
+      return false;
+   }
+
+   public boolean removeAccountsFromModel(List<Account> acs) {
+      if (isInitialized()) {
+         for (Account ac : acs) {
+             getBenTable().getModel().removeRow(ac);
+         }
+         return true;
       }
       return false;
    }

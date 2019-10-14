@@ -5,12 +5,13 @@
  */
 package pasa.cbentley.jpasc.swing.workers.cache;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pasa.cbentley.core.src4.logging.IStringable;
 import pasa.cbentley.core.src5.interfaces.INameable;
 import pasa.cbentley.core.src5.utils.HashMapCache;
-import pasa.cbentley.jpasc.pcore.task.ListTask;
+import pasa.cbentley.core.src5.utils.ICacheLoadingListener;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.workers.abstrakt.WorkerListTaskPage;
 import pasa.cbentley.swing.model.ModelTableBAbstractArray;
@@ -22,10 +23,13 @@ public abstract class WorkerHashMapCacheAbstract<T extends HashMapCache<INameabl
 
    protected final PascalSwingCtx                              psc;
 
+   protected ArrayList<ICacheLoadingListener> listeners;
+   
    public WorkerHashMapCacheAbstract(PascalSwingCtx psc, IWorkerPanel wp, T model) {
       super(psc.getSwingCtx(), wp);
       this.psc = psc;
       this.model = model;
+      listeners = new ArrayList<ICacheLoadingListener>(2);
    }
 
    /**
@@ -46,4 +50,27 @@ public abstract class WorkerHashMapCacheAbstract<T extends HashMapCache<INameabl
       wp.panelSwingWorkerProcessed(this, chunks.size());
    }
 
+   /**
+    * Must be called in the UI thread
+    */
+   public void addTaskListener(ICacheLoadingListener listener) {
+      //#debug
+      psc.getSwingCtx().checkUIThread();
+      
+      listeners.add(listener);
+   }
+   
+   /**
+    * Must be called in the UI thread by 
+    * 
+    * {@link IWorkerPanel#panelSwingWorkerDone(pasa.cbentley.swing.threads.PanelSwingWorker)}
+    */
+   public void notifyListeners() {
+      //#debug
+      psc.getSwingCtx().checkUIThread();
+      
+      for (ICacheLoadingListener lis : listeners) {
+         lis.modelDidFinishLoading(model);
+      }
+   }
 }

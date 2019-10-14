@@ -38,7 +38,7 @@ public class PanelHelperKeyGlobal extends PanelHelperKeyAbstract {
    }
 
    protected ComboModelMapPublicKeyJava createModel() {
-      return psc.getModelProviderPublicJavaKeyPrivate().createPublicKeyJavaPrivate();
+      return psc.getModelProviderPublicJavaKeyPrivate().createModelPublicKeyJava();
    }
 
    //#mdebug

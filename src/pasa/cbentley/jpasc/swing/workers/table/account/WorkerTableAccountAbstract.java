@@ -59,7 +59,13 @@ public abstract class WorkerTableAccountAbstract extends WorkerListTaskPage<Mode
       return task;
    }
 
+   /**
+    * Creates a {@link ListTaskAccountAbstract} implementation.
+    * They filter set of key is already set
+    * @return
+    */
    protected abstract ListTaskAccountAbstract createTaskAccount();
+   
    /**
     * Lazy creation.. Used by outside.
     * Subclass check if null directly.

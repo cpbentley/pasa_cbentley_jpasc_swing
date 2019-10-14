@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
 
 import pasa.cbentley.core.src4.logging.Dctx;
+import pasa.cbentley.jpasc.pcore.domain.PublicKeyJavaManager;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.pcore.filter.SetFilterKey;
 import pasa.cbentley.jpasc.pcore.filter.publickeyjava.FilterKeyJavaEmpty;
@@ -24,7 +25,9 @@ import pasa.cbentley.swing.interfaces.IStringPrefIDable;
 import pasa.cbentley.swing.widgets.b.BLabel;
 
 /**
- * Panel that displays a Drop down combo box of keys.
+ * Base Panel for selecting a {@link PublicKeyJava}.
+ * 
+ * <li> that displays a Drop down combo box of keys.
  * 
  * Can be disabled by default
  * 
@@ -38,15 +41,20 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
     */
    protected PublicKeyJavaComboBoxCached comboKeys;
 
+   protected IStringPrefIDable           idable;
+
    private boolean                       isDefChangeKeySelected;
 
-   private boolean                       isKeySelectionEnabled;
+   /**
+    * When true, shows a drop down combo
+    */
+   private boolean                       isDropDownComboEnabled;
 
    protected boolean                     isShowLabel;
 
-   protected BLabel                      labPublicKey;
+   private boolean                       isWildcarded;
 
-   protected IStringPrefIDable           idable;
+   protected BLabel                      labPublicKey;
 
    protected ICommandableRefresh         refresh;
 
@@ -54,6 +62,7 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
       super(psc);
       this.idable = idable;
       this.refresh = refresh;
+      isDropDownComboEnabled = true;
 
       //TODO we want to listen to key events? to add and remove keys?
    }
@@ -84,19 +93,35 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
          toDLog().pNull("Object already built", this, PanelHelperKeyAbstract.class, "initUI", LVL_09_WARNING, true);
          return;
       }
-      labPublicKey = new BLabel(sc, "text.publickey");
-      labPublicKey.setKeyTip("text.publickey.tip");
+      String labelKey = this.labelKey;
+      if (labelKey == null) {
+         labelKey = "text.publickey";
+      }
+      labPublicKey = new BLabel(sc, labelKey);
 
-      if (isKeySelectionEnabled) {
+      if (isDropDownComboEnabled) {
          ComboModelMapPublicKeyJava model = createModel();
+         comboKeys = new PublicKeyJavaComboBoxCached(psc, this, model);
+         comboKeys.setMaxVisible();
          if (model.isDataLoaded()) {
             selectPreviousKey();
          } else {
             //TODO if data model is finished loading during if call.. listener is useless. very rare case.
-            model.setListenerComboMap(this);
+            model.addListenerComboMap(this);
          }
-         comboKeys = new PublicKeyJavaComboBoxCached(psc, this, model);
-         comboKeys.setMaxVisible();
+      }
+   }
+
+   public void refreshModel() {
+      if (isDropDownComboEnabled) {
+         ComboModelMapPublicKeyJava model = createModel();
+         comboKeys.setModelCombo(model);
+         if (model.isDataLoaded()) {
+            selectPreviousKeyWithEvent(comboKeys);
+         } else {
+            //TODO if data model is finished loading during if call.. listener is useless. very rare case.
+            model.addListenerComboMap(this);
+         }
       }
    }
 
@@ -116,19 +141,30 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
       return idable.getSelectorKeyPrefID() + ".combochoice";
    }
 
+   /**
+    * Get the {@link SetFilterKey} based on current selection.
+    * @return
+    */
    public SetFilterKey getFilterSet() {
       PublicKeyJava pk = getSelectedKeyAsPublicKeyJava();
       SetFilterKey filterSet = null;
       if (pk != null) {
          filterSet = new SetFilterKey(psc.getPCtx());
-         if (pk == psc.getModelProviderPublicJavaKey().getPublicKeyJavaAll()) {
-            //do not set any... null equals all keys
-         } else if (pk == psc.getModelProviderPublicJavaKey().getPublicKeyJavaEmpties()) {
-            filterSet.addFilter(new FilterKeyJavaEmpty(psc.getPCtx()));
+         //wildcard
+         if (pk.isWildcard()) {
+            PublicKeyJavaManager pkManager = psc.getPCtx().getPublicKeyJavaManager();
+            if (pk == pkManager.getAll()) {
+               //do not set any... null equals all keys
+            } else if (pk == pkManager.getEmpties()) {
+               filterSet.addFilter(new FilterKeyJavaEmpty(psc.getPCtx()));
+            }
          } else {
             //check if well formed
-            if (pk.getCanUse() != null) {
+            if (pk.isWellFormed()) {
                filterSet.addKey(pk);
+            } else {
+               //#debug
+               toDLog().pNull("PublicKeyJava not well formed", this, PanelHelperKeyAbstract.class, "getFilterSet", LVL_05_FINE, true);
             }
          }
       }
@@ -163,18 +199,37 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
    }
 
    public boolean isKeySelectionEnabled() {
-      return isKeySelectionEnabled;
+      return isDropDownComboEnabled;
    }
 
    public void modelDidFinishLoading(ComboModelMapPublicKeyJava model) {
+      //#debug
+      toDLog().pFlow("", model, PanelHelperKeyAbstract.class, "modelDidFinishLoading", LVL_05_FINE, true);
+
       selectPreviousKey();
    }
 
    private void selectPreviousKey() {
       if (comboKeys != null) {
          //select the previously selected key
-         String key = psc.getPascPrefs().get(getComboPrefString(), "");
-         comboKeys.setSelectedKeyNoEvent(key);
+         String keySelected = psc.getPascPrefs().get(getComboPrefString(), "");
+         if (keySelected.equals("")) {
+            comboKeys.setSelectedIndex(0);
+         } else {
+            comboKeys.setSelectedKeyNoEvent(keySelected);
+         }
+      }
+   }
+
+   private void selectPreviousKeyWithEvent(PublicKeyJavaComboBoxCached comboKeys) {
+      if (comboKeys != null) {
+         //select the previously selected key
+         String keySelected = psc.getPascPrefs().get(getComboPrefString(), "");
+         if (keySelected.equals("")) {
+            comboKeys.setSelectedIndex(0);
+         } else {
+            comboKeys.setSelectedKeyWithEvent(keySelected);
+         }
       }
    }
 
@@ -190,13 +245,22 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
    }
 
    public void setKeySelectionEnabled(boolean isKeySelectionEnabled) {
-      this.isKeySelectionEnabled = isKeySelectionEnabled;
+      this.isDropDownComboEnabled = isKeySelectionEnabled;
+   }
+
+   public boolean isWildcarded() {
+      return isWildcarded;
+   }
+
+   private String labelKey;
+
+   public void setWildcarded(boolean isWildcarded) {
+      this.isWildcarded = isWildcarded;
    }
 
    public void setLabelTextKey(String key) {
-      if (labPublicKey == null) {
-         labPublicKey = new BLabel(sc, key);
-      } else {
+      labelKey = key;
+      if (labPublicKey != null) {
          labPublicKey.setKey(key);
       }
    }
@@ -239,8 +303,6 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
       dc.append("PrefComboString key" + getComboPrefString() + " value=" + psc.getPascPrefs().get(getComboPrefString(), ""));
 
       dc.nlLvl(comboKeys, "comboKeys");
-
-      dc.nlLvl(psc.getModelProviderPublicJavaKey());
 
    }
 

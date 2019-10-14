@@ -87,7 +87,9 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
    }
 
    /**
+    * Run outside the main thread, the preference have been created.
     * 
+    * Set various values to contexts
     * @param prefs
     */
    protected abstract void initForPrefsPascal(IPrefs prefs);

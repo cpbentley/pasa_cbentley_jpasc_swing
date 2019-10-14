@@ -27,7 +27,12 @@ import pasa.cbentley.swing.threads.PanelSwingWorker;
  */
 public class TablePanelAccountWalletBalance extends TablePanelAccountAbstractMinMaxDouble implements IMyTab {
 
-   public static final String KEY = "list_my_rich";
+   /**
+    * 
+    */
+   private static final long  serialVersionUID = -2670337420041048302L;
+
+   public static final String KEY              = "list_my_rich";
 
    public TablePanelAccountWalletBalance(PascalSwingCtx psc, IRootTabPane root) {
       super(psc, root, KEY);
@@ -38,7 +43,7 @@ public class TablePanelAccountWalletBalance extends TablePanelAccountAbstractMin
    }
 
    protected PanelHelperMinMaxDouble createPanelMinMaxDouble() {
-      PanelHelperMinMaxDouble panel = new PanelHelperMinMaxDouble(psc,this,"balance");
+      PanelHelperMinMaxDouble panel = new PanelHelperMinMaxDouble(psc, this, "balance", this);
       panel.setNullIfEmpty();
       return panel;
    }

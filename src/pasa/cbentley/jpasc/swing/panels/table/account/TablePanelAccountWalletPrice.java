@@ -43,7 +43,7 @@ public class TablePanelAccountWalletPrice extends TablePanelAccountAbstractMinMa
    }
 
    protected PanelHelperMinMaxDouble createPanelMinMaxDouble() {
-      PanelHelperMinMaxDouble panel = new PanelHelperMinMaxDouble(psc, this, "price");
+      PanelHelperMinMaxDouble panel = new PanelHelperMinMaxDouble(psc, this, "price", this);
       panel.setNullIfEmpty();
       return panel;
    }
@@ -61,8 +61,6 @@ public class TablePanelAccountWalletPrice extends TablePanelAccountAbstractMinMa
       super.panelSwingWorkerDone(worker);
       sortTableColDescending(ModelTableAccountFullData.INDEX_08_PRICE);
    }
-
-
 
    //#mdebug
    public void toString(Dctx dc) {

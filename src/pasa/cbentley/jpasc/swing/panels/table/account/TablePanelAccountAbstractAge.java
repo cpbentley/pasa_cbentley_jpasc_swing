@@ -27,7 +27,7 @@ public abstract class TablePanelAccountAbstractAge extends TablePanelAccountAbst
    /**
     * 
     */
-   private static final long    serialVersionUID = -3040964171971420256L;
+   private static final long          serialVersionUID = -3040964171971420256L;
 
    protected PanelHelperMinMaxInteger panelMinMaxInteger;
 
@@ -48,7 +48,7 @@ public abstract class TablePanelAccountAbstractAge extends TablePanelAccountAbst
    protected void subInitPanelNorth(JPanel north) {
       super.subInitPanelNorth(north); //adds panel refresh
       //also want an integer min max
-      panelMinMaxInteger = new PanelHelperMinMaxInteger(psc, this, "blockage");
+      panelMinMaxInteger = new PanelHelperMinMaxInteger(psc, this, "blockage", this);
       north.add(panelMinMaxInteger);
    }
 

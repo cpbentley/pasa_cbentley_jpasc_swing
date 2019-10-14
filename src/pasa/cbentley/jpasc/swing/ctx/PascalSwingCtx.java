@@ -95,6 +95,7 @@ import pasa.cbentley.jpasc.swing.interfaces.IWizardNoob;
 import pasa.cbentley.jpasc.swing.menu.MenuBarPascalAbstract;
 import pasa.cbentley.jpasc.swing.models.ModelProviderPublicJavaKey;
 import pasa.cbentley.jpasc.swing.models.ModelProviderPublicJavaKeyPrivate;
+import pasa.cbentley.jpasc.swing.models.ModelProviderPublicJavaKeyPublic;
 import pasa.cbentley.jpasc.swing.others.PascalSkinManager;
 import pasa.cbentley.jpasc.swing.others.PascalValueDefault;
 import pasa.cbentley.jpasc.swing.panels.funding.FundingManager;
@@ -184,8 +185,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    private ILogin                            login;
 
-   private ModelProviderPublicJavaKey        modelProviderPublicJavaKey;
-
    private ModelProviderPublicJavaKeyPrivate modelProviderPublicJavaKeyPrivate;
 
    private PascalPageManager                 pageManager;
@@ -214,7 +213,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     * Pascal related objects.
     * This file is different than {@link SwingCtx#getPrefs()}
     */
-   private PreferencesSpyLogger              prefs;
+   private IPrefs                            prefs;
 
    Random                                    r                = new Random();
 
@@ -245,6 +244,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    private Object                            walletKeyMapper;
 
    private JLabel                            websitePascal;
+
+   private ModelProviderPublicJavaKeyPublic  modelProviderPublicJavaKeyPublic;
 
    /**
     * 
@@ -833,7 +834,13 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    }
 
    public IUserLog getLog() {
-      return sc.getLog();
+      IUserLog log = sc.getLog();
+      //#mdebug
+      if (log == null) {
+         throw new NullPointerException();
+      }
+      //#enddebug
+      return log;
    }
 
    public ILogin getLogin() {
@@ -847,18 +854,18 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       return currentMode;
    }
 
-   public ModelProviderPublicJavaKey getModelProviderPublicJavaKey() {
-      if (modelProviderPublicJavaKey == null) {
-         modelProviderPublicJavaKey = new ModelProviderPublicJavaKey(this);
-      }
-      return modelProviderPublicJavaKey;
-   }
-
    public ModelProviderPublicJavaKeyPrivate getModelProviderPublicJavaKeyPrivate() {
       if (modelProviderPublicJavaKeyPrivate == null) {
          modelProviderPublicJavaKeyPrivate = new ModelProviderPublicJavaKeyPrivate(this);
       }
       return modelProviderPublicJavaKeyPrivate;
+   }
+
+   public ModelProviderPublicJavaKeyPublic getModelProviderPublicJavaKeyPublic() {
+      if (modelProviderPublicJavaKeyPublic == null) {
+         modelProviderPublicJavaKeyPublic = new ModelProviderPublicJavaKeyPublic(this);
+      }
+      return modelProviderPublicJavaKeyPublic;
    }
 
    public JLabel getNewOfficialClickableLabel() {
@@ -1114,13 +1121,12 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
          swingSkinManager.guiUpdate();
       }
 
-      if (modelProviderPublicJavaKey != null) {
-         modelProviderPublicJavaKey.guiUpdate();
+      if (modelProviderPublicJavaKeyPrivate != null) {
+         modelProviderPublicJavaKeyPrivate.guiUpdate();
       }
       if (modelProviderPublicJavaKeyPrivate != null) {
          modelProviderPublicJavaKeyPrivate.guiUpdate();
       }
-
       if (websitePascal != null) {
          //update language here
       }
@@ -1386,7 +1392,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    }
 
    public void setPrefs(IPrefs prefs) {
-      this.prefs = new PreferencesSpyLogger(uc, prefs);
+      this.prefs = prefs;
    }
 
    public void setPrivateCtx(boolean b) {

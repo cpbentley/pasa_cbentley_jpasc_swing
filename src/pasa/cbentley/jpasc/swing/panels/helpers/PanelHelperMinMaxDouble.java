@@ -7,8 +7,10 @@ package pasa.cbentley.jpasc.swing.panels.helpers;
 
 import java.awt.event.ActionListener;
 
+import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.swing.cmd.ICommandableRefresh;
+import pasa.cbentley.swing.interfaces.IStringPrefIDable;
 
 /**
  * @author Charles Bentley
@@ -16,8 +18,13 @@ import pasa.cbentley.swing.cmd.ICommandableRefresh;
  */
 public class PanelHelperMinMaxDouble extends PanelHelperMinMaxAbstract implements ActionListener {
 
-   public PanelHelperMinMaxDouble(PascalSwingCtx psc, ICommandableRefresh refresh, String keyFor) {
-      super(psc, refresh, keyFor);
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -7980019462969959631L;
+
+   public PanelHelperMinMaxDouble(PascalSwingCtx psc, ICommandableRefresh refresh, String keyRoot, IStringPrefIDable id) {
+      super(psc, refresh, keyRoot, id);
    }
 
    /**
@@ -51,5 +58,25 @@ public class PanelHelperMinMaxDouble extends PanelHelperMinMaxAbstract implement
       Double num = Double.valueOf(val);
       return num;
    }
+
+   //#mdebug
+   public void toString(Dctx dc) {
+      dc.root(this, "PanelHelperMinMaxDouble");
+      toStringPrivate(dc);
+      super.toString(dc.sup());
+   }
+
+   private void toStringPrivate(Dctx dc) {
+      
+   }
+
+   public void toString1Line(Dctx dc) {
+      dc.root1Line(this, "PanelHelperMinMaxDouble");
+      toStringPrivate(dc);
+      super.toString1Line(dc.sup1Line());
+   }
+
+   //#enddebug
+   
 
 }

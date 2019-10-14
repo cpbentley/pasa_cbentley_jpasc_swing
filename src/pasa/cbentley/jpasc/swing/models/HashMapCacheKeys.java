@@ -34,7 +34,5 @@ public class HashMapCacheKeys extends HashMapCache<INameable<PublicKeyJava>, Pub
 
    public void modelDidFinishLoading(HashMapCache<INameable<PublicKeyJava>, PublicKeyJava> model) {
       model.putAllInto(pks);
-      //cascade notify 
-      notifyFinishLoading();
    }
 }

@@ -5,7 +5,10 @@
  */
 package pasa.cbentley.jpasc.swing.models;
 
+import java.util.ArrayList;
 import java.util.Collection;
+
+import javax.swing.JComboBox;
 
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src5.interfaces.INameable;
@@ -16,16 +19,24 @@ import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJavaNamer;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.swing.model.ModelComboMapCache;
 
+/**
+ * a model of {@link PublicKeyJava} for {@link JComboBox}
+ * 
+ * @author Charles Bentley
+ *
+ */
 public class ComboModelMapPublicKeyJava extends ModelComboMapCache<INameable<PublicKeyJava>, PublicKeyJava> implements ICacheLoadingListener<INameable<PublicKeyJava>, PublicKeyJava> {
 
    /**
     * 
     */
-   private static final long                     serialVersionUID = -1787528807762478044L;
-
-   protected final PascalSwingCtx                psc;
+   private static final long                   serialVersionUID = -1787528807762478044L;
 
    private IComboModelMapPublicKeyJavaListener listenerComboMap;
+
+   private ArrayList<IComboModelMapPublicKeyJavaListener> listeners;
+
+   protected final PascalSwingCtx              psc;
 
    public ComboModelMapPublicKeyJava(PascalSwingCtx psc) {
       super(psc.getSwingCtx());
@@ -38,20 +49,12 @@ public class ComboModelMapPublicKeyJava extends ModelComboMapCache<INameable<Pub
       this.addNamer(pk);
 
    }
-   
-   
 
-   /**
-    * Returns the currently selected {@link PublicKeyJava}
-    * @return
-    */
-   public PublicKeyJava getSelectedPublicKeyJava() {
-      INameable<PublicKeyJava> selectedObject = getSelectedObject();
-      if (selectedObject == null) {
-         return null;
-      } else {
-         return selectedObject.getNamedObject();
+   public void addListenerComboMap(IComboModelMapPublicKeyJavaListener listenerComboMap) {
+      if (listeners == null) {
+         listeners = new ArrayList<IComboModelMapPublicKeyJavaListener>(2);
       }
+      this.listeners.add(listenerComboMap);
    }
 
    protected ComboModelMapPublicKeyJava createNewInstance() {
@@ -72,23 +75,49 @@ public class ComboModelMapPublicKeyJava extends ModelComboMapCache<INameable<Pub
       return null;
    }
 
-   public void modelDidFinishLoading(HashMapCache<INameable<PublicKeyJava>, PublicKeyJava> model) {
-      this.setMap(model);
-      //cascade to a listener notify
-      if (getListenerComboMap() != null) {
-         getListenerComboMap().modelDidFinishLoading(this);
-      }
-   }
-
    public IComboModelMapPublicKeyJavaListener getListenerComboMap() {
       return listenerComboMap;
    }
 
-   public void setListenerComboMap(IComboModelMapPublicKeyJavaListener listenerComboMap) {
-      this.listenerComboMap = listenerComboMap;
+   /**
+    * Returns the currently selected {@link PublicKeyJava}
+    * @return
+    */
+   public PublicKeyJava getSelectedPublicKeyJava() {
+      INameable<PublicKeyJava> selectedObject = getSelectedObject();
+      if (selectedObject == null) {
+         return null;
+      } else {
+         return selectedObject.getNamedObject();
+      }
    }
 
-   
+   /**
+    * Called by {@link ICacheLoadingListener#modelDidFinishLoading(HashMapCache)} when
+    * the model data has been loaded.
+    * 
+    * This method call model listener so that UI can select the first element
+    */
+   public void modelDidFinishLoading(HashMapCache<INameable<PublicKeyJava>, PublicKeyJava> model) {
+      this.setMap(model);
+      //cascade to a listener notify
+      notifyListeners();
+   }
+
+   private void notifyListeners() {
+      if (listeners != null) {
+         for (IComboModelMapPublicKeyJavaListener lis : listeners) {
+            lis.modelDidFinishLoading(this);
+         }
+      }
+   }
+
+   public void removeListenerComboMap(IComboModelMapPublicKeyJavaListener listenerComboMap) {
+      if (listeners != null) {
+         this.listeners.remove(listenerComboMap);
+      }
+   }
+
    //#mdebug
    public void toString(Dctx dc) {
       dc.root(this, "ComboModelMapPublicKeyJava");
@@ -97,17 +126,16 @@ public class ComboModelMapPublicKeyJava extends ModelComboMapCache<INameable<Pub
       dc.nlLvl(listenerComboMap, "IComboModelMapPublicKeyJavaListener");
    }
 
-   private void toStringPrivate(Dctx dc) {
-      
-   }
-
    public void toString1Line(Dctx dc) {
       dc.root1Line(this, "ComboModelMapPublicKeyJava");
       toStringPrivate(dc);
       super.toString1Line(dc.sup1Line());
    }
 
+   private void toStringPrivate(Dctx dc) {
+
+   }
+
    //#enddebug
-   
 
 }
