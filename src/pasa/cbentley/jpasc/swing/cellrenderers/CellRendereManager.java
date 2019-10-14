@@ -184,6 +184,15 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
       return cellRendererAccountContiguousCount;
    }
 
+   private CellRendererAccountPackCount cellRendererAccountPackCount;
+
+   public CellRendererAccountPackCount getCellRendererAccountPackCount() {
+      if (cellRendererAccountPackCount == null) {
+         cellRendererAccountPackCount = new CellRendererAccountPackCount(psc);
+      }
+      return cellRendererAccountPackCount;
+   }
+
    public CellRendererAccountOpCount getCellRendererAccountOpCount() {
       if (cellRendererAccountOpCount == null) {
          cellRendererAccountOpCount = new CellRendererAccountOpCount(psc);
@@ -201,12 +210,12 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
    }
 
    /**
-    * Using {@link ModelTableAccountRangePrices#INDEX_16_RANGE_COLOR} for coloring
+    * Using {@link ModelTableAccountRangePrices#INDEX_17_RANGE_COLOR} for coloring
     * @return
     */
    public CellRendererAccountSoldContiguous getCellRendererAccountSoldContiguous() {
       if (cellRendererAccountSoldContiguous == null) {
-         cellRendererAccountSoldContiguous = new CellRendererAccountSoldContiguous(psc, ModelTableAccountRangePrices.INDEX_16_RANGE_COLOR);
+         cellRendererAccountSoldContiguous = new CellRendererAccountSoldContiguous(psc, ModelTableAccountRangePrices.INDEX_17_RANGE_COLOR);
          registerRenderer(cellRendererAccountSoldContiguous);
       }
       return cellRendererAccountSoldContiguous;

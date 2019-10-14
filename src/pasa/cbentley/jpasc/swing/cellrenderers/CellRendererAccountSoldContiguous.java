@@ -33,12 +33,14 @@ public class CellRendererAccountSoldContiguous extends PascalTableCellRenderer i
    private int               colorColumnModelIndex;
 
    private Color             bgColorDefault;
+   private Color             fgColorDefault;
 
    public CellRendererAccountSoldContiguous(PascalSwingCtx psc, int colorColumnModelIndex) {
       super(psc);
       this.colorColumnModelIndex = colorColumnModelIndex;
       this.setHorizontalAlignment(JLabel.TRAILING);
       bgColorDefault = Color.WHITE;
+      fgColorDefault = Color.BLACK;
    }
 
    public void dataUpdate() {
@@ -56,26 +58,22 @@ public class CellRendererAccountSoldContiguous extends PascalTableCellRenderer i
       TableModel model = table.getModel();
       int modelIndex = table.convertRowIndexToModel(row);
       Object color = model.getValueAt(modelIndex, colorColumnModelIndex);
+      Color colorFg = null;
+      Color colorBg = null;
       if (color != null && color instanceof Color) {
-         if (isSelected) {
-            Color colorBg = psc.getCellRendereManager().getSelectedColor((Color) color);
-            renderer.setBackground(colorBg);
-            int fg = ColorUtils.getComplementaryColor(colorBg.getRGB());
-            renderer.setForeground(new Color(fg));
-         } else {
-            renderer.setBackground((Color) color);
-         }
+         colorBg = (Color)color;
       } else {
-         if (isSelected) {
-            Color colorBg = psc.getCellRendereManager().getSelectedColor(bgColorDefault);
-            renderer.setBackground(colorBg);
-            int fg = ColorUtils.getComplementaryColor(colorBg.getRGB());
-            renderer.setForeground(new Color(fg));
-         } else {
-            //the default color
-            renderer.setBackground(bgColorDefault);
-         }
+         colorBg = bgColorDefault;
       }
+      if (isSelected) {
+         colorBg = psc.getCellRendereManager().getSelectedColor(colorBg);
+         int rgbFg = ColorUtils.getComplementaryColor(colorBg.getRGB());
+         colorFg = psc.getSwingCtx().getSwingColorStore().getColorRGB(rgbFg);
+      } else {
+         colorFg = fgColorDefault;
+      }
+      renderer.setBackground(colorBg);
+      renderer.setForeground(colorFg);
       return this;
    }
 

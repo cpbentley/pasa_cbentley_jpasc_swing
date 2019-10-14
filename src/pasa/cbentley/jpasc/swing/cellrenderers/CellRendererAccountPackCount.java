@@ -12,25 +12,28 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
+import pasa.cbentley.core.src4.utils.ColorUtils;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
+import pasa.cbentley.swing.ctx.SwingCtx;
 
 /**
- * We want to group accounts by color in the Operations table.
- * <br>
- * The cell renderer must be created each time the table is refreshed
+ * Color accounts with a high contiguous count.
  * 
  * @author Charles Bentley
  *
  */
-public class CellRendererAccountAge extends PascalTableCellRenderer implements TableCellRenderer {
+public class CellRendererAccountPackCount extends PascalTableCellRenderer implements TableCellRenderer {
 
    /**
     * 
     */
    private static final long serialVersionUID = 6713574784498923775L;
 
-   public CellRendererAccountAge(PascalSwingCtx psc) {
+   protected final SwingCtx  sc;
+
+   public CellRendererAccountPackCount(PascalSwingCtx psc) {
       super(psc);
+      sc = psc.getSwingCtx();
    }
 
    @Override
@@ -39,28 +42,24 @@ public class CellRendererAccountAge extends PascalTableCellRenderer implements T
       if (aNumberValue == null)
          return this;
       Integer value = (Integer) aNumberValue;
-      
-      //#debug
-      //toDLog().pFlow("msg", this, CellRendererAccountAge.class, "getTableCellRendererComponent", IDLog.LVL_05_FINE, true);
-      
+
       if (psc.isIgnoreCellEffects()) {
          return this;
       }
-      Color c = null;
-      if (isDarkTheme()) {
-         c = psc.getAccountAgeColorDark(value.intValue());
-      } else {
-         c = psc.getAccountAgeColorLight(value.intValue());
-      }
+      Color colorBg = null;
+      Color colorFg = null;
+      int diff = value.intValue() * 10;
+      int rgbBg = Integer.MAX_VALUE - diff;
+      int rgbFg = ColorUtils.getComplementaryColor(rgbBg);
+      
+      colorBg = sc.getSwingColorStore().getColorRGB(rgbBg);
+      colorFg = sc.getSwingColorStore().getColorRGB(rgbFg);
+      
       if (isSelected) {
-         c = psc.getCellRendereManager().getSelectedColor(c);
+         colorBg = psc.getCellRendereManager().getSelectedColor(colorBg);
       }
-      if(renderer instanceof JLabel) {
-         //TODO compute only when mouse over
-         String msg = psc.getPascalSwingUtils().computeTimeFromBlockAge(value);
-         ((JLabel)renderer).setToolTipText(msg);
-      }
-      renderer.setBackground(c);
+      renderer.setForeground(colorFg);
+      renderer.setBackground(colorBg);
       return this;
    }
 

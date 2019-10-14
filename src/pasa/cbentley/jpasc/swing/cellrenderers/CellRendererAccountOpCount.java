@@ -42,14 +42,8 @@ public class CellRendererAccountOpCount extends PascalTableCellRenderer implemen
       }
       Number value = (Number) aNumberValue;
       int iv = value.intValue();
-      int c = 0;
-      if (isDarkTheme()) {
-         c = psc.getIntToColor().getColorDarkFgOp(iv);
-      } else {
-         c = psc.getIntToColor().getColorLightFgOp(iv);
-      }
-      //TODO map real objects
-      renderer.setForeground(new Color(c));
+      Color colorFg = psc.getIntToColor().getColorLightFgOp(iv);
+      renderer.setForeground(colorFg);
       return this;
    }
 
