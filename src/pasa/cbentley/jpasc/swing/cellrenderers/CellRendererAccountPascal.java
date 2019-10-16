@@ -307,7 +307,7 @@ public class CellRendererAccountPascal extends PascalTableCellRenderer implement
       Color colorFg = sc.getSwingColorStore().getColorRGB(255, 255, 255);
 
       int luma = colorData.getLuma255();
-      float saturation100 = colorData.getSaturation100();
+      float saturation100 = colorData.getLight100();
 
       //first deal with the greys... saturations around 0 and 15%
       if (saturation100 <= 16) {

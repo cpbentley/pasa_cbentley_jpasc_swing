@@ -49,16 +49,23 @@ public class ModelTableAccountRangePrices extends ModelTableAccountAbstract {
 
    private static final int  INDEX_13_RANGE_DIST_BEFORE = 13;
 
-   public static final int   INDEX_16_RANGE_COLOR       = 16;
-
    private static final int  INDEX_14_RANGE_DIST_AFTER  = 14;
 
    public static final int   INDEX_15_LONELINESS        = 15;
 
+   public static final int   INDEX_16_PACK              = 16;
+
+   public static final int   INDEX_17_CLOSE             = 17;
+
+   /**
+    * special not a column. must be last. does not count to the num of columns
+    */
+   public static final int   INDEX_18_RANGE_COLOR       = 18;
+
    /**
     * Default configuration with all possible columns. Used for fast switch
     */
-   public static final int   NUM_COLUMNS                = 16;
+   public static final int   NUM_COLUMNS                = 18;
 
    /**
     * 
@@ -92,6 +99,8 @@ public class ModelTableAccountRangePrices extends ModelTableAccountAbstract {
       columnModel.setInteger(INDEX_13_RANGE_DIST_BEFORE, "rangedistbefore");
       columnModel.setInteger(INDEX_14_RANGE_DIST_AFTER, "rangedistafter");
       columnModel.setInteger(INDEX_15_LONELINESS, "loneliness");
+      columnModel.setInteger(INDEX_16_PACK, "pack");
+      columnModel.setInteger(INDEX_17_CLOSE, "close");
 
       //check if all columns have been initialized
       //#debug
@@ -151,10 +160,6 @@ public class ModelTableAccountRangePrices extends ModelTableAccountAbstract {
       return INDEX_04_NAME;
    }
 
-   public int getColumnIndexSeller() {
-      return INDEX_10_SELLER;
-   }
-
    public int getColumnIndexAge() {
       return INDEX_05_AGE;
    }
@@ -171,8 +176,16 @@ public class ModelTableAccountRangePrices extends ModelTableAccountAbstract {
       return INDEX_06_OPS;
    }
 
+   public int getColumnIndexPack() {
+      return INDEX_16_PACK;
+   }
+
    public int getColumnIndexPrice() {
       return INDEX_08_PRICE;
+   }
+
+   public int getColumnIndexSeller() {
+      return INDEX_10_SELLER;
    }
 
    public Object getValueAt(int row, int col) {
@@ -241,12 +254,28 @@ public class ModelTableAccountRangePrices extends ModelTableAccountAbstract {
                return ((AccountRange) o).getLoneliness();
             }
          }
-         case INDEX_16_RANGE_COLOR: {
+         case INDEX_18_RANGE_COLOR: {
             Object o = a.getObjectSupport();
             if (o == null) {
                return null;
             } else {
                return ((AccountRange) o).getColor();
+            }
+         }
+         case INDEX_16_PACK: {
+            Object o = a.getObjectSupport();
+            if (o == null) {
+               return null;
+            } else {
+               return ((AccountRange) o).getPackInteger();
+            }
+         }
+         case INDEX_17_CLOSE: {
+            Object o = a.getObjectSupport();
+            if (o == null) {
+               return null;
+            } else {
+               return ((AccountRange) o).getCloseInteger();
             }
          }
          default:

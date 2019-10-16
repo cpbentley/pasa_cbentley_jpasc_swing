@@ -31,6 +31,7 @@ public class CellRendererAccountPackCount extends PascalTableCellRenderer implem
 
    protected final SwingCtx  sc;
 
+   private int[] rgb = new int[3];
    public CellRendererAccountPackCount(PascalSwingCtx psc) {
       super(psc);
       sc = psc.getSwingCtx();
@@ -48,11 +49,14 @@ public class CellRendererAccountPackCount extends PascalTableCellRenderer implem
       }
       Color colorBg = null;
       Color colorFg = null;
-      int diff = value.intValue() * 10;
-      int rgbBg = Integer.MAX_VALUE - diff;
-      int rgbFg = ColorUtils.getComplementaryColor(rgbBg);
+      int intValue = value.intValue();
+      int lum100 = 97 - (intValue / 3);
+      lum100 = Math.max(40, lum100);
+      int diff = intValue*2;
+      ColorUtils.getRGBFromH360S100L100Clip(diff, 50, lum100, rgb);
+      int rgbFg = ColorUtils.getComplementaryColor(rgb);
       
-      colorBg = sc.getSwingColorStore().getColorRGB(rgbBg);
+      colorBg = sc.getSwingColorStore().getColorRGB(rgb);
       colorFg = sc.getSwingColorStore().getColorRGB(rgbFg);
       
       if (isSelected) {

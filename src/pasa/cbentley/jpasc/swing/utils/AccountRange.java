@@ -8,6 +8,7 @@ package pasa.cbentley.jpasc.swing.utils;
 import java.awt.Color;
 
 import pasa.cbentley.core.src4.ctx.UCtx;
+import pasa.cbentley.core.src4.helpers.CounterInt;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IDLog;
 import pasa.cbentley.core.src4.logging.IStringable;
@@ -16,35 +17,43 @@ import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 
 public class AccountRange implements IStringable {
 
-   private Integer          rangeEnd;
+   private Integer                rangeEnd;
 
-   private Integer          rangeStart;
+   private Integer                rangeStart;
 
-   private Color            color;
+   private Color                  color;
 
-   private int              distanceRangeAfter;
+   private int                    distanceRangeAfter;
 
    /**
     * computed on demand
     */
-   private int              distanceRangeBefore;
+   private int                    distanceRangeBefore;
+
+   private CounterInt             packValue;
+
+   private CounterInt             closeAfterCounter;
+
+   private Integer                packInteger;
 
    /**
     * Number of holes around a 500
     */
-   private Integer          loneliness;
+   private Integer                loneliness;
 
    protected final PascalSwingCtx psc;
 
-   private AccountRange     rangeAfter;
+   private AccountRange           rangeAfter;
 
-   private AccountRange     rangeBefore;
+   private AccountRange           rangeBefore;
 
-   private Integer          rangeSizeObject;
+   private Integer                rangeSizeObject;
 
-   private Integer          distanceRangeBeforeInteger;
+   private Integer                distanceRangeBeforeInteger;
 
-   private Integer          distanceRangeAfterInteger;
+   private Integer                distanceRangeAfterInteger;
+
+   private Integer                closeInteger;
 
    public AccountRange(PascalSwingCtx psc, Integer start, Integer end) {
       this.psc = psc;
@@ -128,14 +137,7 @@ public class AccountRange implements IStringable {
          int count = 1;
          while (count < countDistance && before != null) {
             int distance = before.getDistanceRangeBefore();
-            if (distance == 1) {
-               //do nothing.. this is the best case scenario
-            } else if (distance == 2) {
-               //very good as well
-               totalDistanceBefore += 1;
-            } else {
-               totalDistanceBefore += distance;
-            }
+            totalDistanceBefore += (distance - 1);
             //next loop
             before = before.getRangeBefore();
             count += 1;
@@ -145,15 +147,7 @@ public class AccountRange implements IStringable {
          count = 1;
          while (count < countDistance && after != null) {
             int distance = after.getDistanceRangeAfter();
-            // a distance of 1 is zero
-            if (distance == 1) {
-               //do nothing.. this is the best case scenario
-            } else if (distance == 2) {
-               //very good as well
-               totalDistanceAfter += 1;
-            } else {
-               totalDistanceAfter += distance;
-            }
+            totalDistanceAfter += (distance - 1);
             //next loop
             after = after.getRangeAfter();
             count += 1;
@@ -162,6 +156,87 @@ public class AccountRange implements IStringable {
          loneliness = new Integer(totalDistanceBefore + totalDistanceAfter);
       }
       return loneliness;
+   }
+
+   /**
+    * The number of accounts in adjacent ranges with the loniness
+    * @return
+    */
+   public int getPackValue() {
+      if (packValue == null) {
+         int loneLiness = getLoneliness();
+         int total = getRangeSizeValue();
+         CounterInt ci = new CounterInt(psc.getUCtx(), total);
+         AccountRange range = rangeAfter;
+         do {
+            range = recursivePack(loneLiness, ci, range, false);
+         } while (range != null);
+
+         range = rangeBefore;
+         do {
+            range = recursivePack(loneLiness, ci, range, true);
+         } while (range != null);
+         packValue = ci;
+      }
+      return packValue.getCount();
+   }
+
+   public int getCloseValue() {
+      if (closeAfterCounter == null) {
+         int distanceRangeAfterRoot = getDistanceRangeAfter();
+         int total = getRangeSizeValue();
+         CounterInt ci = new CounterInt(psc.getUCtx(), total);
+         AccountRange range = rangeAfter;
+         do {
+            range = recursiveClose(distanceRangeAfterRoot, ci, range);
+         } while (range != null);
+         closeAfterCounter = ci;
+      }
+      return closeAfterCounter.getCount();
+   }
+
+   public Integer getCloseInteger() {
+      if (closeInteger == null) {
+         closeInteger = new Integer(getCloseValue());
+      }
+      return closeInteger;
+   }
+
+   public Integer getPackInteger() {
+      if (packInteger == null) {
+         packInteger = new Integer(getPackValue());
+      }
+      return packInteger;
+   }
+
+   private AccountRange recursiveClose(int distanceRangeAfterRoot, CounterInt total, AccountRange range) {
+      if (range != null) {
+         int distanceRangeAfter = range.getDistanceRangeAfter();
+         if (distanceRangeAfter == distanceRangeAfterRoot) {
+            int num = range.getRangeSizeValue();
+            total.increment(num);
+            range.closeAfterCounter = total;
+            return range.rangeAfter;
+         }
+      }
+      return null;
+   }
+
+   private AccountRange recursivePack(int lone, CounterInt total, AccountRange range, boolean isBefore) {
+      if (range != null) {
+         int afterLone = range.getLoneliness();
+         if (afterLone == lone) {
+            int num = range.getRangeSizeValue();
+            total.increment(num);
+            range.packValue = total;
+            if (isBefore) {
+               return range.rangeBefore;
+            } else {
+               return range.rangeAfter;
+            }
+         }
+      }
+      return null;
    }
 
    public AccountRange getRangeAfter() {

@@ -111,9 +111,17 @@ public class TablePanelAccountChainPrice extends TablePanelAccountAbstractMinMax
       getBenTable().setColumnRenderer(getColumnIndexSeller(), rm.getCellRendererAccountPascal());
       
       getBenTable().setColumnRenderer(getColumnIndexChecksum(), rm.getCellRendererAccountSoldContiguous());
+
+      int tableIndexLoneCount = ModelTableAccountRangePrices.INDEX_15_LONELINESS;
+      getBenTable().setColumnRenderer(tableIndexLoneCount, rm.getCellRendererAccountSoldContiguous());
       
       int tableIndexRangeCount = ModelTableAccountRangePrices.INDEX_12_RANGE_SIZE;
       getBenTable().setColumnRenderer(tableIndexRangeCount, rm.getCellRendererAccountContiguousCount());
+
+      int tableIndexPack = ModelTableAccountRangePrices.INDEX_16_PACK;
+      getBenTable().setColumnRenderer(tableIndexPack, rm.getCellRendererAccountPackCount());
+      int tableIndexClose = ModelTableAccountRangePrices.INDEX_17_CLOSE;
+      getBenTable().setColumnRenderer(tableIndexClose, rm.getCellRendererAccountPackCount());
    }
 
    /**
