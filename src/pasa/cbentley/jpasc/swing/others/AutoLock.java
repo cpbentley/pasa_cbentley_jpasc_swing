@@ -34,7 +34,7 @@ public class AutoLock extends TimerTask implements IEventsPascalSwing {
          IEventBus pascalBus = psc.getEventBusPascal();
          BusEvent be = pascalBus.createEvent(PID_4_WALLET_LOCK, EID_4_WALLET_LOCK_1_LOCKED, this);
          //call the event sending in the UI thread
-         be.putOnBusMainLater(be);
+         be.putOnBusMainLater();
       } else {
          psc.getSwingCtx().publishUILog(IUserLog.consoleLogError, "Wallet failed to auto lock ");
       }
