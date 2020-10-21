@@ -1553,7 +1553,9 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    private void toStringPrivate(Dctx dc) {
 
    }
-
+   public int getCtxID() {
+      return 433;
+   }
    public String toStringProducerID(int pid) {
       switch (pid) {
          case IEventsPascalSwing.PID_2_BLOCK:

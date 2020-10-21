@@ -101,7 +101,7 @@ public abstract class TablePanelAccountAbstractKeyName extends TablePanelAccount
    public void toString(Dctx dc) {
       dc.root(this, "TablePanelAccountAbstractName");
       super.toString(dc.sup());
-      dc.nlLvlNoTitle("panelNameHelper", panelNameHelper);
+      dc.nlLvlNullTitle("panelNameHelper", panelNameHelper);
    }
 
    public void toString1Line(Dctx dc) {

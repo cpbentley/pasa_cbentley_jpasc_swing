@@ -102,7 +102,7 @@ public class PascalCmdManager implements IStringable, ITechShow {
 
 
    public void cmdChangeLanguage(String lang, String country) {
-      psc.getSwingCtx().updateLocale(lang, country);
+      psc.getSwingCtx().localeUpdate(lang, country);
    }
 
    public void cmdChangeMode(int mode) {
