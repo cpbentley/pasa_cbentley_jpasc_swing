@@ -13,8 +13,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-
 import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.interfaces.IPrefs;
 import pasa.cbentley.core.src4.logging.BaseDLogger;
@@ -24,6 +22,7 @@ import pasa.cbentley.core.src4.logging.ITechConfig;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.core.src4.logging.ITechTags;
 import pasa.cbentley.jpasc.pcore.ctx.ITechPCore;
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.swing.menu.MenuBarPascalDemo;
 import pasa.cbentley.jpasc.swing.panels.core.PanelTabLoginConsole;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperKeyWalletSwitch;

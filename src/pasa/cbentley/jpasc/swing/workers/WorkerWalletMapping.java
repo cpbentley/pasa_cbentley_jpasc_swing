@@ -10,9 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.github.davidbolet.jpascalcoin.api.client.PascalCoinClient;
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-
+import pasa.cbentley.jpasc.pcore.client.IPascalCoinClient;
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.swing.threads.IWorkerPanel;
 import pasa.cbentley.swing.threads.PanelSwingWorker;
@@ -28,7 +27,7 @@ public class WorkerWalletMapping extends PanelSwingWorker<Map<String, String>, V
    }
 
    protected Map<String, String> doInBackground() throws Exception {
-      PascalCoinClient pclient = psc.getPascalClient();
+      IPascalCoinClient pclient = psc.getPascalClient();
       Map<String, String> ownerWallet = new HashMap<String, String>();
       List<PublicKey> list = pclient.getWalletPubKeys(0, 1000);
       for (Iterator iterator = list.iterator(); iterator.hasNext();) {

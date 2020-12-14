@@ -8,8 +8,7 @@ package pasa.cbentley.jpasc.swing.tablemodels.bentley;
 import java.util.Date;
 import java.util.HashMap;
 
-import com.github.davidbolet.jpascalcoin.api.model.Block;
-
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
 import pasa.cbentley.jpasc.pcore.utils.PascalCoinValue;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.utils.MinerStat;

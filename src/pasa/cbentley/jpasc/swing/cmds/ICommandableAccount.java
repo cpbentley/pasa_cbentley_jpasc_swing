@@ -7,6 +7,7 @@ package pasa.cbentley.jpasc.swing.cmds;
 
 import pasa.cbentley.core.src4.interfaces.ICommandable;
 import pasa.cbentley.jpasc.pcore.domain.java.AccountJava;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
 
 public interface ICommandableAccount extends ICommandable {
    /**
@@ -17,22 +18,7 @@ public interface ICommandableAccount extends ICommandable {
    /**
     * 
     */
-   public void cmdShowSelectedAccountSellerDetails();
-
-   /**
-    * 
-    */
-   public void cmdShowSelectedAccountSellerDetailsNewWindow();
-
-   /**
-    * 
-    */
    public void cmdShowSelectedAccountDetailsNewWindow();
-
-   /**
-    * 
-    */
-   public void cmdShowSelectedAccountOwner();
 
    /**
     * Shows the names owned by the selected accounts key.
@@ -50,7 +36,26 @@ public interface ICommandableAccount extends ICommandable {
    /**
     * 
     */
+   public void cmdShowSelectedAccountOwner();
+
+   /**
+    * 
+    */
    public void cmdShowSelectedAccountOwnerNewWindow();
+
+   public void cmdShowSelectedAccountReceiverDetails();
+
+   public void cmdShowSelectedAccountReceiverDetailsNewWindow();
+
+   /**
+    * 
+    */
+   public void cmdShowSelectedAccountSellerDetails();
+
+   /**
+    * 
+    */
+   public void cmdShowSelectedAccountSellerDetailsNewWindow();
 
    /**
     * 
@@ -89,5 +94,7 @@ public interface ICommandableAccount extends ICommandable {
     * @return
     */
    public AccountJava getSelectedAccountJava();
+
+   public Account getSelectedAccount();
 
 }

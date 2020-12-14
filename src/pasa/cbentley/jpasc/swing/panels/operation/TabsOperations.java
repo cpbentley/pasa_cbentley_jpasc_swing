@@ -7,10 +7,9 @@ package pasa.cbentley.jpasc.swing.panels.operation;
 
 import javax.swing.event.ChangeListener;
 
-import com.github.davidbolet.jpascalcoin.api.model.Block;
-
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.interfaces.IBlockListener;
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.table.operation.PanelDetailsOperation;

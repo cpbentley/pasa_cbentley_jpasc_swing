@@ -43,6 +43,10 @@ public class TablePanelAccountChainName extends TablePanelAccountAbstractKeyName
       isKeyFilteringEnabled = false; //we don't want by default
    }
 
+   /**
+    * When a search/refresh occurs, {@link TablePanelAccountAbstract#cmdRefresh(Object)} generates
+    * a new createWroker
+    */
    protected PanelHelperName createPanelHelperName() {
       return new PanelHelperNameChain(psc, this);
    }

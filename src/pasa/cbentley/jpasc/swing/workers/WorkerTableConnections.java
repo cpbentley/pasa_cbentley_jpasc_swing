@@ -8,10 +8,9 @@ package pasa.cbentley.jpasc.swing.workers;
 import java.util.Iterator;
 import java.util.List;
 
-import com.github.davidbolet.jpascalcoin.api.client.PascalCoinClient;
-import com.github.davidbolet.jpascalcoin.api.model.Connection;
-
 import pasa.cbentley.core.src4.logging.Dctx;
+import pasa.cbentley.jpasc.pcore.client.IPascalCoinClient;
+import pasa.cbentley.jpasc.pcore.rpc.model.Connection;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.tablemodels.ModelTableConnections;
 import pasa.cbentley.swing.threads.IWorkerPanel;
@@ -19,7 +18,7 @@ import pasa.cbentley.swing.threads.PanelSwingWorker;
 
 public class WorkerTableConnections extends PanelSwingWorker<ModelTableConnections, Connection> {
 
-   private PascalCoinClient            pmodelclient;
+   private IPascalCoinClient            pmodelclient;
 
    private final ModelTableConnections tableModel;
 

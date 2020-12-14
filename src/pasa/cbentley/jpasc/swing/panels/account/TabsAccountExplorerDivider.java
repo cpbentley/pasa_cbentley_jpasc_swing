@@ -8,13 +8,12 @@ package pasa.cbentley.jpasc.swing.panels.account;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-import com.github.davidbolet.jpascalcoin.api.model.Block;
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-
 import pasa.cbentley.jpasc.pcore.access.AccessPascalRPC;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.pcore.interfaces.IAccessPascal;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountChainAll;
@@ -91,14 +90,14 @@ public class TabsAccountExplorerDivider extends TabbedBentleyPanel implements IM
    public void initTabs() {
 
       //init default position
-      accountChainAllRange9999 = new TablePanelAccountChainAllRange(psc, this,0,9999);
-      accountChainAllRange99999 = new TablePanelAccountChainAllRange(psc, this,10000,99999);
-      accountChainAllRange500000 = new TablePanelAccountChainAllRange(psc, this,100000,500000);
-      accountChainAllRange999999 = new TablePanelAccountChainAllRange(psc, this,500000,1000000);
-      accountChainAllRange1999999 = new TablePanelAccountChainAllRange(psc, this,1000000,1999999);
-      accountChainAllRange2999999 = new TablePanelAccountChainAllRange(psc, this,2000000,2999999);
+      accountChainAllRange9999 = new TablePanelAccountChainAllRange(psc, this, 0, 9999);
+      accountChainAllRange99999 = new TablePanelAccountChainAllRange(psc, this, 10000, 99999);
+      accountChainAllRange500000 = new TablePanelAccountChainAllRange(psc, this, 100000, 500000);
+      accountChainAllRange999999 = new TablePanelAccountChainAllRange(psc, this, 500000, 1000000);
+      accountChainAllRange1999999 = new TablePanelAccountChainAllRange(psc, this, 1000000, 1999999);
+      accountChainAllRange2999999 = new TablePanelAccountChainAllRange(psc, this, 2000000, 2999999);
 
-      accountExplorerPanelRange = new PanelAccountDetails(psc, this,"account_details_range");
+      accountExplorerPanelRange = new PanelAccountDetails(psc, this, "account_details_range");
 
       //deal with ordering of the tabs? TODO and what if there framed tab
       String state = psc.getPascPrefs().get(ID + "state", "");
@@ -155,6 +154,11 @@ public class TabsAccountExplorerDivider extends TabbedBentleyPanel implements IM
       rootRPC.showBlock(ac);
    }
 
+   public void showBlockDetails(Block ac) {
+      initCheck();
+      rootRPC.showBlockDetails(ac);
+   }
+
    public void showPublicKeyJavaAccountNames(PublicKeyJava pk) {
       // TODO Auto-generated method stub
 
@@ -167,6 +171,26 @@ public class TabsAccountExplorerDivider extends TabbedBentleyPanel implements IM
    public void showPublicKeyAccounts(PublicKey pk) {
       // TODO Auto-generated method stub
 
+   }
+
+   public Integer getAccountLast() {
+      // TODO Auto-generated method stub
+      return null;
+   }
+
+   public Integer getBlockNext(Integer block) {
+      // TODO Auto-generated method stub
+      return null;
+   }
+
+   public Integer getBlockPrev(Integer block) {
+      // TODO Auto-generated method stub
+      return null;
+   }
+
+   public Integer getBlockLast() {
+      // TODO Auto-generated method stub
+      return null;
    }
 
 }

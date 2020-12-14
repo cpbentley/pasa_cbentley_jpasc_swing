@@ -33,11 +33,12 @@ public abstract class TablePanelAccountAbstractKey extends TablePanelAccountAbst
    /**
     * 
     */
-   private static final long        serialVersionUID = -3040964171971420256L;
+   private static final long        serialVersionUID      = -3040964171971420256L;
 
    protected PanelHelperKeyAbstract panelKeyHelper;
 
-   protected boolean isKeyFilteringEnabled = true;
+   protected boolean                isKeyFilteringEnabled = true;
+
    /**
     * 
     * @param psc
@@ -55,6 +56,10 @@ public abstract class TablePanelAccountAbstractKey extends TablePanelAccountAbst
       }
    }
 
+   /**
+    * Creates an implementation of {@link PanelHelperKeyAbstract}
+    * @return
+    */
    protected abstract PanelHelperKeyAbstract createPanelHelperKey();
 
    public PanelHelperKeyAbstract getPanelKeyHelperAbstract() {
@@ -64,7 +69,6 @@ public abstract class TablePanelAccountAbstractKey extends TablePanelAccountAbst
       }
       return panelKeyHelper;
    }
-
 
    public void setPublicKey(PublicKeyJava pk) {
       getPanelKeyHelperAbstract().setPublicKeyNoEvent(pk);
@@ -88,6 +92,7 @@ public abstract class TablePanelAccountAbstractKey extends TablePanelAccountAbst
       panelKeyHelper.buildUI();
       north.add(panelKeyHelper);
    }
+
    /**
     * Override must not call super.
     */

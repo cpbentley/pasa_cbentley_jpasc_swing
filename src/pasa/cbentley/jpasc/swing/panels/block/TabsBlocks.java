@@ -6,6 +6,7 @@
 package pasa.cbentley.jpasc.swing.panels.block;
 
 import pasa.cbentley.core.src4.logging.Dctx;
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.core.TabsPascalSwing;
@@ -40,20 +41,30 @@ public class TabsBlocks extends TabsPascalSwing implements IMyTab {
 
    private TablePanelBlockLastMonth tablePanelBlockLastMonth;
 
-   private TablePanelBlockLast1000 tablePanelBlockLast1000;
+   private TablePanelBlockLast1000  tablePanelBlockLast1000;
+
+   private PanelBlockDetails        panelBlockDetails;
 
    public TabsBlocks(PascalSwingCtx psc, IRootTabPane root) {
       super(psc, "root_blocks");
       this.root = root;
    }
 
+   public void showBlockDetails(Block ac) {
+      initCheck();
+      panelBlockDetails.setBlock(ac);
+      showTab(panelBlockDetails);
+   }
+
    public void disposeTab() {
       if (isInitialized()) {
+         panelBlockDetails.disposeTab();
          tablePanelBlockLast24h.disposeTab();
          tablePanelBlockLast48h.disposeTab();
          tablePanelBlockLastWeek.disposeTab();
          tablePanelBlockLastMonth.disposeTab();
 
+         panelBlockDetails = null;
          tablePanelBlockLast24h = null;
          tablePanelBlockLast48h = null;
          tablePanelBlockLastWeek = null;
@@ -67,17 +78,20 @@ public class TabsBlocks extends TabsPascalSwing implements IMyTab {
    }
 
    public void initTabs() {
+
+      panelBlockDetails = new PanelBlockDetails(psc, root);
       tablePanelBlockLast24h = new TablePanelBlockLast24h(psc, root);
       tablePanelBlockLast48h = new TablePanelBlockLast48h(psc, root);
       tablePanelBlockLast1000 = new TablePanelBlockLast1000(psc, root);
-      
+
       //tablePanelBlockLastWeek = new TablePanelBlockLastWeek(psc, root);
       //tablePanelBlockLastMonth = new TablePanelBlockLastMonth(psc, root);
 
+      addMyTab(panelBlockDetails);
       addMyTab(tablePanelBlockLast24h);
       addMyTab(tablePanelBlockLast48h);
       addMyTab(tablePanelBlockLast1000);
-      
+
       //addMyTab(tablePanelBlockLastWeek);
       //addMyTab(tablePanelBlockLastMonth);
    }

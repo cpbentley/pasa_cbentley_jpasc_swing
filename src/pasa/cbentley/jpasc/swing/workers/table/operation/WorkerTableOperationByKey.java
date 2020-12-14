@@ -5,9 +5,8 @@
  */
 package pasa.cbentley.jpasc.swing.workers.table.operation;
 
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-
 import pasa.cbentley.core.src4.logging.Dctx;
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.operation.ListTaskOperationAbstract;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.operation.ListTaskOperationByKey;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;

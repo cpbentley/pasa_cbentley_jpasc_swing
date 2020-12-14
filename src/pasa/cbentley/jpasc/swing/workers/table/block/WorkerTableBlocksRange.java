@@ -5,9 +5,8 @@
  */
 package pasa.cbentley.jpasc.swing.workers.table.block;
 
-import com.github.davidbolet.jpascalcoin.api.model.Block;
-
 import pasa.cbentley.core.src4.logging.Dctx;
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
 import pasa.cbentley.jpasc.pcore.task.ListTaskPage;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.block.ListTaskBlockRange;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;

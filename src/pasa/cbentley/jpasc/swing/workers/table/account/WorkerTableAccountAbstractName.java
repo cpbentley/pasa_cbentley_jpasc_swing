@@ -6,6 +6,7 @@
 package pasa.cbentley.jpasc.swing.workers.table.account;
 
 import pasa.cbentley.core.src4.logging.Dctx;
+import pasa.cbentley.jpasc.pcore.ctx.ITechPascRPC;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableAccountAbstract;
 import pasa.cbentley.swing.threads.IWorkerPanel;
@@ -19,9 +20,12 @@ import pasa.cbentley.swing.threads.IWorkerPanel;
  */
 public abstract class WorkerTableAccountAbstractName extends WorkerTableAccountAbstract {
 
-   protected boolean isOnlyEmty;
-
    protected String  name;
+
+   /**
+    * {@link ITechPascRPC#NAMESEARCHTYPE_CONTAINS}
+    */
+   protected String    nameSearchType;
 
    public WorkerTableAccountAbstractName(PascalSwingCtx psc, IWorkerPanel wp, ModelTableAccountAbstract tableModel) {
       super(psc, wp, tableModel);
@@ -31,16 +35,16 @@ public abstract class WorkerTableAccountAbstractName extends WorkerTableAccountA
       return name;
    }
 
-   public boolean isOnlyEmty() {
-      return isOnlyEmty;
+   public String getNameSearchType() {
+      return nameSearchType;
    }
 
    public void setName(String name) {
       this.name = name;
    }
 
-   public void setOnlyEmty(boolean isOnlyEmty) {
-      this.isOnlyEmty = isOnlyEmty;
+   public void setNameSearchType(String nameSearchType) {
+      this.nameSearchType = nameSearchType;
    }
 
    //#mdebug
@@ -58,7 +62,7 @@ public abstract class WorkerTableAccountAbstractName extends WorkerTableAccountA
 
    private void toStringPrivate(Dctx dc) {
       dc.appendVarWithSpace("name", name);
-      dc.appendVarWithSpace("isOnlyEmty", isOnlyEmty);
+      dc.appendVarWithSpace("nameSearchType", nameSearchType);
    }
 
    //#enddebug

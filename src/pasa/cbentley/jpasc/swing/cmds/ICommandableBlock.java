@@ -12,4 +12,10 @@ public interface ICommandableBlock extends ICommandable {
    public void cmdShowSelectedBlockOperationsTabHome();
 
    public void cmdShowSelectedBlockOperationsNewWindow();
+
+   public void cmdShowSelectedBlockDetails();
+
+   public void cmdShowSelectedBlockDetailsNewWindow();
+   
+   
 }

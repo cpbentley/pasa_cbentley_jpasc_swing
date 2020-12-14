@@ -61,7 +61,9 @@ public abstract class TablePanelAccountAbstractKeyName extends TablePanelAccount
    protected void subInitPanelNorth(JPanel north) {
       super.subInitPanelNorth(north); //adds panel refresh
 
-      north.add(getPanelNameHelper());
+      PanelHelperName panelName = getPanelNameHelper();
+      panelName.buildUI();
+      north.add(panelName);
    }
 
    public PanelHelperName getPanelNameHelper() {
@@ -71,6 +73,10 @@ public abstract class TablePanelAccountAbstractKeyName extends TablePanelAccount
       return panelNameHelper;
    }
 
+   /**
+    * Creates {@link PanelHelperName}
+    * @return
+    */
    protected abstract PanelHelperName createPanelHelperName();
 
    public void cmdGoToEdit() {
@@ -83,7 +89,7 @@ public abstract class TablePanelAccountAbstractKeyName extends TablePanelAccount
    protected void setWorkerData(WorkerTableAccountAbstractName worker) {
       if (panelNameHelper != null) {
          worker.setName(panelNameHelper.getFilterNameString());
-         worker.setOnlyEmty(panelNameHelper.isOnlyEmptyNames());
+         worker.setNameSearchType(panelNameHelper.getNameSearchType());
       }
       super.setWorkerData(worker);
    }
@@ -95,8 +101,7 @@ public abstract class TablePanelAccountAbstractKeyName extends TablePanelAccount
       super.panelSwingWorkerDone(worker);
       sortTableColAscending(getColumnIndexAccountName());
    }
-   
-  
+
    //#mdebug
    public void toString(Dctx dc) {
       dc.root(this, "TablePanelAccountAbstractName");

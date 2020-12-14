@@ -37,7 +37,7 @@ public class PascalBPopupMenuFactory {
       popupMenu.add(new BCMenuItem<ICommandableKey>(sc, keyActor, pcm.getCmdCopyKeyBase58()));
       popupMenu.add(new BCMenuItem<ICommandableKey>(sc, keyActor, pcm.getCmdCopyKeyEncoded()));
    }
-   
+
    public void addKeyMenuItemsDefault(IMenuSwing popupMenu, ICommandableKey keyActor) {
       popupMenu.add(new BCMenuItem<ICommandableKey>(sc, keyActor, pcm.getCmdKeyChangeName()));
       popupMenu.addSeparator();
@@ -48,12 +48,13 @@ public class PascalBPopupMenuFactory {
    }
 
    /**
-    * We define 
-    * <li> Show Account Being Sold in Inspector
-    * <li> Show Seller Account in Inspector
+    * Adds the following commands to the {@link IMenuSwing}
+    * With Seller/Account
+    * @param menu
+    * @param accountActor
+    * @param keyActor
     */
    public void addAccountSaleMenuItems(IMenuSwing menu, ICommandableAccount accountActor, ICommandableKey keyActor) {
-
       menu.add(new BCMenuItem<ICommandableAccount>(sc, accountActor, pcm.getCmdShowAccountInInspectorTab()));
       menu.add(new BCMenuItem<ICommandableAccount>(sc, accountActor, pcm.getCmdShowAccountSellerInInspectorTab()));
       menu.addSeparator();
@@ -65,4 +66,29 @@ public class PascalBPopupMenuFactory {
       menu.add(keyMenu);
    }
 
+   public void addSwapAccountMenuItems(IMenuSwing menu, ICommandableAccount accountActor, ICommandableKey keyActor) {
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, accountActor, pcm.getCmdShowAccountInInspectorTab()));
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, accountActor, pcm.getCmdShowAccountInInspectorWin()));
+      menu.addSeparator();
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, accountActor, pcm.getCmdCopyHashedSecret()));
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, accountActor, pcm.getCmdCopyNewKey()));
+      menu.addSeparator();
+      BMenu keyMenu = new BMenu(sc, "menu.account.key");
+      addKeyMenuItems(keyMenu, keyActor);
+      menu.add(keyMenu);
+   }
+
+   public void addSwapCoinMenuItems(IMenuSwing menu, ICommandableAccount accountActor, ICommandableKey keyActor) {
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, accountActor, pcm.getCmdShowAccountInInspectorTab()));
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, accountActor, pcm.getCmdShowAccountReceiverInInspectorTab()));
+      menu.addSeparator();
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, accountActor, pcm.getCmdShowAccountInInspectorWin()));
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, accountActor, pcm.getCmdShowAccountReceiverInInspectorWin()));
+      menu.addSeparator();
+      menu.add(new BCMenuItem<ICommandableAccount>(sc, accountActor, pcm.getCmdCopyHashedSecret()));
+      menu.addSeparator();
+      BMenu keyMenu = new BMenu(sc, "menu.account.key");
+      addKeyMenuItems(keyMenu, keyActor);
+      menu.add(keyMenu);
+   }
 }

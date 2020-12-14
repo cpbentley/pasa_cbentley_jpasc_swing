@@ -9,13 +9,12 @@ import java.awt.Component;
 
 import javax.swing.event.ChangeListener;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-import com.github.davidbolet.jpascalcoin.api.model.Block;
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-
 import pasa.cbentley.jpasc.pcore.access.AccessPascalRPC;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.pcore.interfaces.IAccessPascal;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.getstarted.TabsGetStarted;
@@ -149,6 +148,11 @@ public class TabsRootRPC extends TabbedBentleyPanel implements ChangeListener, I
       rootChain.showBlock(ac);
    }
 
+   public void showBlockDetails(Block ac) {
+      initCheck();
+      rootChain.showBlockDetails(ac);
+   }
+   
    public Integer getAccountNext(Integer account) {
       initCheck();
       return rootChain.getAccountNext(account);
@@ -166,6 +170,24 @@ public class TabsRootRPC extends TabbedBentleyPanel implements ChangeListener, I
 
    public IAccessPascal getAccessPascal() {
       return new AccessPascalRPC(psc.getPCtx());
+   }
+
+   public Integer getAccountLast() {
+      return psc.getPCtx().getLastValidAccount();
+   }
+
+   public Integer getBlockNext(Integer block) {
+      initCheck();
+      return rootChain.getBlockNext(block);
+   }
+
+   public Integer getBlockPrev(Integer block) {
+      initCheck();
+      return rootChain.getBlockPrev(block);
+   }
+
+   public Integer getBlockLast() {
+      return psc.getPCtx().getLastValidAccount();
    }
 
 }

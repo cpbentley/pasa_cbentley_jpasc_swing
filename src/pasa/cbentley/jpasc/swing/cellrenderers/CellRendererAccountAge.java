@@ -57,7 +57,7 @@ public class CellRendererAccountAge extends PascalTableCellRenderer implements T
       }
       if(renderer instanceof JLabel) {
          //TODO compute only when mouse over
-         String msg = psc.getPascalSwingUtils().computeTimeFromBlockAge(value);
+         String msg = psc.getPascalSwingUtils().computeTimeFromBlockAgePascalTime(value);
          ((JLabel)renderer).setToolTipText(msg);
       }
       renderer.setBackground(c);

@@ -9,9 +9,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-import com.github.davidbolet.jpascalcoin.api.model.Operation;
-
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
+import pasa.cbentley.jpasc.pcore.rpc.model.Operation;
 import pasa.cbentley.jpasc.swing.cellrenderers.CellRendereManager;
 import pasa.cbentley.jpasc.swing.cellrenderers.CellRendererAccountPascal;
 import pasa.cbentley.jpasc.swing.cellrenderers.CellRendererOpAccount;

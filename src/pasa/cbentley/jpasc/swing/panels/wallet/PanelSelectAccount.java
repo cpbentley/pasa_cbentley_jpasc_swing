@@ -16,11 +16,10 @@ import javax.swing.JSeparator;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-
 import pasa.cbentley.jpasc.pcore.domain.java.AccountJava;
 import pasa.cbentley.jpasc.pcore.interfaces.IAccountSelector;
 import pasa.cbentley.jpasc.pcore.interfaces.IAccountValidator;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.swing.ctx.SwingCtx;
 import pasa.cbentley.swing.image.SphereColors;

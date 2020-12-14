@@ -7,8 +7,7 @@ package pasa.cbentley.jpasc.swing.panels.table.block;
 
 import javax.swing.JPanel;
 
-import com.github.davidbolet.jpascalcoin.api.model.Block;
-
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperRefresh;

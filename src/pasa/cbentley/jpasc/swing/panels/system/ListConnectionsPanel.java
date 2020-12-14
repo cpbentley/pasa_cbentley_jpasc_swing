@@ -7,8 +7,7 @@ package pasa.cbentley.jpasc.swing.panels.system;
 
 import java.awt.BorderLayout;
 
-import com.github.davidbolet.jpascalcoin.api.model.Connection;
-
+import pasa.cbentley.jpasc.pcore.rpc.model.Connection;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.tablemodels.ModelTableConnections;
 import pasa.cbentley.jpasc.swing.workers.WorkerTableConnections;

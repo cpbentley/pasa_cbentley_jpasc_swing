@@ -9,9 +9,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Icon;
 
-import com.github.davidbolet.jpascalcoin.api.model.OperationSubType;
-
 import pasa.cbentley.jpasc.pcore.filter.operation.FilterOperationBySubtype1OrSubtype2;
+import pasa.cbentley.jpasc.pcore.rpc.model.OperationSubType;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.block.ListTaskBlockAbstract;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;

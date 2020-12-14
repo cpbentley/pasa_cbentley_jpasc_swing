@@ -12,10 +12,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.core.src4.utils.StringUtils;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.panels.core.PanelTabAbstractPascal;
 import pasa.cbentley.swing.layout.RiverPanel;

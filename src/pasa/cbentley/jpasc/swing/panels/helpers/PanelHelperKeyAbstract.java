@@ -8,13 +8,12 @@ package pasa.cbentley.jpasc.swing.panels.helpers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.domain.PublicKeyJavaManager;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.pcore.filter.SetFilterKey;
 import pasa.cbentley.jpasc.pcore.filter.publickeyjava.FilterKeyJavaEmpty;
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.models.ComboModelMapPublicKeyJava;
 import pasa.cbentley.jpasc.swing.models.IComboModelMapPublicKeyJavaListener;

@@ -10,10 +10,9 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.domain.java.AccountJava;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
 import pasa.cbentley.jpasc.swing.audio.PascalAudio;
 import pasa.cbentley.jpasc.swing.cellrenderers.CellRendereManager;
 import pasa.cbentley.jpasc.swing.cmds.CmdCopyKeyBase58;
@@ -285,6 +284,35 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
       }
    }
 
+   public void cmdShowSelectedAccountReceiverDetails() {
+      Account ac = this.getSelectedAccount();
+      if (ac != null) {
+         Integer receiver = ac.getReceiverSwapAccount();
+         if (receiver != null) {
+            root.showAccountDetails(receiver);
+         } else {
+            psc.getLog().consoleLogDateRed("Selected account does not have a receiver account");
+         }
+      }
+   }
+
+   public void cmdShowSelectedAccountReceiverDetailsNewWindow() {
+      //#debug
+      toDLog().pFlow("", this, TablePanelAccountAbstract.class, "cmdShowSelectedAccountReceiverDetailsNewWindow", LVL_05_FINE, true);
+      Account ac = this.getSelectedAccount();
+      if (ac != null) {
+         //request to show the tab for account details in the current ctx
+         Integer receiver = ac.getReceiverSwapAccount();
+         if (receiver != null) {
+            PanelAccountDetails details = new PanelAccountDetails(psc, root);
+            details.setAccount(receiver);
+            psc.getSwingCtx().showInNewFrame(details);
+         } else {
+            psc.getLog().consoleLogDateRed("Selected account does not have a receiver account");
+         }
+      }
+   }
+
    /**
     * 
     */
@@ -365,6 +393,10 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
       return new ModelTableAccountFullData(psc);
    }
 
+   /**
+    * The {@link WorkerTableAccountAbstract} that will read accounts from the chain
+    * according to its own list of parameters and conditions
+    */
    protected abstract WorkerTableAccountAbstract createWorker();
 
    public void disposeTab() {
@@ -383,8 +415,12 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
       return getTableModel().getColumnIndexAccount();
    }
 
-   protected int getColumnIndexAge() {
-      return getTableModel().getColumnIndexAge();
+   protected int getColumnIndexAgeActive() {
+      return getTableModel().getColumnIndexAgeActive();
+   }
+
+   protected int getColumnIndexAgePassive() {
+      return getTableModel().getColumnIndexAgePassive();
    }
 
    protected int getColumnIndexKey() {
@@ -404,7 +440,7 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
    }
 
    protected int getColumnIndexPrice() {
-      return getTableModel().getColumnIndexAge();
+      return getTableModel().getColumnIndexAgeActive();
    }
 
    protected int getDefSortColumnIndex() {
@@ -472,7 +508,7 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
    public boolean removeAccountsFromModel(List<Account> acs) {
       if (isInitialized()) {
          for (Account ac : acs) {
-             getBenTable().getModel().removeRow(ac);
+            getBenTable().getModel().removeRow(ac);
          }
          return true;
       }
@@ -487,7 +523,8 @@ public abstract class TablePanelAccountAbstract extends TablePanelAbstract<Accou
       getBenTable().setColumnRenderer(getColumnIndexAccount(), rm.getCellRendererAccountPascal());
       getBenTable().setColumnRenderer(getColumnIndexOps(), rm.getCellRendererAccountOpCount());
       getBenTable().setColumnRenderer(getColumnIndexKey(), rm.getCellRendererKeyName());
-      getBenTable().setColumnRenderer(getColumnIndexAge(), rm.getCellRendererAccountAge());
+      getBenTable().setColumnRenderer(getColumnIndexAgeActive(), rm.getCellRendererAccountAge());
+      getBenTable().setColumnRenderer(getColumnIndexAgePassive(), rm.getCellRendererAccountAge());
       subSetColumnRenderers();
    }
 

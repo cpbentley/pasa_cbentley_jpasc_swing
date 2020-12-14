@@ -8,10 +8,9 @@ package pasa.cbentley.jpasc.swing.tablemodels.bentley;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
-import com.github.davidbolet.jpascalcoin.api.model.Operation;
-import com.github.davidbolet.jpascalcoin.api.model.OperationSubType;
-import com.github.davidbolet.jpascalcoin.api.model.OperationType;
-
+import pasa.cbentley.jpasc.pcore.rpc.model.Operation;
+import pasa.cbentley.jpasc.pcore.rpc.model.OperationSubType;
+import pasa.cbentley.jpasc.pcore.rpc.model.OperationType;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.swing.model.ModelColumnBAbstract;
 

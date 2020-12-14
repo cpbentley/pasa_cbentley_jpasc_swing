@@ -10,6 +10,11 @@ import pasa.cbentley.jpasc.swing.interfaces.ICommandableNameList;
 
 public class PanelHelperNameChain extends PanelHelperName {
 
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1105593052425208610L;
+
    public PanelHelperNameChain(PascalSwingCtx psc, ICommandableNameList refresh) {
       super(psc,refresh);
    }

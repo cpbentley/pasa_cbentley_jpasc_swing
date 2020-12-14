@@ -16,11 +16,10 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import com.github.davidbolet.jpascalcoin.api.constants.PascalCoinConstants;
-
 import pasa.cbentley.core.src4.event.BusEvent;
 import pasa.cbentley.core.src4.event.IEventConsumer;
 import pasa.cbentley.core.src4.utils.ColorUtils;
+import pasa.cbentley.jpasc.pcore.ctx.ITechPasc;
 import pasa.cbentley.jpasc.pcore.ctx.PCoreCtx;
 import pasa.cbentley.jpasc.pcore.interfaces.IBlockListener;
 import pasa.cbentley.jpasc.pcore.network.RPCConnection;
@@ -279,7 +278,7 @@ public class PanelTabLogin extends PanelTabAbstractPascal implements ActionListe
       loginIPField = new JTextField("127.0.0.1", 17);
 
       loginPortLab = new JLabel("Port:");
-      loginPortField = new JTextField("" + PascalCoinConstants.DEFAULT_MAINNET_RPC_PORT, 5);
+      loginPortField = new JTextField("" + ITechPasc.DEFAULT_MAINNET_RPC_PORT, 5);
 
       loginBlockNumLab = new JLabel("");
       loginTimingLab = new JLabel("");

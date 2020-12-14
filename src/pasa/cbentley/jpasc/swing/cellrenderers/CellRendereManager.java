@@ -210,12 +210,12 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
    }
 
    /**
-    * Using {@link ModelTableAccountRangePrices#INDEX_18_RANGE_COLOR} for coloring
+    * Using {@link ModelTableAccountRangePrices#INDEX_19_RANGE_COLOR} for coloring
     * @return
     */
    public CellRendererAccountSoldContiguous getCellRendererAccountSoldContiguous() {
       if (cellRendererAccountSoldContiguous == null) {
-         cellRendererAccountSoldContiguous = new CellRendererAccountSoldContiguous(psc, ModelTableAccountRangePrices.INDEX_18_RANGE_COLOR);
+         cellRendererAccountSoldContiguous = new CellRendererAccountSoldContiguous(psc, ModelTableAccountRangePrices.INDEX_19_RANGE_COLOR);
          registerRenderer(cellRendererAccountSoldContiguous);
       }
       return cellRendererAccountSoldContiguous;

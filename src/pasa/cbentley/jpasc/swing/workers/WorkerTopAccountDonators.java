@@ -7,8 +7,7 @@ package pasa.cbentley.jpasc.swing.workers;
 
 import java.util.List;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableAccountAbstract;
 import pasa.cbentley.swing.threads.IWorkerPanel;

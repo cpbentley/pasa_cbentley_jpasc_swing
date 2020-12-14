@@ -8,19 +8,20 @@ package pasa.cbentley.jpasc.swing.panels.account;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-import com.github.davidbolet.jpascalcoin.api.model.Block;
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-
 import pasa.cbentley.jpasc.pcore.access.AccessPascalRPC;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.pcore.interfaces.IAccessPascal;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountChainAll;
 import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountChainBalance;
 import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountChainName;
 import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountChainPrice;
+import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountChainSwapAccount;
+import pasa.cbentley.jpasc.swing.panels.table.account.TablePanelAccountChainSwapCoin;
 import pasa.cbentley.swing.imytab.IMyTab;
 import pasa.cbentley.swing.imytab.TabbedBentleyPanel;
 
@@ -45,6 +46,10 @@ public class TabsAccountExplorer extends TabbedBentleyPanel implements IMyTab, A
    private TablePanelAccountChainPrice   listAccountPrices;
 
    private TablePanelAccountChainBalance listAccountRich;
+
+   private TablePanelAccountChainSwapCoin    listAccountSwapCoin;
+
+   private TablePanelAccountChainSwapAccount listAccountSwapAccount;
 
    public TabsAccountExplorer(PascalSwingCtx psc, IRootTabPane root) {
       super(psc.getSwingCtx(), ID);
@@ -80,9 +85,12 @@ public class TabsAccountExplorer extends TabbedBentleyPanel implements IMyTab, A
       //init default position
       listName = new TablePanelAccountChainName(psc, this);
       listAccount = new TabsAccountExplorerDivider(psc, this);
-      listAccountPrices = new TablePanelAccountChainPrice(psc, this);
       listAccountRich = new TablePanelAccountChainBalance(psc, this);
       listAccountRich.setDoubleMinNoRefresh("20000.0");
+      listAccountPrices = new TablePanelAccountChainPrice(psc, this);
+      listAccountSwapCoin = new TablePanelAccountChainSwapCoin(psc, this);
+      listAccountSwapAccount = new TablePanelAccountChainSwapAccount(psc, this);
+
       accountExplorerPanel = new PanelAccountDetails(psc, this);
 
       //deal with ordering of the tabs? TODO and what if there framed tab
@@ -104,6 +112,8 @@ public class TabsAccountExplorer extends TabbedBentleyPanel implements IMyTab, A
          addMyTab(listName);
          addMyTab(listAccountRich);
          addMyTab(listAccountPrices);
+         addMyTab(listAccountSwapCoin);
+         addMyTab(listAccountSwapAccount);
       }
    }
 
@@ -138,6 +148,12 @@ public class TabsAccountExplorer extends TabbedBentleyPanel implements IMyTab, A
       //we don't support block UI at this level.. we must use parent
       rootRPC.showBlock(ac);
    }
+   
+   public void showBlockDetails(Block ac) {
+      initCheck();
+      //we don't support block UI at this level.. we must use parent
+      rootRPC.showBlockDetails(ac);
+   }
 
    public void showPublicKeyJavaAccountNames(PublicKeyJava pk) {
       // TODO Auto-generated method stub
@@ -151,6 +167,26 @@ public class TabsAccountExplorer extends TabbedBentleyPanel implements IMyTab, A
    public void showPublicKeyAccounts(PublicKey pk) {
       // TODO Auto-generated method stub
 
+   }
+
+   public Integer getAccountLast() {
+      // TODO Auto-generated method stub
+      return null;
+   }
+
+   public Integer getBlockNext(Integer block) {
+      // TODO Auto-generated method stub
+      return null;
+   }
+
+   public Integer getBlockPrev(Integer block) {
+      // TODO Auto-generated method stub
+      return null;
+   }
+
+   public Integer getBlockLast() {
+      // TODO Auto-generated method stub
+      return null;
    }
 
 }

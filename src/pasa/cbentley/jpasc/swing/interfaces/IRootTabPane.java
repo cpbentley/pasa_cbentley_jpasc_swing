@@ -5,12 +5,11 @@
  */
 package pasa.cbentley.jpasc.swing.interfaces;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-import com.github.davidbolet.jpascalcoin.api.model.Block;
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.pcore.interfaces.IAccessPascal;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 
 /**
  * Interface to a GUI panel managing an independant business function
@@ -34,11 +33,27 @@ public interface IRootTabPane {
    public Integer getAccountNext(Integer account);
 
    /**
+    * 
+    * @return
+    */
+   public Integer getAccountLast();
+
+   /**
     * Null if none available
     * @param account
     * @return
     */
    public Integer getAccountPrev(Integer account);
+
+   public Integer getBlockNext(Integer block);
+
+   public Integer getBlockPrev(Integer block);
+
+   /**
+    * 
+    * @return null if not possible to connect
+    */
+   public Integer getBlockLast();
 
    /**
     * Interface to the blockchain data, might be RPC, local, etc
@@ -84,6 +99,8 @@ public interface IRootTabPane {
     * @param ac
     */
    public void showBlock(Block ac);
+
+   public void showBlockDetails(Block ac);
 
    /**
     * 

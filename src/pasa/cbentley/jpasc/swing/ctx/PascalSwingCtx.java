@@ -56,12 +56,6 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
-import com.github.davidbolet.jpascalcoin.api.client.PascalCoinClient;
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-import com.github.davidbolet.jpascalcoin.api.model.Operation;
-import com.github.davidbolet.jpascalcoin.api.model.PayLoadEncryptionMethod;
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-
 import pasa.cbentley.core.src4.ctx.ACtx;
 import pasa.cbentley.core.src4.ctx.ICtx;
 import pasa.cbentley.core.src4.ctx.UCtx;
@@ -73,13 +67,17 @@ import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IDLog;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.core.src4.logging.IUserLog;
-import pasa.cbentley.core.src4.logging.PreferencesSpyLogger;
 import pasa.cbentley.core.src4.utils.ColorUtils;
 import pasa.cbentley.core.src5.ctx.C5Ctx;
+import pasa.cbentley.jpasc.pcore.client.IPascalCoinClient;
+import pasa.cbentley.jpasc.pcore.ctx.ITechPasc;
 import pasa.cbentley.jpasc.pcore.ctx.PCoreCtx;
 import pasa.cbentley.jpasc.pcore.interfaces.IBlockListener;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
+import pasa.cbentley.jpasc.pcore.rpc.model.Operation;
+import pasa.cbentley.jpasc.pcore.rpc.model.PayLoadEncryptionMethod;
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.pcore.utils.PascalCoinValue;
-import pasa.cbentley.jpasc.pcore.utils.PascalUtils;
 import pasa.cbentley.jpasc.swing.audio.PascalAudio;
 import pasa.cbentley.jpasc.swing.cellrenderers.CellRendereManager;
 import pasa.cbentley.jpasc.swing.cellrenderers.PascalTableCellRenderer;
@@ -93,7 +91,6 @@ import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.interfaces.ITechUserMode;
 import pasa.cbentley.jpasc.swing.interfaces.IWizardNoob;
 import pasa.cbentley.jpasc.swing.menu.MenuBarPascalAbstract;
-import pasa.cbentley.jpasc.swing.models.ModelProviderPublicJavaKey;
 import pasa.cbentley.jpasc.swing.models.ModelProviderPublicJavaKeyPrivate;
 import pasa.cbentley.jpasc.swing.models.ModelProviderPublicJavaKeyPublic;
 import pasa.cbentley.jpasc.swing.others.PascalSkinManager;
@@ -133,6 +130,8 @@ import pasa.cbentley.swing.window.CBentleyFrame;
  *
  */
 public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
+
+   public static final int CTX_ID = 5002;
 
    private PascalAudio                       audio;
 
@@ -187,6 +186,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    private ModelProviderPublicJavaKeyPrivate modelProviderPublicJavaKeyPrivate;
 
+   private ModelProviderPublicJavaKeyPublic  modelProviderPublicJavaKeyPublic;
+
    private PascalPageManager                 pageManager;
 
    private PanelHelperChangeKeyName          panelHelperChangeKeyName;
@@ -196,11 +197,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    private PascalCmdManager                  pascalCmdManager;
 
    private MenuBarPascalAbstract             pascalMenuBar;
-
-   /**
-    * Could be null inside this class.
-    */
-   private SwingSkinManager                  swingSkinManager;
 
    private PascalSwingUtils                  pascalSwingUtils;
 
@@ -235,6 +231,11 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    private SwingBlockEventAdapter            swingBlockEvent;
 
    /**
+    * Could be null inside this class.
+    */
+   private SwingSkinManager                  swingSkinManager;
+
+   /**
     * Fast access value for {@link PascalTableCellRenderer}s
     * 
     * When zero, no coloring effects
@@ -244,8 +245,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    private Object                            walletKeyMapper;
 
    private JLabel                            websitePascal;
-
-   private ModelProviderPublicJavaKeyPublic  modelProviderPublicJavaKeyPublic;
 
    /**
     * 
@@ -493,13 +492,13 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
          return new Color(ColorUtils.FR_VERT_Amande);
       } else if (age == 5) {
          return new Color(ColorUtils.FR_VERT_Blanc_menthe);
-      } else if (age < PascalUtils.BLOCKS_3_YEAR) {
+      } else if (age < ITechPasc.BLOCKS_3_YEAR) {
          return new Color(ColorUtils.FR_VERT_Blanc_menthe);
-      } else if (age < PascalUtils.BLOCKS_3_YEAR) {
+      } else if (age < ITechPasc.BLOCKS_3_YEAR) {
          return new Color(ColorUtils.FR_VERT_Avocat);
-      } else if (age < PascalUtils.BLOCKS_3_YEARS_9_MONTH) {
+      } else if (age < ITechPasc.BLOCKS_3_YEARS_9_MONTH) {
          return new Color(ColorUtils.FR_CYAN_Bleu_azur);
-      } else if (age < PascalUtils.BLOCKS_3_YEARS_11_MONTH) {
+      } else if (age < ITechPasc.BLOCKS_3_YEARS_11_MONTH) {
          return new Color(ColorUtils.FR_CYAN_Bleu_canard);
       } else {
          return new Color(ColorUtils.FR_CYAN_Aigue_marine);
@@ -521,15 +520,19 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
          return getColorsAccountAge()[5];
       } else if (age < 20) {
          return getColorsAccountAge()[6];
-      } else if (age < PascalUtils.BLOCKS_3_YEAR) {
+      } else if (age < ITechPasc.BLOCKS_3_YEAR) {
          //colors most of the block
          return getColorsAccountAge()[7];
-      } else if (age < PascalUtils.BLOCKS_3_YEARS_9_MONTH) {
+      } else if (age < ITechPasc.BLOCKS_3_YEARS_9_MONTH) {
          return getColorsAccountAge()[8];
-      } else if (age < PascalUtils.BLOCKS_3_YEARS_11_MONTH) {
+      } else if (age < ITechPasc.BLOCKS_3_YEARS_11_MONTH) {
          return getColorsAccountAge()[9]; //old nearly done
+      } else if (age < ITechPasc.BLOCKS_4_YEARS) {
+         return getColorsAccountAge()[10]; //old nearly done
+      } else if (age < ITechPasc.BLOCKS_4_YEARS_WEEK) {
+         return getColorsAccountAge()[11]; //old nearly done
       } else {
-         return getColorsAccountAge()[10];
+         return getColorsAccountAge()[12];
       }
    }
 
@@ -554,6 +557,10 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
          //70+
          return getColorsAccountContiguous()[5];
       }
+   }
+
+   public Integer getAccountLast() {
+      return pc.getLastValidAccount();
    }
 
    public Integer getAccountNext(Integer account) {
@@ -591,6 +598,31 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     */
    public BackForwardTabPage getBackForwardTabPage() {
       return backForwardManager;
+   }
+
+   /**
+    * 
+    * @return
+    */
+   public Integer getBlockLast() {
+      return getPCtx().getPClient().getBlockCount();
+   }
+
+   public Integer getBlockNext(Integer block) {
+      if (block == null) {
+         return 0;
+      }
+      return block + 1;
+   }
+
+   public Integer getBlockPrev(Integer block) {
+      if (block == null) {
+         return 0;
+      }
+      if (block != 0) {
+         return block - 1;
+      }
+      return block;
    }
 
    /**
@@ -643,19 +675,21 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    private Color[] getColorsAccountAge() {
       if (colorsAccountAge == null) {
-         colorsAccountAge = new Color[11];
+         colorsAccountAge = new Color[13];
          int index = 0;
          colorsAccountAge[index++] = new Color(ColorUtils.FR_ROUGE_Coquelicot); //0
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_SAUMON_Incarnat);
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_SAUMON_Incarnat); //1
          colorsAccountAge[index++] = new Color(ColorUtils.FR_ORANGE_Blond);
          colorsAccountAge[index++] = new Color(ColorUtils.FR_ORANGE_Brulee); //3
          colorsAccountAge[index++] = new Color(ColorUtils.FR_VERT_Avocat);
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_VERT_Amande);
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_VERT_Amande);//5
          colorsAccountAge[index++] = new Color(ColorUtils.FR_CYAN_Bleu_azur);
          colorsAccountAge[index++] = new Color(ColorUtils.FR_VERT_Blanc_menthe); // 7
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_CYAN_Bleu_canard); //8
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_VERT_Tilleul); //8
          colorsAccountAge[index++] = new Color(ColorUtils.FR_CYAN_Aigue_marine); //9
-         colorsAccountAge[index++] = new Color(ColorUtils.FR_BRUN_Alezan); //10
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_VERT_Bouteille); //10
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_BRUN_Auburn); //11
+         colorsAccountAge[index++] = new Color(ColorUtils.FR_BRUN_Alezan); //12
       }
       return colorsAccountAge;
    }
@@ -683,6 +717,10 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       }
       Component c = renderer.getTableCellRendererComponent(table, value, false, false, -1, column);
       return c.getPreferredSize().width;
+   }
+
+   public int getCtxID() {
+      return CTX_ID;
    }
 
    /**
@@ -909,7 +947,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     * Returns the {@link PascalCoinClient}
     * @return
     */
-   public PascalCoinClient getPascalClient() {
+   public IPascalCoinClient getPascalClient() {
       return pc.getPClient();
    }
 
@@ -923,18 +961,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       return swingSkinManager;
    }
 
-   public PascalSwingUtils getPascalSwingUtils() {
-      return pascalSwingUtils;
-   }
-
-   public MenuBarPascalAbstract getPascMenuBar() {
-      return pascalMenuBar;
-   }
-
-   public IPrefs getPascPrefs() {
-      return prefs;
-   }
-
    //   public Account getSelectedAccount(ListAccountBasePanel lpane) {
    //      Account ac = null;
    //      int selRow = lpane.getJTable().getSelectedRow();
@@ -945,8 +971,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    //      return ac;
    //   }
 
-   public PCoreCtx getPCtx() {
-      return pc;
+   public PascalSwingUtils getPascalSwingUtils() {
+      return pascalSwingUtils;
    }
 
    //   public Operation getSelectedOperation(JTable table, TableModelOperation tableModel) {
@@ -978,6 +1004,18 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    //      }
    //      return pk;
    //   }
+
+   public MenuBarPascalAbstract getPascMenuBar() {
+      return pascalMenuBar;
+   }
+
+   public IPrefs getPascPrefs() {
+      return prefs;
+   }
+
+   public PCoreCtx getPCtx() {
+      return pc;
+   }
 
    public String getPrettyBytes(long size) {
       String bytes = null;
@@ -1383,14 +1421,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       //apply
    }
 
-   /**
-    * Set a skin manager. otherwise get will lazy create one.
-    * @param lfModule
-    */
-   public void setSwingSkinManager(SwingSkinManager lfModule) {
-      this.swingSkinManager = lfModule;
-   }
-
    public void setPrefs(IPrefs prefs) {
       this.prefs = prefs;
    }
@@ -1405,6 +1435,14 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
    public void setRootRPC(IRootTabPane pane) {
       rootRPC = pane;
+   }
+
+   /**
+    * Set a skin manager. otherwise get will lazy create one.
+    * @param lfModule
+    */
+   public void setSwingSkinManager(SwingSkinManager lfModule) {
+      this.swingSkinManager = lfModule;
    }
 
    public boolean showHelpFor(String string) {
@@ -1553,9 +1591,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    private void toStringPrivate(Dctx dc) {
 
    }
-   public int getCtxID() {
-      return 433;
-   }
+
    public String toStringProducerID(int pid) {
       switch (pid) {
          case IEventsPascalSwing.PID_2_BLOCK:

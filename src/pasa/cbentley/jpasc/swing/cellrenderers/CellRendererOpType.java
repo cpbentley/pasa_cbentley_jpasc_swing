@@ -10,9 +10,8 @@ import java.awt.Component;
 
 import javax.swing.JTable;
 
-import com.github.davidbolet.jpascalcoin.api.model.OperationType;
-
 import pasa.cbentley.core.src4.utils.ColorUtils;
+import pasa.cbentley.jpasc.pcore.rpc.model.OperationType;
 import pasa.cbentley.jpasc.pcore.utils.PascalUtils;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 

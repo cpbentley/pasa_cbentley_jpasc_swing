@@ -5,12 +5,11 @@
  */
 package pasa.cbentley.jpasc.swing.panels.wallet;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-import com.github.davidbolet.jpascalcoin.api.model.Block;
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.pcore.interfaces.IAccessPascal;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.swing.audio.PascalAudio;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
@@ -42,31 +41,31 @@ public class TabsMyAssets extends TabbedBentleyPanel implements IMyTab, IRootTab
    /**
     * 
     */
-   private static final long              serialVersionUID = 6723662454248226691L;
+   private static final long               serialVersionUID = 6723662454248226691L;
 
-   public static final String ID = "root_assets";
+   public static final String              ID               = "root_assets";
 
-   private PanelAccountDetails            accountInspector;
+   private PanelAccountDetails             accountInspector;
 
-   private PascalSwingCtx                 psc;
+   private PascalSwingCtx                  psc;
 
-   private RegisterNewName                registerName;
+   private RegisterNewName                 registerName;
 
-   private IRootTabPane                   rootRPC;
+   private IRootTabPane                    rootRPC;
 
-   private TablePanelAccountWalletAge     tablePanelAccountWalletAge;
+   private TablePanelAccountWalletAge      tablePanelAccountWalletAge;
 
-   private TablePanelAccountWalletAll     tablePanelAccountWalletAll;
+   private TablePanelAccountWalletAll      tablePanelAccountWalletAll;
 
-   private TablePanelAccountWalletBalance tablePanelAccountWalletBalance;
+   private TablePanelAccountWalletBalance  tablePanelAccountWalletBalance;
 
-   private TablePanelAccountWalletKey     tablePanelAccountWalletKey;
+   private TablePanelAccountWalletKey      tablePanelAccountWalletKey;
 
-   private TablePanelAccountWalletName    tablePanelAccountWalletName;
+   private TablePanelAccountWalletName     tablePanelAccountWalletName;
 
-   private TablePanelAccountWalletPrice   tablePanelAccountWalletPrice;
+   private TablePanelAccountWalletPrice    tablePanelAccountWalletPrice;
 
-   private TablePanelPublicKeyJavaMyAssets      tablePanelKeyJavaMyAssets;
+   private TablePanelPublicKeyJavaMyAssets tablePanelKeyJavaMyAssets;
 
    /**
     * {@link IRootTabPane} from which we belong.
@@ -184,6 +183,12 @@ public class TabsMyAssets extends TabbedBentleyPanel implements IMyTab, IRootTab
       rootRPC.showBlock(ac);
    }
 
+   public void showBlockDetails(Block ac) {
+      initCheck();
+      //we don't support block UI at this level.. we must use parent
+      rootRPC.showBlockDetails(ac);
+   }
+
    public void showPublicKeyJavaAccounts(PublicKeyJava pk) {
       tablePanelAccountWalletKey.setPublicKey(pk);
       showAccountWalletKey();
@@ -209,6 +214,22 @@ public class TabsMyAssets extends TabbedBentleyPanel implements IMyTab, IRootTab
 
    public void tabLostFocus() {
       super.tabLostFocus();
+   }
+
+   public Integer getAccountLast() {
+      return psc.getAccountLast();
+   }
+
+   public Integer getBlockNext(Integer block) {
+      return psc.getBlockNext(block);
+   }
+
+   public Integer getBlockPrev(Integer block) {
+      return psc.getBlockPrev(block);
+   }
+
+   public Integer getBlockLast() {
+      return psc.getBlockLast();
    }
 
 }

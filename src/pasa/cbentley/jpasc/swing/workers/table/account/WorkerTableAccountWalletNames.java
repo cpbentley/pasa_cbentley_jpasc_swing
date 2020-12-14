@@ -7,6 +7,7 @@ package pasa.cbentley.jpasc.swing.workers.table.account;
 
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.strings.StrAcceptorContains;
+import pasa.cbentley.jpasc.pcore.ctx.ITechPascRPC;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.ListTaskAccountAbstract;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.wallet.ListTaskAccountWallet;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.wallet.ListTaskAccountWalletNameAcceptor;
@@ -24,11 +25,12 @@ public class WorkerTableAccountWalletNames extends WorkerTableAccountAbstractNam
 
    protected ListTaskAccountAbstract createTaskAccount() {
       ListTaskAccountWallet listTaskAccountWallet = null;
-      if (isOnlyEmty) {
+      if (nameSearchType == ITechPascRPC.NAMESEARCHTYPE_NONE) {
          listTaskAccountWallet = new ListTaskAccountWalletNameNull(psc.getPCtx(), this);
-      } else if (name == null) {
+      } else if (nameSearchType == ITechPascRPC.NAMESEARCHTYPE_ANY) {
          listTaskAccountWallet = new ListTaskAccountWalletNameAny(psc.getPCtx(), this);
       } else {
+         //TODO we can add our own acceptors 
          StrAcceptorContains acceptor = new StrAcceptorContains(psc.getUCtx(), name);
          listTaskAccountWallet = new ListTaskAccountWalletNameAcceptor(psc.getPCtx(), this, acceptor);
       }

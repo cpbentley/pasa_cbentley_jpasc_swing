@@ -20,13 +20,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import pasa.cbentley.core.src4.ctx.UCtx;
-import pasa.cbentley.core.src4.interfaces.ICallBack;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IDLog;
 import pasa.cbentley.core.src4.logging.IStringable;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.jpasc.swing.audio.PascalAudio;
-import pasa.cbentley.jpasc.swing.audio.SoundPlay;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IPrefsPascalSwing;
 import pasa.cbentley.jpasc.swing.widgets.HelpDialog;
@@ -38,68 +36,83 @@ import pasa.cbentley.swing.window.CBentleyFrame;
 
 public class PascalCmdManager implements IStringable, ITechShow {
 
-   private CmdAccountSendFrom              cmdAccountSendFrom;
+   private CmdAccountSendFrom                cmdAccountSendFrom;
 
-   private CmdAccountSendFrom              cmdAccountSendFromWin;
+   private CmdAccountSendFrom                cmdAccountSendFromWin;
 
-   private CmdAccountSendTo                cmdAccountSendTo;
+   private CmdAccountSendTo                  cmdAccountSendTo;
 
-   private CmdAccountSendTo                cmdAccountSendToWin;
+   private CmdAccountSendTo                  cmdAccountSendToWin;
 
-   private CmdShowAccountKey               cmdAccountShowKeyHome;
+   private CmdShowAccountKey                 cmdAccountShowKeyHome;
 
-   private CmdShowAccountKeyNames          cmdAccountShowKeyNames;
+   private CmdShowAccountKeyNames            cmdAccountShowKeyNames;
 
-   private CmdShowAccountKeyNames          cmdAccountShowKeyNamesWin;
+   private CmdShowAccountKeyNames            cmdAccountShowKeyNamesWin;
 
-   private CmdShowAccountKey               cmdAccountShowKeyWin;
+   private CmdShowAccountKey                 cmdAccountShowKeyWin;
 
-   private CmdShowBlockOperations          cmdBlockShowOperationsHome;
+   private CmdShowBlockInInspector           cmdBlockShowInspectorHome;
 
-   private CmdShowBlockOperations          cmdBlockShowOperationsWin;
+   private CmdShowBlockInInspector           cmdBlockShowInspectorWin;
 
-   private CmdConnectConnect     cmdConnectConnect;
+   private CmdShowBlockOperations            cmdBlockShowOperationsHome;
 
-   private CmdConnectDisconnect  cmdConnectDisconnect;
+   private CmdShowBlockOperations            cmdBlockShowOperationsWin;
 
-   private CmdConnectTestNetwork cmdConnectTestNetwork;
+   private CmdConnectConnect                 cmdConnectConnect;
 
-   private CmdCopyKeyBase58                cmdCopyKeyBase58;
+   private CmdConnectDisconnect              cmdConnectDisconnect;
 
-   private CmdCopyKeyEncoded               cmdCopyKeyEncoded;
+   private CmdConnectTestNetwork             cmdConnectTestNetwork;
 
-   private CmdKeyChangeName                cmdKeyChangeName;
+   private CmdCopyKeyBase58                  cmdCopyKeyBase58;
 
-   private CmdShowAccountInInspector       cmdShowAccountInInspectorTab;
+   private CmdCopyKeyEncoded                 cmdCopyKeyEncoded;
 
-   private CmdShowAccountInInspector       cmdShowAccountInInspectorWin;
+   private CmdKeyChangeName                  cmdKeyChangeName;
 
-   private CmdShowKeyAccountNames          cmdShowAccountKeyAccounts;
+   private CmdLockLock                       cmdLock;
 
-   private CmdShowKeyAccountNames          cmdShowAccountKeyAccountsWin;
+   private CmdShowAccountInInspector         cmdShowAccountInInspectorTab;
 
-   private CmdShowAccountSellerInInspector cmdShowAccountSellerInInspectorTab;
+   private CmdShowAccountInInspector         cmdShowAccountInInspectorWin;
 
-   private CmdShowAccountSellerInInspector cmdShowAccountSellerInInspectorWindow;
+   private CmdShowKeyAccountNames            cmdShowAccountKeyAccounts;
 
-   private CmdShowKeyAccounts              cmdShowKeyAccounts;
+   private CmdShowKeyAccountNames            cmdShowAccountKeyAccountsWin;
 
-   private CmdShowKeyAccounts              cmdShowKeyAccountsWin;
+   private CmdShowAccountSellerInInspector   cmdShowAccountSellerInInspectorTab;
 
-   private CmdTogglePrivacyCtx             cmdTogglePrivacyCtx;
+   private CmdShowAccountSellerInInspector   cmdShowAccountSellerInInspectorWindow;
 
-   private int                             currentMode;
+   private CmdShowKeyAccounts                cmdShowKeyAccounts;
 
-   private HelpDialog                      frameHelpDialog;
+   private CmdShowKeyAccounts                cmdShowKeyAccountsWin;
 
-   private boolean                         isPlaySounds;
+   private CmdTogglePrivacyCtx               cmdTogglePrivacyCtx;
 
-   private final PascalSwingCtx            psc;
+   private CmdLockUnlock                     cmdUnlock;
+
+   private int                               currentMode;
+
+   private HelpDialog                        frameHelpDialog;
+
+   private boolean                           isPlaySounds;
+
+   private final PascalSwingCtx              psc;
+
+   private CmdShowAccountReceiverInInspector cmdShowAccountReceiverInInspectorTab;
+
+   private CmdShowAccountReceiverInInspector cmdShowAccountReceiverInInspectorWin;
+
+   private CmdCopyHashedSecret               cmdCopyHashedSecret;
+
+   private CmdCopyNewKey cmdCopyNewKey;
 
    public PascalCmdManager(PascalSwingCtx psc) {
       this.psc = psc;
    }
-
 
    public void cmdChangeLanguage(String lang, String country) {
       psc.getSwingCtx().localeUpdate(lang, country);
@@ -351,6 +364,20 @@ public class PascalCmdManager implements IStringable, ITechShow {
       return cmdAccountShowKeyWin;
    }
 
+   public CmdShowBlockInInspector getCmdBlockShowInspectorHome() {
+      if (cmdBlockShowInspectorHome == null) {
+         cmdBlockShowInspectorHome = new CmdShowBlockInInspector(this, SHOW_TYPE_0_HOME);
+      }
+      return cmdBlockShowInspectorHome;
+   }
+
+   public CmdShowBlockInInspector getCmdBlockShowInspectorWin() {
+      if (cmdBlockShowInspectorWin == null) {
+         cmdBlockShowInspectorWin = new CmdShowBlockInInspector(this, SHOW_TYPE_1_NEW_WIN);
+      }
+      return cmdBlockShowInspectorWin;
+   }
+
    public CmdShowBlockOperations getCmdBlockShowOperationsHome() {
       if (cmdBlockShowOperationsHome == null) {
          cmdBlockShowOperationsHome = new CmdShowBlockOperations(this, SHOW_TYPE_0_HOME);
@@ -372,25 +399,6 @@ public class PascalCmdManager implements IStringable, ITechShow {
       return cmdConnectConnect;
    }
 
-   private CmdLockUnlock cmdUnlock;
-
-   public CmdLockUnlock getCmdLockUnlock() {
-      if (cmdUnlock == null) {
-         cmdUnlock = new CmdLockUnlock(this);
-      }
-      return cmdUnlock;
-   }
-
-   private CmdLockLock cmdLock;
-
-   public CmdLockLock getCmdLockLock() {
-      if (cmdLock == null) {
-         cmdLock = new CmdLockLock(this);
-      }
-      return cmdLock;
-   }
-
-   
    public CmdConnectDisconnect getCmdConnectDisconnect() {
       if (cmdConnectDisconnect == null) {
          cmdConnectDisconnect = new CmdConnectDisconnect(this);
@@ -419,11 +427,39 @@ public class PascalCmdManager implements IStringable, ITechShow {
       return cmdCopyKeyEncoded;
    }
 
+   public CmdCopyHashedSecret getCmdCopyHashedSecret() {
+      if (cmdCopyHashedSecret == null) {
+         cmdCopyHashedSecret = new CmdCopyHashedSecret(this);
+      }
+      return cmdCopyHashedSecret;
+   }
+
+   public CmdCopyNewKey getCmdCopyNewKey() {
+      if (cmdCopyNewKey == null) {
+         cmdCopyNewKey = new CmdCopyNewKey(this);
+      }
+      return cmdCopyNewKey;
+   }
+
    public CmdKeyChangeName getCmdKeyChangeName() {
       if (cmdKeyChangeName == null) {
          cmdKeyChangeName = new CmdKeyChangeName(psc);
       }
       return cmdKeyChangeName;
+   }
+
+   public CmdLockLock getCmdLockLock() {
+      if (cmdLock == null) {
+         cmdLock = new CmdLockLock(this);
+      }
+      return cmdLock;
+   }
+
+   public CmdLockUnlock getCmdLockUnlock() {
+      if (cmdUnlock == null) {
+         cmdUnlock = new CmdLockUnlock(this);
+      }
+      return cmdUnlock;
    }
 
    public CmdShowAccountInInspector getCmdShowAccountInInspectorTab() {
@@ -445,6 +481,20 @@ public class PascalCmdManager implements IStringable, ITechShow {
          cmdShowAccountSellerInInspectorTab = new CmdShowAccountSellerInInspector(this, SHOW_TYPE_0_HOME);
       }
       return cmdShowAccountSellerInInspectorTab;
+   }
+
+   public CmdSwingAbstract<ICommandableAccount> getCmdShowAccountReceiverInInspectorTab() {
+      if (cmdShowAccountReceiverInInspectorTab == null) {
+         cmdShowAccountReceiverInInspectorTab = new CmdShowAccountReceiverInInspector(this, SHOW_TYPE_0_HOME);
+      }
+      return cmdShowAccountReceiverInInspectorTab;
+   }
+
+   public CmdSwingAbstract<ICommandableAccount> getCmdShowAccountReceiverInInspectorWin() {
+      if (cmdShowAccountReceiverInInspectorWin == null) {
+         cmdShowAccountReceiverInInspectorWin = new CmdShowAccountReceiverInInspector(this, SHOW_TYPE_1_NEW_WIN);
+      }
+      return cmdShowAccountReceiverInInspectorWin;
    }
 
    public CmdSwingAbstract<ICommandableAccount> getCmdShowAccountSellerInInspectorWin() {

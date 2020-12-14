@@ -112,15 +112,15 @@ public class TablePanelAccountChainPrice extends TablePanelAccountAbstractMinMax
       
       getBenTable().setColumnRenderer(getColumnIndexChecksum(), rm.getCellRendererAccountSoldContiguous());
 
-      int tableIndexLoneCount = ModelTableAccountRangePrices.INDEX_15_LONELINESS;
+      int tableIndexLoneCount = ModelTableAccountRangePrices.INDEX_16_LONELINESS;
       getBenTable().setColumnRenderer(tableIndexLoneCount, rm.getCellRendererAccountSoldContiguous());
       
-      int tableIndexRangeCount = ModelTableAccountRangePrices.INDEX_12_RANGE_SIZE;
+      int tableIndexRangeCount = ModelTableAccountRangePrices.INDEX_13_RANGE_SIZE;
       getBenTable().setColumnRenderer(tableIndexRangeCount, rm.getCellRendererAccountContiguousCount());
 
-      int tableIndexPack = ModelTableAccountRangePrices.INDEX_16_PACK;
+      int tableIndexPack = ModelTableAccountRangePrices.INDEX_17_PACK;
       getBenTable().setColumnRenderer(tableIndexPack, rm.getCellRendererAccountPackCount());
-      int tableIndexClose = ModelTableAccountRangePrices.INDEX_17_CLOSE;
+      int tableIndexClose = ModelTableAccountRangePrices.INDEX_18_CLOSE;
       getBenTable().setColumnRenderer(tableIndexClose, rm.getCellRendererAccountPackCount());
    }
 
@@ -129,7 +129,7 @@ public class TablePanelAccountChainPrice extends TablePanelAccountAbstractMinMax
     */
    public void panelSwingWorkerDone(PanelSwingWorker worker) {
       super.panelSwingWorkerDone(worker);
-      sortTableColDescending(ModelTableAccountRangePrices.INDEX_08_PRICE);
+      sortTableColDescending(ModelTableAccountRangePrices.INDEX_09_PRICE);
    }
 
    //#mdebug

@@ -7,6 +7,11 @@ package pasa.cbentley.jpasc.swing.interfaces;
 
 import pasa.cbentley.swing.cmd.ICommandableRefresh;
 
+/**
+ * 
+ * @author Charles Bentley
+ *
+ */
 public interface ICommandableNameList extends ICommandableRefresh {
 
    public void cmdGoToEdit();

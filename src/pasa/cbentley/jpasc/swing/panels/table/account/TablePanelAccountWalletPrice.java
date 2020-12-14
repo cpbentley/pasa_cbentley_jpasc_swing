@@ -59,7 +59,7 @@ public class TablePanelAccountWalletPrice extends TablePanelAccountAbstractMinMa
     */
    public void panelSwingWorkerDone(PanelSwingWorker worker) {
       super.panelSwingWorkerDone(worker);
-      sortTableColDescending(ModelTableAccountFullData.INDEX_08_PRICE);
+      sortTableColDescending(ModelTableAccountFullData.INDEX_09_PRICE);
    }
 
    //#mdebug

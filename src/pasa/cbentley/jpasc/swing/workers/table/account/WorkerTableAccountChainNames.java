@@ -6,8 +6,9 @@
 package pasa.cbentley.jpasc.swing.workers.table.account;
 
 import pasa.cbentley.core.src4.logging.Dctx;
+import pasa.cbentley.jpasc.pcore.ctx.ITechPascRPC;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.ListTaskAccountAbstract;
-import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.chain.ListTaskAccountChain;
+import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.chain.ListTaskAccountChainName;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.chain.ListTaskAccountChainNameAny;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.chain.ListTaskAccountChainNameNull;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
@@ -22,12 +23,12 @@ public class WorkerTableAccountChainNames extends WorkerTableAccountAbstractName
 
    protected ListTaskAccountAbstract createTaskAccount() {
       ListTaskAccountAbstract listTaskAccountChain = null;
-      if (isOnlyEmty) {
+      if (nameSearchType == ITechPascRPC.NAMESEARCHTYPE_NONE) {
          listTaskAccountChain = new ListTaskAccountChainNameNull(psc.getPCtx(), this);
-      } else if (name == null) {
-         listTaskAccountChain = new ListTaskAccountChainNameAny(psc.getPCtx(), this, "");
+      } else if (nameSearchType == ITechPascRPC.NAMESEARCHTYPE_ANY) {
+         listTaskAccountChain = new ListTaskAccountChainNameAny(psc.getPCtx(), this);
       } else {
-         listTaskAccountChain = new ListTaskAccountChainNameAny(psc.getPCtx(), this, name);
+         listTaskAccountChain = new ListTaskAccountChainName(psc.getPCtx(), this, name, nameSearchType);
       }
       return listTaskAccountChain;
    }

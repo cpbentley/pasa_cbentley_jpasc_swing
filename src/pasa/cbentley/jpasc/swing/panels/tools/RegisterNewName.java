@@ -27,15 +27,14 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-import com.github.davidbolet.jpascalcoin.api.model.Operation;
-import com.github.davidbolet.jpascalcoin.api.model.PayLoadEncryptionMethod;
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-import com.github.davidbolet.jpascalcoin.exception.RPCApiException;
-
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.core.src4.utils.ColorUtils;
 import pasa.cbentley.jpasc.pcore.ctx.PCoreCtx;
+import pasa.cbentley.jpasc.pcore.rpc.exception.RPCApiException;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
+import pasa.cbentley.jpasc.pcore.rpc.model.Operation;
+import pasa.cbentley.jpasc.pcore.rpc.model.PayLoadEncryptionMethod;
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.pcore.utils.PascalCoinValue;
 import pasa.cbentley.jpasc.pcore.utils.PascalUtils;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;

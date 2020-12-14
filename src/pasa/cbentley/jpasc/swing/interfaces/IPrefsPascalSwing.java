@@ -77,6 +77,11 @@ public interface IPrefsPascalSwing extends ITechPrefs {
    public static final String UI_PK_STRING                  = "ui.pk.search";
 
    public static final String UI_EXPLORER_ACCOUNT           = "ui.accountexplorer";
+   public static final String UI_EXPLORER_BLOCK           = "ui.blockexplorer";
+
+   public static final String UI_EXPLORER_NAME_SEARCH       = "ui.find.name";
+
+   public static final String UI_EXPLORER_NAME_TYPE_SEARCH  = "ui.find.searchtype";
 
    public static final String PREF_DEBUG_TRANSLATION        = "lang.debug";
 
@@ -84,5 +89,7 @@ public interface IPrefsPascalSwing extends ITechPrefs {
     * Auto refresh when table is not empty
     */
    public static final String PREF_GLOBAL_MANUAL_REFRESH    = "global.manual.refresh";
+
+   public static final String UI_EXPLORER_SWAP_TYPE_SEARCH  = "ui.find.searchtype.swap";;
 
 }

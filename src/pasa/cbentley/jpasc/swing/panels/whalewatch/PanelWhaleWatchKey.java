@@ -11,8 +11,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.workers.table.operation.WorkerTableOperationAbstract;

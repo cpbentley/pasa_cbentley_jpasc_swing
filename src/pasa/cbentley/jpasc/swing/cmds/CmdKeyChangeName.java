@@ -7,10 +7,9 @@ package pasa.cbentley.jpasc.swing.cmds;
 
 import javax.swing.JOptionPane;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-
 import pasa.cbentley.jpasc.pcore.ctx.PCoreCtx;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
 import pasa.cbentley.jpasc.pcore.tools.KeyNameProvider;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperChangeKeyName;

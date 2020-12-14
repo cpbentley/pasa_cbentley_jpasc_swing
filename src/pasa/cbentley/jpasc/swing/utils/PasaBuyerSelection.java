@@ -12,8 +12,7 @@ import java.util.List;
 
 import javax.swing.JTable;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
 import pasa.cbentley.jpasc.pcore.utils.PascalCoinValue;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableAccountAbstract;

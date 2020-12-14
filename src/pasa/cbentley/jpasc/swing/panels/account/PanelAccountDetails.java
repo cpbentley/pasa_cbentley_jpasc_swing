@@ -19,12 +19,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.ITechLvl;
+import pasa.cbentley.core.src4.utils.DateUtils;
 import pasa.cbentley.jpasc.pcore.network.RPCConnection;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.pcore.utils.AddressValidationResult;
 import pasa.cbentley.jpasc.pcore.utils.PascalCoinDouble;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
@@ -94,9 +95,9 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
 
    private BLabel                       labFindName;
 
-   private BLabel                       labLastBlock;
+   private BLabel                       labLastBlockActive;
 
-   private BLabel                       labLastOpTime;
+   private BLabel                       labLastOpTimeActive;
 
    private BLabel                       labLockBlock;
 
@@ -136,9 +137,9 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
 
    private JTextField                   textCheckSum;
 
-   private JTextField                   textLastBlock;
+   private JTextField                   textLastBlockActive;
 
-   private JTextField                   textLastOpTime;
+   private JTextField                   textLastOpTimeActive;
 
    private JTextField                   textLockBlock;
 
@@ -159,6 +160,24 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
    private BButton                      butRandom;
 
    private BButton                      butChangeKeyNames;
+
+   private BLabel                       labSeal;
+
+   private JTextField                   textSeal;
+
+   private BLabel                       labData;
+
+   private JTextField                   textData;
+
+   private BLabel                       labLastBlockPassive;
+
+   private JTextField                   textLastBlockPassive;
+
+   private BLabel                       labLastOpTimePassive;
+
+   private JTextField                   textLastOpTimePassive;
+
+   private BButton                      butOpenOwnWindow;
 
    public PanelAccountDetails(PascalSwingCtx psc, IRootTabPane root) {
       this(psc, root, ID);
@@ -200,6 +219,12 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
             //update the names
             privateUpdateKeyNames();
          }
+      } else if (src == butOpenOwnWindow) {
+         if (account != null) {
+            PanelAccountDetails details = new PanelAccountDetails(psc, root);
+            details.setAccount(account);
+            psc.getSwingCtx().showInNewFrame(details);
+         }
       }
    }
 
@@ -233,8 +258,12 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       textAreaPubKey.setText("");
       textBalance.setText("");
       textCheckSum.setText("");
-      textLastBlock.setText("");
-      textLastOpTime.setText("");
+      textLastBlockActive.setText("");
+      textLastOpTimeActive.setText("");
+      textLastBlockPassive.setText("");
+      textLastOpTimePassive.setText("");
+      textData.setText("");
+      textSeal.setText("");
       textLockBlock.setText("");
       textName.setText("");
       textNumOperations.setText("");
@@ -294,6 +323,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       butNext = new BButton(sc, this, "but.acc.next");
       butPrev = new BButton(sc, this, "but.acc.previous");
       butRandom = new BButton(sc, this, "but.acc.random");
+      butOpenOwnWindow = new BButton(sc, this, "but.open.window");
 
       butFindAccount = new BButton(sc, this, "but.find.account");
 
@@ -311,8 +341,6 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       container.add("", butTopLeft);
 
       JPanel panelButtons = new JPanel();
-      panelButtons.add(butPrev);
-      panelButtons.add(butNext);
       panelButtons.add(butFindAccount);
       labFindName = new BLabel(sc, "but.findbyname");
       panelButtons.add(labFindName);
@@ -340,6 +368,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       container.add("tab", butPrev);
       container.add("tab", butNext);
       container.add("tab", butRandom);
+      container.add("tab", butOpenOwnWindow);
 
       labChecksum = new BLabel(sc, "text.checksum");
       container.add("br", labChecksum);
@@ -364,6 +393,22 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       textName = new JTextField(54);
       textName.setEditable(false);
       container.add("tab", textName);
+
+      //-------------------------
+
+      labNumOperation = new BLabel(sc, "text.operationsnum");
+      textNumOperations = new JTextField(10);
+      textNumOperations.setEditable(false);
+      container.add("br", labNumOperation);
+      container.add("tab", textNumOperations);
+
+      labSeal = new BLabel(sc, "text.seal");
+      textSeal = new JTextField(40);
+      textSeal.setEnabled(false);
+      container.add("tab", labSeal);
+      container.add("tab", textSeal);
+
+      //-----------------------
 
       labBalance = new BLabel(sc, "text.balance");
       container.add("br", labBalance);
@@ -420,7 +465,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       container.add("tab", textKeyNamePublic);
 
       butPublicKey58 = new BButton(sc, this, "text.keybase58");
-      textAreaPubKey = new BTextArea(sc, 2, 100);
+      textAreaPubKey = new BTextArea(sc, 1, 100);
       textAreaPubKey.setLineWrap(true);
       textAreaPubKey.setEditable(false);
       textAreaPubKey.setTextKeyTip("text.keybase58.tip");
@@ -429,7 +474,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       container.add("tab", textAreaPubKey);
 
       butEncPubKey = new BButton(sc, this, "text.keyencoded");
-      textAreaEncPubKey = new BTextArea(sc, 2, 100);
+      textAreaEncPubKey = new BTextArea(sc, 1, 130);
       textAreaEncPubKey.setLineWrap(true);
       textAreaEncPubKey.setEditable(false);
       textAreaPubKey.setTextKeyTip("text.keyencoded.tip");
@@ -437,25 +482,39 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       container.add("p", butEncPubKey);
       container.add("tab", textAreaEncPubKey);
 
-      labNumOperation = new BLabel(sc, "text.operationsnum");
-      textNumOperations = new JTextField(10);
-      textNumOperations.setEditable(false);
-      container.add("br", labNumOperation);
-      container.add("tab", textNumOperations);
+      labLastBlockActive = new BLabel(sc, "text.lastblock.active");
+      textLastBlockActive = new JTextField(10);
+      textLastBlockActive.setEditable(false);
+      container.add("br", labLastBlockActive);
+      container.add("tab", textLastBlockActive);
 
-      labLastBlock = new BLabel(sc, "text.lastblock");
-      textLastBlock = new JTextField(10);
-      textLastBlock.setEditable(false);
-      container.add("tab", labLastBlock);
-      container.add("tab", textLastBlock);
+      labLastOpTimeActive = new BLabel(sc, "text.lastoperation.active");
+      textLastOpTimeActive = new JTextField(60);
+      textLastOpTimeActive.setEnabled(false);
+      container.add("tab", labLastOpTimeActive);
+      container.add("tab", textLastOpTimeActive);
 
-      labLastOpTime = new BLabel(sc, "text.lastoperation");
-      textLastOpTime = new JTextField(30);
-      textLastOpTime.setEnabled(false);
-      container.add("tab", labLastOpTime);
-      container.add("tab", textLastOpTime);
+      labLastBlockPassive = new BLabel(sc, "text.lastblock.passive");
+      textLastBlockPassive = new JTextField(10);
+      textLastBlockPassive.setEditable(false);
+      container.add("br", labLastBlockPassive);
+      container.add("tab", textLastBlockPassive);
+
+      labLastOpTimePassive = new BLabel(sc, "text.lastoperation.passive");
+      textLastOpTimePassive = new JTextField(60);
+      textLastOpTimePassive.setEnabled(false);
+      container.add("tab", labLastOpTimePassive);
+      container.add("tab", textLastOpTimePassive);
 
       //container.add("p hfill", tableBen.getScrollPane());
+      container.add("p hfill", accountOperations);
+
+      labData = new BLabel(sc, "text.data");
+      textData = new JTextField(50);
+      textData.setEnabled(false);
+      container.add("br", labData);
+      container.add("tab", textData);
+
       container.add("p hfill", accountOperations);
 
       JScrollPane scrollPaneAll = new JScrollPane(container);
@@ -517,19 +576,29 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
 
       textNumOperations.setText(account.getnOperation().toString());
       String encPubKey = account.getEncPubkey();
+
       PublicKey pk = this.psc.getPascalClient().decodePubKey(encPubKey, null);
       textAreaPubKey.setText(pk.getBase58PubKey());
       textAreaEncPubKey.setText(encPubKey);
-      Integer updateB = account.getUpdatedB();
-      textLastBlock.setText("" + updateB);
+
+      Integer updateBlockActive = account.getUpdatedBlockActive();
+      textLastBlockActive.setText("" + updateBlockActive);
+
+      Integer updateBlockPassive = account.getUpdatedBlockPassive();
+      textLastBlockPassive.setText("" + updateBlockPassive);
+
       RPCConnection con = psc.getPCtx().getRPCConnection();
       if (con.isConnected()) {
-         int ageDiff = con.getLastBlockMined().intValue() - updateB.intValue();
-         String timeAgo = psc.getPascalSwingUtils().computeTimeFromBlockAge(ageDiff);
-         textLastOpTime.setText(ageDiff + " : " + timeAgo);
+         int lastBlockInt = con.getLastBlockMined().intValue();
+         String strBlockAge = computeBlockAgeStr(updateBlockActive, con, lastBlockInt);
+         textLastOpTimeActive.setText(strBlockAge);
+         strBlockAge = computeBlockAgeStr(updateBlockPassive, con, lastBlockInt);
+         textLastOpTimePassive.setText(strBlockAge);
       } else {
-         textLastOpTime.setText("Not connected");
+         textLastOpTimeActive.setText("Not connected");
+         textLastOpTimePassive.setText("Not connected");
       }
+
       textType.setText("" + account.getType());
 
       Double price = account.getPrice();
@@ -557,6 +626,17 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
       } else {
          textLockBlock.setText(lockTillBlock.toString());
       }
+      String data = account.getData();
+      if (data == null) {
+         data = "";
+      }
+      textData.setText(data);
+
+      String seal = account.getSeal();
+      if (seal == null) {
+         seal = "";
+      }
+      textSeal.setText(seal);
 
       privateUpdateKeyNames();
 
@@ -564,6 +644,17 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
 
       accountOperations.showAccount(account);
 
+   }
+
+   private String computeBlockAgeStr(Integer updateBlockActive, RPCConnection con, int lastBlockInt) {
+      int updateBlockActiveInt = updateBlockActive.intValue();
+      int ageDiffBlockTime = lastBlockInt - updateBlockActiveInt;
+      String timeAgo = psc.getPascalSwingUtils().computeTimeFromBlockAgePascalTime(ageDiffBlockTime);
+      Block block = con.getPClient().getBlock(updateBlockActive);
+      Long timeStamp = block.getTimestamp();
+      String realTimeAgo = DateUtils.getDaysNazad(timeStamp.longValue() * 1000, System.currentTimeMillis());
+      String strBlockAge = ageDiffBlockTime + " blocks ago i.e. " + timeAgo + " in pascal time, i.e." + realTimeAgo + " in our time";
+      return strBlockAge;
    }
 
    public void setAccount(Integer account) {

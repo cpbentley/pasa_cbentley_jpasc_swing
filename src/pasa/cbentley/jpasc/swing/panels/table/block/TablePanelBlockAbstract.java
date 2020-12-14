@@ -5,13 +5,14 @@
  */
 package pasa.cbentley.jpasc.swing.panels.table.block;
 
-import com.github.davidbolet.jpascalcoin.api.model.Block;
-
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
 import pasa.cbentley.jpasc.swing.cellrenderers.CellRendereManager;
 import pasa.cbentley.jpasc.swing.cmds.ICommandableBlock;
 import pasa.cbentley.jpasc.swing.cmds.PascalCmdManager;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
+import pasa.cbentley.jpasc.swing.panels.block.PanelBlockDetails;
 import pasa.cbentley.jpasc.swing.panels.table.abstrakt.TablePanelAbstract;
 import pasa.cbentley.jpasc.swing.panels.table.operation.TablePanelOperationByBlock;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableBlockAbstract;
@@ -41,12 +42,41 @@ public abstract class TablePanelBlockAbstract extends TablePanelAbstract<Block> 
       SwingCtx sc = psc.getSwingCtx();
       PascalCmdManager pcm = psc.getCmds();
 
+      menu.add(new BCMenuItem<ICommandableBlock>(sc, this, pcm.getCmdBlockShowInspectorHome()));
+      menu.add(new BCMenuItem<ICommandableBlock>(sc, this, pcm.getCmdBlockShowInspectorWin()));
+      menu.addSeparator();
       menu.add(new BCMenuItem<ICommandableBlock>(sc, this, pcm.getCmdBlockShowOperationsHome()));
       menu.add(new BCMenuItem<ICommandableBlock>(sc, this, pcm.getCmdBlockShowOperationsWin()));
       menu.addSeparator();
 
    }
 
+   public void cmdShowSelectedBlockDetails() {
+      //#debug
+      toDLog().pFlow("", this, TablePanelBlockAbstract.class, "cmdShowSelectedBlockDetails", LVL_05_FINE, true);
+     
+      Block block = this.getSelectedBlock();
+      if (block != null) {
+         //request to show the tab for account details in the current ctx
+         root.showBlock(block);
+      }
+   }
+
+   public void cmdShowSelectedBlockDetailsNewWindow() {
+      //#debug
+      toDLog().pFlow("", this, TablePanelBlockAbstract.class, "cmdShowSelectedBlockDetailsNewWindow", LVL_05_FINE, true);
+     
+      
+      Block block = getSelectedBlock();
+      if (block != null) {
+         //which window to use? 
+         PanelBlockDetails blockDetails = new PanelBlockDetails(psc, root);
+         blockDetails.setBlock(block);
+         psc.getSwingCtx().showInNewFrame(blockDetails);
+      }
+   }
+
+   
    public void cmdShowSelectedBlockOperationsNewWindow() {
       //#debug
       toDLog().pFlow("", this, TablePanelBlockAbstract.class, "cmdShowSelectedBlockOperationsNewWindow", LVL_05_FINE, true);

@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,13 +27,12 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
-import com.github.davidbolet.jpascalcoin.api.client.PascalCoinClient;
-import com.github.davidbolet.jpascalcoin.api.model.NetProtocol;
-import com.github.davidbolet.jpascalcoin.api.model.NetStats;
-import com.github.davidbolet.jpascalcoin.api.model.NodeServer;
-import com.github.davidbolet.jpascalcoin.api.model.NodeStatus;
-
 import pasa.cbentley.core.src4.logging.ITechLvl;
+import pasa.cbentley.jpasc.pcore.client.IPascalCoinClient;
+import pasa.cbentley.jpasc.pcore.rpc.model.NetProtocol;
+import pasa.cbentley.jpasc.pcore.rpc.model.NetStats;
+import pasa.cbentley.jpasc.pcore.rpc.model.NodeServer;
+import pasa.cbentley.jpasc.pcore.rpc.model.NodeStatus;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.swing.imytab.AbstractMyTab;
 import pasa.cbentley.swing.imytab.IMyGui;
@@ -239,7 +237,7 @@ public class PanelTabNodeCenter extends AbstractMyTab implements ActionListener,
     * 
     * @return never null. 
     */
-   public PascalCoinClient getClient() {
+   public IPascalCoinClient getClient() {
       return psc.getPascalClient();
    }
 
@@ -438,7 +436,7 @@ public class PanelTabNodeCenter extends AbstractMyTab implements ActionListener,
    }
 
    public void updateState() {
-      PascalCoinClient pclient = getClient();
+      IPascalCoinClient pclient = getClient();
       Integer bc = pclient.getBlockCount(); //null if not connected
       Integer pendingC = pclient.getPendingsCount();
       String blockCountStr = (bc == null) ? "null" : bc.toString();
@@ -517,7 +515,7 @@ public class PanelTabNodeCenter extends AbstractMyTab implements ActionListener,
     * Text based data so it can be copy pasted easily
     */
    public void updateStateText() {
-      PascalCoinClient pclient = getClient();
+      IPascalCoinClient pclient = getClient();
       stateText.setText("");
       Integer bc = pclient.getBlockCount(); //null if not connected
       String blockCountStr = (bc == null) ? "null" : bc.toString();

@@ -2,7 +2,7 @@ package pasa.cbentley.jpasc.swing.utils;
 
 import java.util.Comparator;
 
-import com.github.davidbolet.jpascalcoin.api.model.OperationType;
+import pasa.cbentley.jpasc.pcore.rpc.model.OperationType;
 
 public class ComparatorOpType implements Comparator<OperationType> {
 

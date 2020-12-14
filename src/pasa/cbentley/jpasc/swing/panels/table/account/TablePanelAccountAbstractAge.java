@@ -57,7 +57,7 @@ public abstract class TablePanelAccountAbstractAge extends TablePanelAccountAbst
     */
    public void panelSwingWorkerDone(PanelSwingWorker worker) {
       super.panelSwingWorkerDone(worker);
-      sortTableColDescending(getColumnIndexAge());
+      sortTableColDescending(getColumnIndexAgeActive());
    }
 
    //#mdebug

@@ -5,10 +5,9 @@
  */
 package pasa.cbentley.jpasc.swing.workers;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.jpasc.pcore.interfaces.IAccessAccountDBolet;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.swing.ctx.SwingCtx;
 import pasa.cbentley.swing.threads.IWorkerPanel;

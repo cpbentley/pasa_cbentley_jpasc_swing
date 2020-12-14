@@ -5,12 +5,11 @@
  */
 package pasa.cbentley.jpasc.swing.workers;
 
-import com.github.davidbolet.jpascalcoin.api.model.Block;
-
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.filter.predicates.BlockPredicate;
 import pasa.cbentley.jpasc.pcore.filter.predicates.PPredicate;
 import pasa.cbentley.jpasc.pcore.interfaces.IObjectListener;
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.block.BlockFinderTask;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.swing.threads.IWorkerPanel;

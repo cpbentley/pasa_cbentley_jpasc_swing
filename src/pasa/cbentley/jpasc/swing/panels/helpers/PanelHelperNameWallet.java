@@ -44,7 +44,7 @@ public class PanelHelperNameWallet extends PanelHelperName {
    public void addWidgets() {
       add(labFilter);
       add(textFilter);
-      add(clear);
+      add(butClear);
       add(cbNoNames);
       add(labEditWarning);
       add(butGoToEdit);

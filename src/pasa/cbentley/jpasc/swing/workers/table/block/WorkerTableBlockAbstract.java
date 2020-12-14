@@ -7,10 +7,9 @@ package pasa.cbentley.jpasc.swing.workers.table.block;
 
 import java.util.List;
 
-import com.github.davidbolet.jpascalcoin.api.model.Block;
-
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.listlisteners.IListListener;
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
 import pasa.cbentley.jpasc.pcore.task.ListTask;
 import pasa.cbentley.jpasc.pcore.task.list.dbolet.account.wallet.ListTaskAccountWallet;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;

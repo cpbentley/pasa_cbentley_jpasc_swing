@@ -9,14 +9,13 @@ import java.awt.Color;
 
 import javax.swing.UIManager;
 
-import com.github.davidbolet.jpascalcoin.api.model.Account;
-import com.github.davidbolet.jpascalcoin.api.model.Block;
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-
 import pasa.cbentley.jpasc.pcore.access.AccessPascalRPC;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
-import pasa.cbentley.jpasc.pcore.interfaces.IAccessAccountDBolet;
 import pasa.cbentley.jpasc.pcore.interfaces.IAccessPascal;
+import pasa.cbentley.jpasc.pcore.network.RPCConnection;
+import pasa.cbentley.jpasc.pcore.rpc.model.Account;
+import pasa.cbentley.jpasc.pcore.rpc.model.Block;
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.account.TabsAccountExplorer;
@@ -58,6 +57,17 @@ public class TabsChainExplorer extends TabbedBentleyPanel implements IRootTabPan
 
    }
 
+   /**
+    * {@link IAccessPascal}
+    */
+   public IAccessPascal getAccessPascal() {
+      return new AccessPascalRPC(psc.getPCtx());
+   }
+
+   public Integer getAccountLast() {
+      return psc.getPCtx().getLastValidAccount();
+   }
+
    public Integer getAccountNext(Integer account) {
       return psc.getAccountNext(account);
    }
@@ -66,11 +76,20 @@ public class TabsChainExplorer extends TabbedBentleyPanel implements IRootTabPan
       return psc.getAccountPrev(account);
    }
 
-   /**
-    * {@link IAccessPascal}
-    */
-   public IAccessPascal getAccessPascal() {
-      return new AccessPascalRPC(psc.getPCtx());
+   public Integer getBlockLast() {
+      RPCConnection con = psc.getPCtx().getRPCConnection();
+      if (con.isConnected()) {
+         return con.getLastBlockMined();
+      }
+      return null;
+   }
+
+   public Integer getBlockNext(Integer block) {
+      return psc.getBlockNext(block);
+   }
+
+   public Integer getBlockPrev(Integer block) {
+      return psc.getBlockPrev(block);
    }
 
    public void initTabs() {
@@ -148,6 +167,17 @@ public class TabsChainExplorer extends TabbedBentleyPanel implements IRootTabPan
       showTab(operationsPanel);
    }
 
+   public void showBlockDetails(Block ac) {
+      initCheck();
+      blockPanel.showBlockDetails(ac);
+      showTab(blockPanel);
+   }
+
+   public void showPublicKeyAccounts(PublicKey pk) {
+      initCheck();
+      accountExplorerPanel.showPublicKeyAccounts(pk);
+   }
+
    public void showPublicKeyJavaAccountNames(PublicKeyJava pk) {
 
    }
@@ -156,11 +186,6 @@ public class TabsChainExplorer extends TabbedBentleyPanel implements IRootTabPan
       initCheck();
       keysExplorer.showPublicKeyJavaAccounts(pk);
       showTab(keysExplorer);
-   }
-
-   public void showPublicKeyAccounts(PublicKey pk) {
-      initCheck();
-      accountExplorerPanel.showPublicKeyAccounts(pk);
    }
 
 }

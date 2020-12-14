@@ -8,11 +8,10 @@ package pasa.cbentley.jpasc.swing.workers;
 import java.util.Iterator;
 import java.util.List;
 
-import com.github.davidbolet.jpascalcoin.api.model.PublicKey;
-
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.core.src4.thread.AbstractBRunnable;
 import pasa.cbentley.jpasc.pcore.ctx.PCoreCtx;
+import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.pcore.utils.AssetStatResult;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 
