@@ -33,23 +33,6 @@ public class WorkerTableAccountChainStatusType extends WorkerTableAccountAbstrac
       return "Account Swap";
    }
 
-   //#mdebug
-   public void toString(Dctx dc) {
-      dc.root(this, "WorkerTableAccountChainMinMaxPrice");
-      toStringPrivate(dc);
-      super.toString(dc.sup());
-   }
-
-   private void toStringPrivate(Dctx dc) {
-
-   }
-
-   public void toString1Line(Dctx dc) {
-      dc.root1Line(this, "WorkerTableAccountChainMinMaxPrice");
-      toStringPrivate(dc);
-      super.toString1Line(dc.sup1Line());
-   }
-
    public String getStatusType() {
       return statusType;
    }
@@ -58,6 +41,22 @@ public class WorkerTableAccountChainStatusType extends WorkerTableAccountAbstrac
       this.statusType = statusType;
    }
 
+   //#mdebug
+   public void toString(Dctx dc) {
+      dc.root(this, "WorkerTableAccountChainMinMaxPrice");
+      toStringPrivate(dc);
+      super.toString(dc.sup());
+   }
+
+   public void toString1Line(Dctx dc) {
+      dc.root1Line(this, "WorkerTableAccountChainMinMaxPrice");
+      toStringPrivate(dc);
+      super.toString1Line(dc.sup1Line());
+   }
+
+   private void toStringPrivate(Dctx dc) {
+
+   }
    //#enddebug
 
 }
