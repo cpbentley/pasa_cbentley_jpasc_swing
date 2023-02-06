@@ -13,7 +13,10 @@ import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableAccountAbstract;
 import pasa.cbentley.swing.threads.IWorkerPanel;
 
 /**
- * List all accounts
+ * List all accounts for a wallet key
+ * 
+ * @see ListTaskAccountWalletPubKey
+ * 
  * @author Charles Bentley
  *
  */
@@ -25,8 +28,7 @@ public class WorkerTableAccountWalletKey extends WorkerTableAccountAbstract {
     * Key cannot be null here
     * @param psc
     * @param wp
-    * @param tableModel
-    * @param pk
+    * @param tableModel ModelTableAccountAbstract
     */
    public WorkerTableAccountWalletKey(PascalSwingCtx psc, IWorkerPanel wp, ModelTableAccountAbstract tableModel) {
       super(psc, wp, tableModel);

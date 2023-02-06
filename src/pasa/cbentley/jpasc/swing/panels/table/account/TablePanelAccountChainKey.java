@@ -15,7 +15,7 @@ import pasa.cbentley.swing.imytab.IMyTab;
 import pasa.cbentley.swing.widgets.b.BPopupMenu;
 
 /**
- * Tab to tell the users which account is near the 4 years consensus rule.
+ * Panel displaying the accounts of a public key from the blockchain
  * 
  * @author Charles Bentley
  *
@@ -55,12 +55,12 @@ public class TablePanelAccountChainKey extends TablePanelAccountAbstractKey impl
 
    //#mdebug
    public void toString(Dctx dc) {
-      dc.root(this, "TablePanelAccountChainKey");
+      dc.root(this, TablePanelAccountChainKey.class);
       super.toString(dc.sup());
    }
 
    public void toString1Line(Dctx dc) {
-      dc.root1Line(this, "TablePanelAccountChainKey");
+      dc.root1Line(this, TablePanelAccountChainKey.class);
       super.toString1Line(dc.sup1Line());
    }
    //#enddebug

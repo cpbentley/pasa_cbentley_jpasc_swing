@@ -43,7 +43,7 @@ public class WorkerHashMapCacheKeyPrivate extends WorkerHashMapCacheAbstract<Has
 
    //#mdebug
    public void toString(Dctx dc) {
-      dc.root(this, "WorkerHashMapCacheKeyPrivate");
+      dc.root(this, WorkerHashMapCacheKeyPrivate.class);
       toStringPrivate(dc);
       super.toString(dc.sup());
    }
@@ -53,7 +53,7 @@ public class WorkerHashMapCacheKeyPrivate extends WorkerHashMapCacheAbstract<Has
    }
 
    public void toString1Line(Dctx dc) {
-      dc.root1Line(this, "WorkerHashMapCacheKeyPrivate");
+      dc.root1Line(this, WorkerHashMapCacheKeyPrivate.class);
       toStringPrivate(dc);
       super.toString1Line(dc.sup1Line());
    }

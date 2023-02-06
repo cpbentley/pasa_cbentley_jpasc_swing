@@ -13,7 +13,8 @@ import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableAccountAbstract;
 import pasa.cbentley.swing.threads.IWorkerPanel;
 
 /**
- * List all accounts
+ * List all accounts of a given public key
+ * 
  * @author Charles Bentley
  *
  */

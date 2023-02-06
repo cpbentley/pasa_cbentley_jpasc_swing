@@ -9,9 +9,9 @@ import java.util.List;
 
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
+import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJavaCache;
 import pasa.cbentley.jpasc.pcore.task.ListTaskPage;
 import pasa.cbentley.jpasc.pcore.task.list.java.key.ListTaskPublicKeyJavaChainAll;
-import pasa.cbentley.jpasc.pcore.utils.PublicKeyJavaCache;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTablePublicKeyJavaAbstract;
 import pasa.cbentley.swing.threads.IWorkerPanel;

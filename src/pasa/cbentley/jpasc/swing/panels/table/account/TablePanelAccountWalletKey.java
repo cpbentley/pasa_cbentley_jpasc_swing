@@ -8,24 +8,28 @@ package pasa.cbentley.jpasc.swing.panels.table.account;
 import javax.swing.JPanel;
 
 import pasa.cbentley.core.src4.logging.Dctx;
+import pasa.cbentley.jpasc.pcore.domain.java.PublicKeyJava;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.IRootTabPane;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperKeyAbstract;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperKeyWalletNoWildcards;
 import pasa.cbentley.jpasc.swing.workers.table.account.WorkerTableAccountAbstract;
+import pasa.cbentley.jpasc.swing.workers.table.account.WorkerTableAccountAbstractName;
 import pasa.cbentley.jpasc.swing.workers.table.account.WorkerTableAccountWalletKey;
 import pasa.cbentley.swing.imytab.IMyTab;
 import pasa.cbentley.swing.widgets.b.BPopupMenu;
 
 /**
- * Tab to tell the users which account is near the 4 years consensus rule.
+ * Panel displaying the accounts of a public key from the wallet
+ * 
+ * @see TablePanelAccountChainKey
  * 
  * @author Charles Bentley
  *
  */
 public class TablePanelAccountWalletKey extends TablePanelAccountAbstractKey implements IMyTab {
 
-   private static final String KEY              = "list_mykey_accounts";
+   private static final String KEY              = "wallet_keys_account";
 
    /**
     * 
@@ -54,6 +58,25 @@ public class TablePanelAccountWalletKey extends TablePanelAccountAbstractKey imp
       return worker;
    }
 
+   protected void setWorkerData(WorkerTableAccountWalletKey worker) {
+      if (panelKeyHelper != null) {
+         
+         //#debug
+         toDLog().pFlow("", this, TablePanelAccountWalletKey.class, "setWorkerData", LVL_05_FINE, false);
+         
+         PublicKeyJava pk = panelKeyHelper.getSelectedKeyAsPublicKeyJava();
+         
+         
+         String encPK = pk.getEncPubKey();
+         
+         //#debug
+         toDLog().pFlow("", pk, TablePanelAccountWalletKey.class, "setWorkerData", LVL_04_FINER, true);
+         
+         worker.setEncPubKey(encPK);
+      }
+      super.setWorkerData(worker);
+   }
+   
    protected void subInitPanelNorth(JPanel north) {
       super.subInitPanelNorth(north); //adds panel refresh
    }
@@ -64,12 +87,12 @@ public class TablePanelAccountWalletKey extends TablePanelAccountAbstractKey imp
 
    //#mdebug
    public void toString(Dctx dc) {
-      dc.root(this, "TablePanelAccountWalletKey");
+      dc.root(this, TablePanelAccountWalletKey.class);
       super.toString(dc.sup());
    }
 
    public void toString1Line(Dctx dc) {
-      dc.root1Line(this, "TablePanelAccountWalletKey");
+      dc.root1Line(this, TablePanelAccountWalletKey.class);
       super.toString1Line(dc.sup1Line());
    }
    //#enddebug

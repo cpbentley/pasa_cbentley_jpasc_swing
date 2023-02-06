@@ -9,38 +9,41 @@ import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.models.ComboModelMapPublicKeyJava;
 import pasa.cbentley.swing.cmd.ICommandableRefresh;
-import pasa.cbentley.swing.imytab.AbstractMyTab;
+import pasa.cbentley.swing.interfaces.IStringPrefIDable;
 
 /**
- * Panel that displays a Drop down combo box of keys
+ * Panel that displays a Drop down combo box of wallet keys.
+ * 
+ * It will load them on demand
  * 
  * @author Charles Bentley
  *
  */
 public class PanelHelperKeyWalletNoWildcards extends PanelHelperKeyAbstract {
 
-
-   public PanelHelperKeyWalletNoWildcards(PascalSwingCtx psc, AbstractMyTab owner, ICommandableRefresh refresh) {
-      super(psc,owner,refresh);
+   public PanelHelperKeyWalletNoWildcards(PascalSwingCtx psc, IStringPrefIDable owner, ICommandableRefresh refresh) {
+      super(psc, owner, refresh);
    }
 
-
+   /**
+    * 
+    */
    public void buildUI() {
       super.buildUI();
       this.add(labPublicKey);
-      if(comboKeys != null) {
+      if (comboKeys != null) {
          this.add(comboKeys);
       }
+      this.add(butRefresh);
    }
 
    protected ComboModelMapPublicKeyJava createModel() {
       return psc.getModelProviderPublicJavaKeyPrivate().createModelPublicKeyJava();
    }
 
-   
    //#mdebug
    public void toString(Dctx dc) {
-      dc.root(this, "PanelKeyHelperWalletNoAll");
+      dc.root(this, PanelHelperKeyWalletNoWildcards.class);
       toStringPrivate(dc);
       super.toString(dc.sup());
    }
@@ -49,13 +52,11 @@ public class PanelHelperKeyWalletNoWildcards extends PanelHelperKeyAbstract {
    }
 
    public void toString1Line(Dctx dc) {
-      dc.root1Line(this, "PanelKeyHelperWalletNoAll");
+      dc.root1Line(this, PanelHelperKeyWalletNoWildcards.class);
       toStringPrivate(dc);
       super.toString1Line(dc.sup1Line());
    }
 
    //#enddebug
-   
-
 
 }

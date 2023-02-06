@@ -15,7 +15,6 @@ import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableAccountFullData;
 import pasa.cbentley.jpasc.swing.workers.table.account.WorkerTableAccountAbstract;
 import pasa.cbentley.jpasc.swing.workers.table.account.WorkerTableAccountJavaPublicKey;
 import pasa.cbentley.jpasc.swing.workers.table.account.WorkerTableAccountWalletKey;
-import pasa.cbentley.jpasc.swing.workers.table.key.WorkerTableKeyLocal;
 import pasa.cbentley.swing.imytab.IMyTab;
 import pasa.cbentley.swing.threads.PanelSwingWorker;
 import pasa.cbentley.swing.widgets.b.BPopupMenu;
@@ -32,28 +31,17 @@ import pasa.cbentley.swing.widgets.b.BPopupMenu;
  */
 public class TablePanelAccountPublicKeyJava extends TablePanelAccountAbstract implements IMyTab {
 
+   public static final String KEY              = "list_account_pkjava";
+
    /**
     * 
     */
    private static final long  serialVersionUID = -2019545956569117458L;
 
-   public static final String KEY              = "list_account_pkjava";
-
    private PublicKeyJava      pk;
 
    public TablePanelAccountPublicKeyJava(PascalSwingCtx psc, IRootTabPane root) {
       super(psc, KEY, root);
-   }
-
-   public void setPublicKeyJava(PublicKeyJava pk) {
-      this.workerTable = null; //resets the worker
-      this.pk = pk;
-      //check if key is wallet key
-      boolean isWalletKey = psc.getPCtx().getKeyNameProvider().getPkNameStorePrivate().hasWalletKey(pk.getEncPubKey());
-      if (isWalletKey) {
-         pk.setWalletKey(true);
-      }
-      //
    }
 
    protected WorkerTableAccountAbstract createWorker() {
@@ -80,16 +68,27 @@ public class TablePanelAccountPublicKeyJava extends TablePanelAccountAbstract im
       }
    }
 
-   protected void subPopulatePopMenu(BPopupMenu menu) {
-      super.addDefaultAccountMenuItemsNoSendNoKey(menu);
-   }
-
    /**
     * Sorts the table in {@link SortOrder#DESCENDING}
     */
    public void panelSwingWorkerDone(PanelSwingWorker worker) {
       super.panelSwingWorkerDone(worker);
       sortTableColDescending(ModelTableAccountFullData.INDEX_03_BALANCE);
+   }
+
+   public void setPublicKeyJava(PublicKeyJava pk) {
+      this.workerTable = null; //resets the worker
+      this.pk = pk;
+      //check if key is wallet key
+      boolean isWalletKey = psc.getPCtx().getKeyNameProvider().getPkNameStorePrivate().hasWalletKey(pk.getEncPubKey());
+      if (isWalletKey) {
+         pk.setWalletKey(true);
+      }
+      //
+   }
+
+   protected void subPopulatePopMenu(BPopupMenu menu) {
+      super.addDefaultAccountMenuItemsNoSendNoKey(menu);
    }
 
    //#mdebug

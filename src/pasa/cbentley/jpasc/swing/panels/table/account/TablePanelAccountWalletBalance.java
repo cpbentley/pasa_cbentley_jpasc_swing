@@ -32,7 +32,7 @@ public class TablePanelAccountWalletBalance extends TablePanelAccountAbstractMin
     */
    private static final long  serialVersionUID = -2670337420041048302L;
 
-   public static final String KEY              = "list_my_rich";
+   public static final String KEY              = "wallet_rich";
 
    public TablePanelAccountWalletBalance(PascalSwingCtx psc, IRootTabPane root) {
       super(psc, root, KEY);

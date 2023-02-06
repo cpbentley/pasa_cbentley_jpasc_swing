@@ -37,6 +37,9 @@ public abstract class TablePanelAccountAbstractKey extends TablePanelAccountAbst
 
    protected PanelHelperKeyAbstract panelKeyHelper;
 
+   /**
+    * 
+    */
    protected boolean                isKeyFilteringEnabled = true;
 
    /**

@@ -21,6 +21,7 @@ import pasa.cbentley.jpasc.swing.widgets.PanelPascal;
 import pasa.cbentley.jpasc.swing.widgets.PublicKeyJavaComboBoxCached;
 import pasa.cbentley.swing.cmd.ICommandableRefresh;
 import pasa.cbentley.swing.interfaces.IStringPrefIDable;
+import pasa.cbentley.swing.widgets.b.BButton;
 import pasa.cbentley.swing.widgets.b.BLabel;
 
 /**
@@ -35,11 +36,16 @@ import pasa.cbentley.swing.widgets.b.BLabel;
  */
 public abstract class PanelHelperKeyAbstract extends PanelPascal implements ActionListener, IComboModelMapPublicKeyJavaListener {
 
+   protected BButton                     butRefresh;
+
    /**
     * Possibly null
     */
    protected PublicKeyJavaComboBoxCached comboKeys;
 
+   /**
+    * 
+    */
    protected IStringPrefIDable           idable;
 
    private boolean                       isDefChangeKeySelected;
@@ -52,6 +58,8 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
    protected boolean                     isShowLabel;
 
    private boolean                       isWildcarded;
+
+   private String                        labelKey;
 
    protected BLabel                      labPublicKey;
 
@@ -76,7 +84,16 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
          //we don't want a refresh when model is simply updating
          return;
       }
+      
+      if(e.getSource() == butRefresh) {
+         refreshModel();
+         return;
+      }
+      
       PublicKeyJava pk = comboKeys.getSelectedKeyJava();
+      
+      //#debug
+      toDLog().pFlow("Selected PublicKeyJava", pk, PanelHelperKeyAbstract.class, "actionPerformed", LVL_04_FINER, true);
       if (pk != null) {
          psc.getPascPrefs().put(getComboPrefString(), pk.getName());
       }
@@ -85,6 +102,9 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
       }
    }
 
+   /**
+    * Called when it is necessary to add the components.
+    */
    public void buildUI() {
       if (isBuilt()) {
          //issue warning TODO Dev warn disparu?
@@ -97,6 +117,7 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
          labelKey = "text.publickey";
       }
       labPublicKey = new BLabel(sc, labelKey);
+      butRefresh = new BButton(sc, this, "but.refresh");
 
       if (isDropDownComboEnabled) {
          ComboModelMapPublicKeyJava model = createModel();
@@ -111,21 +132,9 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
       }
    }
 
-   public void refreshModel() {
-      if (isDropDownComboEnabled) {
-         ComboModelMapPublicKeyJava model = createModel();
-         comboKeys.setModelCombo(model);
-         if (model.isDataLoaded()) {
-            selectPreviousKeyWithEvent(comboKeys);
-         } else {
-            //TODO if data model is finished loading during if call.. listener is useless. very rare case.
-            model.addListenerComboMap(this);
-         }
-      }
-   }
-
    /**
-    * Create the model with its data for the Combobox.
+    * Create the model and its data for the Combobox.
+    * 
     * The model might not be populated.. so an event is required for this.
     * At least one row gives a message if full empty or if loading key
     * @return
@@ -193,12 +202,20 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
       return psc.getPCtx().getDomainMapper().mapPublicKeyJava(selectedKeyAsPublicKeyJava);
    }
 
+   /**
+    * True if combo menu is not null.
+    * @return
+    */
    public boolean isBuilt() {
       return comboKeys != null;
    }
 
    public boolean isKeySelectionEnabled() {
       return isDropDownComboEnabled;
+   }
+
+   public boolean isWildcarded() {
+      return isWildcarded;
    }
 
    public void modelDidFinishLoading(ComboModelMapPublicKeyJava model) {
@@ -208,12 +225,33 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
       selectPreviousKey();
    }
 
+   public void refreshModel() {
+      if (isDropDownComboEnabled) {
+         ComboModelMapPublicKeyJava model = createModel();
+         comboKeys.setModelCombo(model);
+         if (model.isDataLoaded()) {
+            selectPreviousKeyWithEvent(comboKeys);
+         } else {
+            //TODO if data model is finished loading during if call.. listener is useless. very rare case.
+            model.addListenerComboMap(this);
+         }
+      }
+   }
+
    private void selectPreviousKey() {
       if (comboKeys != null) {
          //select the previously selected key
          String keySelected = psc.getPascPrefs().get(getComboPrefString(), "");
          if (keySelected.equals("")) {
-            comboKeys.setSelectedIndex(0);
+            //select the first one
+            int count = comboKeys.getItemCount();
+            if(count != 0) {
+               comboKeys.setSelectedIndex(0);
+            } else {
+               //
+               //#debug
+               toDLog().pFlow("Empty ComboBox", this, PanelHelperKeyAbstract.class, "selectPreviousKey", LVL_04_FINER, true);
+            }
          } else {
             comboKeys.setSelectedKeyNoEvent(keySelected);
          }
@@ -245,16 +283,6 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
 
    public void setKeySelectionEnabled(boolean isKeySelectionEnabled) {
       this.isDropDownComboEnabled = isKeySelectionEnabled;
-   }
-
-   public boolean isWildcarded() {
-      return isWildcarded;
-   }
-
-   private String labelKey;
-
-   public void setWildcarded(boolean isWildcarded) {
-      this.isWildcarded = isWildcarded;
    }
 
    public void setLabelTextKey(String key) {
@@ -289,12 +317,20 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
       }
    }
 
+   public void setWildcarded(boolean isWildcarded) {
+      this.isWildcarded = isWildcarded;
+   }
+
    //#mdebug
    public void toString(Dctx dc) {
-      dc.root(this, "PanelKeyHelperAbstract");
+      dc.root(this, PanelHelperKeyAbstract.class);
       toStringPrivate(dc);
       super.toString(dc.sup());
 
+      dc.appendVarWithSpace("isWildcarded", isWildcarded);
+      dc.appendVarWithSpace("isShowLabel", isShowLabel);
+      dc.appendVarWithSpace("isDropDownComboEnabled", isDropDownComboEnabled);
+      
       PublicKeyJava pkj = getSelectedKeyAsPublicKeyJava();
       dc.nlLvl(pkj, "SelectedKeyJava");
 
@@ -303,6 +339,7 @@ public abstract class PanelHelperKeyAbstract extends PanelPascal implements Acti
 
       dc.nlLvl(comboKeys, "comboKeys");
 
+      dc.nlLvl(idable, "IStringPrefIDable");
    }
 
    public void toString1Line(Dctx dc) {

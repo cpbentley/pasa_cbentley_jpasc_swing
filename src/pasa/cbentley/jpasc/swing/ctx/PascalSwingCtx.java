@@ -131,7 +131,7 @@ import pasa.cbentley.swing.window.CBentleyFrame;
  */
 public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
 
-   public static final int CTX_ID = 5002;
+   public static final int                   CTX_ID           = 5002;
 
    private PascalAudio                       audio;
 
@@ -892,6 +892,10 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       return currentMode;
    }
 
+   /**
+    * The collection of keys read from the deamon
+    * @return {@link ModelProviderPublicJavaKeyPrivate}
+    */
    public ModelProviderPublicJavaKeyPrivate getModelProviderPublicJavaKeyPrivate() {
       if (modelProviderPublicJavaKeyPrivate == null) {
          modelProviderPublicJavaKeyPrivate = new ModelProviderPublicJavaKeyPrivate(this);

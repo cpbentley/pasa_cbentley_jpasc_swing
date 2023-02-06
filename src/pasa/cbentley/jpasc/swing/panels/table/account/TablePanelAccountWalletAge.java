@@ -23,7 +23,7 @@ import pasa.cbentley.swing.imytab.IMyTab;
  */
 public class TablePanelAccountWalletAge extends TablePanelAccountAbstractMinMaxInteger implements IMyTab {
 
-   public static final String KEY = "list_my_ages";
+   public static final String KEY = "wallet_age";
 
    public TablePanelAccountWalletAge(PascalSwingCtx psc, IRootTabPane root) {
       super(psc, root, KEY);

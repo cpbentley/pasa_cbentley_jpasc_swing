@@ -43,6 +43,8 @@ public class TabsChainExplorer extends TabbedBentleyPanel implements IRootTabPan
 
    private TabsOperations      operationsPanel;
 
+   private TabsWalletExplorer  walletPanel;
+
    private PascalSwingCtx      psc;
 
    private IRootTabPane        rootRPC;
@@ -98,11 +100,13 @@ public class TabsChainExplorer extends TabbedBentleyPanel implements IRootTabPan
       accountExplorerPanel = new TabsAccountExplorer(psc, rootRPC);
       blockPanel = new TabsBlocks(psc, rootRPC);
       keysExplorer = new TabsKeysExplorer(psc, rootRPC);
-
+      walletPanel = new TabsWalletExplorer(psc, rootRPC);
+      
       this.addMyTab(accountExplorerPanel);
       this.addMyTab(operationsPanel);
       this.addMyTab(blockPanel);
       this.addMyTab(keysExplorer);
+      this.addMyTab(walletPanel);
 
    }
 

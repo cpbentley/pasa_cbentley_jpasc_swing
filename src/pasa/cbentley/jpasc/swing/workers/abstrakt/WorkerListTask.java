@@ -20,12 +20,20 @@ import pasa.cbentley.swing.threads.IWorkerPanel;
 import pasa.cbentley.swing.threads.PanelSwingWorker;
 import pasa.cbentley.swing.threads.WorkerStat;
 
+/**
+ * 
+ * {@link PanelSwingWorker}
+ * 
+ * @author Charles Bentley
+ *
+ * @param <K>
+ * @param <V>
+ */
 public abstract class WorkerListTask<K, V> extends PanelSwingWorker<K, V> implements IListListener<V> {
 
    public WorkerListTask(SwingCtx sc, IWorkerPanel wp) {
       super(sc, wp);
    }
-
 
    private ListTask<V> task;
 
@@ -40,7 +48,7 @@ public abstract class WorkerListTask<K, V> extends PanelSwingWorker<K, V> implem
    }
 
    /**
-    * The specific {@link ListTask} that will be run inside this SwingWorker.
+    * Create a new instance of the specific {@link ListTask} that will be run inside this SwingWorker.
     * <br>
     * @return
     */
@@ -59,7 +67,6 @@ public abstract class WorkerListTask<K, V> extends PanelSwingWorker<K, V> implem
       publicList(list);
    }
 
-   
    /**
     * 
     * {@link SwingWorker#cancel(boolean)} will interrupt our thread.
@@ -78,6 +85,10 @@ public abstract class WorkerListTask<K, V> extends PanelSwingWorker<K, V> implem
       return getModel();
    }
 
+   /**
+    * Publish the elements in List using {@link SwingWorker#publish} protected final method
+    * @param list
+    */
    public void publicList(List<V> list) {
       Iterator<V> it = list.iterator();
       while (it.hasNext()) {
@@ -106,8 +117,5 @@ public abstract class WorkerListTask<K, V> extends PanelSwingWorker<K, V> implem
    }
 
    //#enddebug
-   
- 
-   
 
 }

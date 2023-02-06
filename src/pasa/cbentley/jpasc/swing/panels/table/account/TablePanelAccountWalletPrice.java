@@ -27,7 +27,7 @@ import pasa.cbentley.swing.threads.PanelSwingWorker;
  */
 public class TablePanelAccountWalletPrice extends TablePanelAccountAbstractMinMaxDouble implements IMyTab {
 
-   public static final String KEY              = "list_my_price";
+   public static final String KEY              = "wallet_sales";
 
    /**
     * 

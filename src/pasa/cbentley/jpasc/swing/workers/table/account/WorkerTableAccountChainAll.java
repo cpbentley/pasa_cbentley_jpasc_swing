@@ -13,7 +13,7 @@ import pasa.cbentley.jpasc.swing.tablemodels.bentley.ModelTableAccountAbstract;
 import pasa.cbentley.swing.threads.IWorkerPanel;
 
 /**
- * Worker that lists all accounts with no conditions.
+ * Worker that lists all accounts of the blockchain with no conditions.
  * 
  * @author Charles Bentley
  *
@@ -34,7 +34,7 @@ public class WorkerTableAccountChainAll extends WorkerTableAccountAbstract {
 
    //#mdebug
    public void toString(Dctx dc) {
-      dc.root(this, "WorkerTableAccountChainAll");
+      dc.root(this, WorkerTableAccountChainAll.class);
       super.toString(dc.sup());
    }
 

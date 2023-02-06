@@ -35,6 +35,9 @@ import pasa.cbentley.swing.threads.PanelSwingWorker;
  */
 public abstract class ModelProviderPublicJavaKeyAbstract implements IWorkerPanel, IMyGui, IEventConsumer, IEventsPascalSwing {
 
+   /**
+    * 
+    */
    protected HashMapCacheKeys                 cacheKeyPrivate;
 
    /**
@@ -42,6 +45,9 @@ public abstract class ModelProviderPublicJavaKeyAbstract implements IWorkerPanel
     */
    protected HashMapCacheKeys                 cacheKeyPrivateWildcards;
 
+   /**
+    * 
+    */
    protected final PascalSwingCtx             psc;
 
    /**
@@ -54,6 +60,9 @@ public abstract class ModelProviderPublicJavaKeyAbstract implements IWorkerPanel
     */
    private WorkerHashMapCacheAbstract         workerPrivate;
 
+   /**
+    * 
+    */
    private WorkerHashMapCacheAbstract         workerPrivateWild;
 
    public ModelProviderPublicJavaKeyAbstract(PascalSwingCtx psc) {
@@ -76,6 +85,11 @@ public abstract class ModelProviderPublicJavaKeyAbstract implements IWorkerPanel
       }
    }
 
+   /**
+    * Factory method for creating the 
+    * @param model
+    * @return WorkerHashMapCacheAbstract
+    */
    protected abstract WorkerHashMapCacheAbstract createWorkerKey(HashMapCacheKeys model);
 
    public void guiUpdate() {
@@ -101,7 +115,7 @@ public abstract class ModelProviderPublicJavaKeyAbstract implements IWorkerPanel
    private void initMainCache() {
       if (cacheKeyPrivate == null) {
          //#debug
-         toDLog().pInit("Creating cacheKeyPrivate", this, ModelProviderPublicJavaKeyPrivate.class, "getCacheKeyPrivate", LVL_05_FINE, true);
+         toDLog().pInit("Creating cacheKeyPrivate", this, ModelProviderPublicJavaKeyAbstract.class, "getCacheKeyPrivate", LVL_05_FINE, true);
          cacheKeyPrivate = new HashMapCacheKeys(psc);
          //populate the cache
          workerPrivate = createWorkerKey(cacheKeyPrivate);
@@ -120,7 +134,7 @@ public abstract class ModelProviderPublicJavaKeyAbstract implements IWorkerPanel
       //hashmap with wildcards and private keys
       if (cacheKeyPrivateWildcards == null) {
          //#debug
-         toDLog().pInit("Creating cacheKeyPrivateWildcards", this, ModelProviderPublicJavaKeyPrivate.class, "getCacheKeyPrivateWildcards", LVL_05_FINE, true);
+         toDLog().pInit("Creating cacheKeyPrivateWildcards", this, ModelProviderPublicJavaKeyAbstract.class, "getCacheKeyPrivateWildcards", LVL_05_FINE, true);
          cacheKeyPrivateWildcards = new HashMapCacheKeys(psc);
 
          initMainCache();
@@ -136,6 +150,11 @@ public abstract class ModelProviderPublicJavaKeyAbstract implements IWorkerPanel
          listener.modelDidFinishLoading(cacheKeyPrivateWildcards);
       }
    }
+
+   /**
+    * 
+    * @return ComboModelMapPublicKeyJava
+    */
    public ComboModelMapPublicKeyJava createModelPublicKeyJava() {
       ComboModelMapPublicKeyJava model = new ComboModelMapPublicKeyJava(psc);
       //track all models. add it before calling
@@ -169,7 +188,7 @@ public abstract class ModelProviderPublicJavaKeyAbstract implements IWorkerPanel
       loadCacheKeyPrivateWildcards(model);
       return model;
    }
-   
+
    public void panelSwingWorkerCancelled(PanelSwingWorker worker) {
    }
 
@@ -212,7 +231,7 @@ public abstract class ModelProviderPublicJavaKeyAbstract implements IWorkerPanel
    }
 
    public void toString(Dctx dc) {
-      dc.root(this, "ModelProviderPublicJavaKeyAbstract");
+      dc.root(this, ModelProviderPublicJavaKeyAbstract.class);
       toStringPrivate(dc);
    }
 
@@ -221,7 +240,7 @@ public abstract class ModelProviderPublicJavaKeyAbstract implements IWorkerPanel
    }
 
    public void toString1Line(Dctx dc) {
-      dc.root1Line(this, "ModelProviderPublicJavaKeyAbstract");
+      dc.root1Line(this, ModelProviderPublicJavaKeyAbstract.class);
       toStringPrivate(dc);
    }
 

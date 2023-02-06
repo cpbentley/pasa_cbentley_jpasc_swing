@@ -27,7 +27,7 @@ import pasa.cbentley.swing.widgets.b.BPopupMenu;
  */
 public class TablePanelAccountWalletName extends TablePanelAccountAbstractKeyName implements IMyTab {
 
-   private static final String KEY              = "list_my_names";
+   private static final String KEY              = "wallet_names";
 
    /**
     * 

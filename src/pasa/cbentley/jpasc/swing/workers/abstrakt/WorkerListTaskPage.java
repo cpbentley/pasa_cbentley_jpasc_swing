@@ -7,16 +7,27 @@ package pasa.cbentley.jpasc.swing.workers.abstrakt;
 
 import java.util.List;
 
+import javax.swing.SwingWorker;
+
+import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.jpasc.pcore.pages.PagerAbstract;
 import pasa.cbentley.jpasc.pcore.task.ListTask;
 import pasa.cbentley.jpasc.pcore.task.ListTaskPage;
 import pasa.cbentley.swing.ctx.SwingCtx;
 import pasa.cbentley.swing.threads.IWorkerPanel;
+import pasa.cbentley.swing.threads.PanelSwingWorker;
 import pasa.cbentley.swing.threads.WorkerStat;
 
 /**
- * With paging
+ * Adds paging support to {@link WorkerListTask} <- {@link PanelSwingWorker} <- {@link SwingWorker} 
+ * 
+ * <br>
+ * <br>
+ * 
+ * Requires a {@link IWorkerPanel} in the constructor.
+ * <br>
+ * <br>
  * 
  * @author Charles Bentley
  *
@@ -27,19 +38,36 @@ public abstract class WorkerListTaskPage<K, V> extends WorkerListTask<K, V> {
 
    private ListTaskPage<V> taskPage;
 
+   /**
+    * 
+    * @param sc
+    * @param wp
+    */
    public WorkerListTaskPage(SwingCtx sc, IWorkerPanel wp) {
       super(sc, wp);
    }
 
+   /**
+    * Creates the specific {@link ListTaskPage} for this Worker.
+    * @return
+    */
    protected abstract ListTaskPage<V> createTaskPage();
 
+   /**
+    * Subclasses now work with {@link WorkerListTaskPage#createTaskPage()}
+    * 
+    * <br>
+    * 
+    * Indirection of the {@link WorkerListTask#createTask()}.
+    */
    protected ListTask<V> createTask() {
       taskPage = createTaskPage();
       return taskPage;
    }
 
    /**
-    * Called in the worker thread
+    * Hooks on {@link WorkerListTask#newDataAvailable(List)} to update the {@link WorkerStat} object
+    * with the page values.
     */
    public void newDataAvailable(List<V> list) {
       //update the worker stat 
@@ -55,7 +83,7 @@ public abstract class WorkerListTaskPage<K, V> extends WorkerListTask<K, V> {
 
    //#mdebug
    public void toString(Dctx dc) {
-      dc.root(this, "WorkerListTaskPage");
+      dc.root(this, WorkerListTaskPage.class, "@line78");
       toStringPrivate(dc);
       super.toString(dc.sup());
    }
@@ -65,10 +93,11 @@ public abstract class WorkerListTaskPage<K, V> extends WorkerListTask<K, V> {
    }
 
    public void toString1Line(Dctx dc) {
-      dc.root1Line(this, "WorkerListTaskPage");
+      dc.root1Line(this, WorkerListTaskPage.class);
       toStringPrivate(dc);
       super.toString1Line(dc.sup1Line());
    }
 
    //#enddebug
+
 }

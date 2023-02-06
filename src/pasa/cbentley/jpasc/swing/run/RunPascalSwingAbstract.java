@@ -65,6 +65,16 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
       this.psc = new PascalSwingCtx(pc, sc, gifc);
    }
 
+   public void startUI() {
+      final RunPascalSwingAbstract runner = this;
+      runner.initUIThreadOutside();
+      //init UI stuff inside AWT thread.
+      javax.swing.SwingUtilities.invokeLater(new Runnable() {
+         public void run() {
+            runner.initUIThreadInside();
+         }
+      });
+   }
    /**
     * Final. Force the use of {@link RunPascalSwingAbstract#addI18nPascal(List)} 
     */
@@ -95,7 +105,7 @@ public abstract class RunPascalSwingAbstract extends RunSwingAbstract implements
    protected abstract void initForPrefsPascal(IPrefs prefs);
 
    /**
-    * 
+    * Add implementation resource bundle keys to the list
     * @param list
     */
    protected abstract void addI18nPascal(List<String> list);

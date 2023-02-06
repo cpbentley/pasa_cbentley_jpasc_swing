@@ -25,6 +25,7 @@ import pasa.cbentley.jpasc.pcore.ctx.ITechPCore;
 import pasa.cbentley.jpasc.pcore.rpc.model.PublicKey;
 import pasa.cbentley.jpasc.swing.menu.MenuBarPascalDemo;
 import pasa.cbentley.jpasc.swing.panels.core.PanelTabLoginConsole;
+import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperKeyWalletNoWildcards;
 import pasa.cbentley.jpasc.swing.panels.helpers.PanelHelperKeyWalletSwitch;
 import pasa.cbentley.swing.actions.IExitable;
 import pasa.cbentley.swing.cmd.ICommandableRefresh;
@@ -50,7 +51,7 @@ public class RunPanelHelperKeyWalletSwitch extends RunPascalSwingAbstract implem
    private PanelHelperKeyWalletSwitch panelHelperKeyWalletSwitch1;
 
    private PanelHelperKeyWalletSwitch panelHelperKeyWalletSwitch2;
-
+   
    /**
     * Super constructor initializes all the contexts
     */

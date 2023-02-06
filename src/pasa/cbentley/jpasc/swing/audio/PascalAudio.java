@@ -132,6 +132,11 @@ public class PascalAudio implements IBlockListener {
       } else {
          //assume wav for now
          InputStream is = this.getClass().getResourceAsStream(fileName);
+         if(is == null) {
+          //#debug
+            toDLog().pSound("ERROR no file for " + fileName, this, PascalAudio.class, "playAudio", ITechLvl.LVL_09_WARNING, true);
+            return;
+         }
          try {
             AudioInputStream aff = AudioSystem.getAudioInputStream(is);
             Clip clip = AudioSystem.getClip();
