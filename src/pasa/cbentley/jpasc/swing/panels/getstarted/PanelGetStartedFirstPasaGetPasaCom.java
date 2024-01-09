@@ -201,7 +201,7 @@ public class PanelGetStartedFirstPasaGetPasaCom extends PanelTabAbstractPascal i
 
    public void refreshTable() {
       //#debug
-      toDLog().pEvent("", this, PanelGetStartedFirstPasaGetPasaCom.class, "refreshTable", ITechLvl.LVL_04_FINER, ITechConfig.CONFIG_FLAG_3_STACK);
+      toDLog().pEvent("", this, PanelGetStartedFirstPasaGetPasaCom.class, "refreshTable", ITechLvl.LVL_04_FINER, ITechConfig.FORMAT_FLAG_03_STACK);
 
       simpleModel = new ModelTablePublicKeyJavaSimple(psc);
       jtableKeys.setModel(simpleModel);
