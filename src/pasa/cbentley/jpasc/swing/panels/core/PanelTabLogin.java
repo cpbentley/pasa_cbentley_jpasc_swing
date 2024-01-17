@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 
 import pasa.cbentley.core.src4.event.BusEvent;
 import pasa.cbentley.core.src4.event.IEventConsumer;
-import pasa.cbentley.core.src4.utils.ColorUtils;
+import pasa.cbentley.core.src4.utils.interfaces.IColorsWeb;
 import pasa.cbentley.jpasc.pcore.ctx.ITechPasc;
 import pasa.cbentley.jpasc.pcore.ctx.PCoreCtx;
 import pasa.cbentley.jpasc.pcore.interfaces.IBlockListener;
@@ -288,7 +288,7 @@ public class PanelTabLogin extends PanelTabAbstractPascal implements ActionListe
       labWaitingTitle = new JLabel("Waiting for next");
 
       loginTimingLabElapsed = new JLabel();
-      loginTimingLabElapsed.setForeground(new Color(ColorUtils.WEB_indianred));
+      loginTimingLabElapsed.setForeground(new Color(IColorsWeb.WEB_indianred));
       //loginTimingLabElapsed.setEnabled(false);
       loginTimingLabElapsed.setToolTipText("Time elapsed since last block was found");
 
