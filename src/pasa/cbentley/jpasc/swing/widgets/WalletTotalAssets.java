@@ -16,6 +16,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
+import pasa.cbentley.core.src4.ctx.ToStringStaticUc;
 import pasa.cbentley.core.src4.ctx.UCtx;
 import pasa.cbentley.core.src4.event.BusEvent;
 import pasa.cbentley.core.src4.event.IEventConsumer;
@@ -23,7 +24,6 @@ import pasa.cbentley.core.src4.interfaces.ICommandable;
 import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IDLog;
 import pasa.cbentley.core.src4.logging.ITechLvl;
-import pasa.cbentley.core.src4.thread.AbstractBRunnable;
 import pasa.cbentley.core.src4.thread.IBRunnable;
 import pasa.cbentley.core.src4.thread.IBRunnableListener;
 import pasa.cbentley.core.src4.utils.ColorUtils;
@@ -265,7 +265,7 @@ public class WalletTotalAssets extends JPanel implements IMyGui, ICommandable, I
 
    public void runnerNewState(IBRunnable runner, int newState) {
       //#debug
-      toDLog().pFlow("newState=" + AbstractBRunnable.toStringState(newState), this, WalletTotalAssets.class, "runnerNewState", ITechLvl.LVL_05_FINE, true);
+      toDLog().pFlow("newState=" + ToStringStaticUc.toStringState(newState), this, WalletTotalAssets.class, "runnerNewState", ITechLvl.LVL_05_FINE, true);
       //we are in the worker thread here
       WorkerWalletAssetStats worker = (WorkerWalletAssetStats) runner;
       final AssetStatResult res = worker.getAssetStatResultImmutable();
