@@ -302,7 +302,7 @@ public class WalletTotalAssets extends JPanel implements IMyGui, ICommandable, I
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
    //#enddebug
 

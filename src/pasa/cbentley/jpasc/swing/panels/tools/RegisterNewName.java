@@ -319,7 +319,7 @@ public class RegisterNewName extends PanelTabAbstractPascal implements IMyGui, I
       }
 
       char c0 = name.charAt(0);
-      if (sc.getUCtx().getCU().isNumerical(c0)) {
+      if (sc.getUC().getCU().isNumerical(c0)) {
          labResult.setForeground(Color.red);
          labResult.setText("name cannot start with 0 1 2 3 4 5 6 7 8 or 9");
          return;

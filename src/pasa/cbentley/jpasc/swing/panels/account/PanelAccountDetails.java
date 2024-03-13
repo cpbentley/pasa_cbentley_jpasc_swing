@@ -202,7 +202,7 @@ public class PanelAccountDetails extends PanelTabAbstractPascal implements Docum
          Integer account = root.getAccountPrev(getAccountAsInt());
          textAccount.setText(account.toString());
       } else if (src == butRandom) {
-         Integer account = psc.getUCtx().getRandom().nextInt(psc.getPCtx().getLastValidAccount());
+         Integer account = psc.getUC().getRandom().nextInt(psc.getPCtx().getLastValidAccount());
          textAccount.setText(account.toString());
       } else if (src == butCopyAccountCk) {
          String value = textAccount.getText() + "-" + textCheckSum.getText();

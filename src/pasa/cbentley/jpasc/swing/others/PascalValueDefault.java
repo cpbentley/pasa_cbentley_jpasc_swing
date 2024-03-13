@@ -45,7 +45,7 @@ public class PascalValueDefault implements IStringable {
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
    //#enddebug
 

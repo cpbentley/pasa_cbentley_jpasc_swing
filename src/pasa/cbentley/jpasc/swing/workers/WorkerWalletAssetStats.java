@@ -41,7 +41,7 @@ public class WorkerWalletAssetStats extends AbstractBRunnable {
    }
 
    public WorkerWalletAssetStats(PascalSwingCtx psc) {
-      super(psc.getUCtx());
+      super(psc.getUC());
       this.psc = psc;
    }
 

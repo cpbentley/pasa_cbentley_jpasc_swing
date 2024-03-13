@@ -38,7 +38,7 @@ public class PanelHelperLoadingStat extends PanelPascal {
       progressBar = new PascalProgressBar(psc);
       progressBar.setStringPainted(true);
 
-      entries = new IntToObjects(psc.getUCtx());
+      entries = new IntToObjects(psc.getUC());
    }
 
    public void addToPanelSerially(JPanel panel) {

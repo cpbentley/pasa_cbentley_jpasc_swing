@@ -28,7 +28,7 @@ public class WorkerTableAccountNameContains extends WorkerTableAccountAbstract {
       if (name == null) {
          throw new NullPointerException();
       }
-      this.acceptor = new StrAcceptorContained(psc.getUCtx(), name);
+      this.acceptor = new StrAcceptorContained(psc.getUC(), name);
    }
 
    protected ListTaskAccountAbstract createTaskAccount() {

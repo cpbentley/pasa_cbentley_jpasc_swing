@@ -31,7 +31,7 @@ public class WorkerTableAccountWalletNames extends WorkerTableAccountAbstractNam
          listTaskAccountWallet = new ListTaskAccountWalletNameAny(psc.getPCtx(), this);
       } else {
          //TODO we can add our own acceptors 
-         StrAcceptorContains acceptor = new StrAcceptorContains(psc.getUCtx(), name);
+         StrAcceptorContains acceptor = new StrAcceptorContains(psc.getUC(), name);
          listTaskAccountWallet = new ListTaskAccountWalletNameAcceptor(psc.getPCtx(), this, acceptor);
       }
       return listTaskAccountWallet;

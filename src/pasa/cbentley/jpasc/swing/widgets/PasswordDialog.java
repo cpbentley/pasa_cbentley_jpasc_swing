@@ -159,7 +159,7 @@ public class PasswordDialog extends JOptionPane implements ComponentListener {
          ar[i] = ' ';
       }
       jpassword.setText(""); //clear password asap from GUI
-      psc.getUCtx().getMem().softGC(); //garbage collect any objects
+      psc.getUC().getMem().softGC(); //garbage collect any objects
       if (isUnlocked) {
          //check if 
          

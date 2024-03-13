@@ -209,7 +209,7 @@ public class FundingTab extends PanelTabAbstractPascal implements ActionListener
 
             String name = ac.getName();
             labFeatureAccountName.setText(name);
-            StringUtils su = sc.getUCtx().getStrU();
+            StringUtils su = sc.getUC().getStrU();
 
             String id = su.getSubstring(name, '_', '_');
             if (id != null) {

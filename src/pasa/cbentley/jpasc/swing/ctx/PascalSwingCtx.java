@@ -252,7 +252,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
     * @param sc cannot be null
     */
    public PascalSwingCtx(PCoreCtx pc, SwingCtx sc, SwingGifCtx gifc) {
-      super(pc.getUCtx());
+      super(pc.getUC());
       this.gifc = gifc;
       this.imgCtx = gifc.getImgCtx();
       this.pc = pc;
@@ -277,7 +277,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       pascalEventsTopology[PID_5_CONNECTIONS] = EID_5_ZZ_NUM;
       pascalEventsTopology[PID_6_KEY_LOCAL_OPERATION] = EID_6_ZZ_NUM;
       pascalEventsTopology[PID_7_PRIVACY_CHANGES] = EID_7_ZZ_NUM;
-      eventBusPascal = new EventBusArray(getUCtx(), this, pascalEventsTopology);
+      eventBusPascal = new EventBusArray(getUC(), this, pascalEventsTopology);
 
       eventBusPascal.setExecutor(sc.getSwingExecutor());
       //same for our core pascal context who can't set itself since it doesn not its GUI context
@@ -1123,8 +1123,8 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       return sc;
    }
 
-   public UCtx getUCtx() {
-      return sc.getUCtx();
+   public UCtx getUC() {
+      return sc.getUC();
    }
 
    public IPrefs getUIPref() {
@@ -1485,7 +1485,7 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    }
 
    public String toString(PublicKey pkNew, Account buyer, Account bought, Double fee) {
-      StringBBuilder sb = new StringBBuilder(sc.getUCtx());
+      StringBBuilder sb = new StringBBuilder(sc.getUC());
       sb.append("Account ");
       sb.append(buyer.getAccount());
       sb.append(" buys ");

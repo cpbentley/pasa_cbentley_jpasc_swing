@@ -117,7 +117,7 @@ public class SwingBlockEventAdapter implements IBlockListener, IEventsPascalSwin
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
    //#enddebug
 

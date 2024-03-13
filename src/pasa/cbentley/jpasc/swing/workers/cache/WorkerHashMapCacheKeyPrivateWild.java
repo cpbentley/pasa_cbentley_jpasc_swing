@@ -56,7 +56,7 @@ public class WorkerHashMapCacheKeyPrivateWild extends WorkerHashMapCacheAbstract
          //list task will return early
          task = new ListTaskPageCustomRunEmpty<PublicKeyJava>(psc.getPCtx(), this);
       } else {
-         mutex = new MutexSignal(psc.getUCtx());
+         mutex = new MutexSignal(psc.getUC());
          workerReal.addTaskListener(this);
          //list task will wait
          task = new ListTaskFromWorkerCache(psc.getPCtx(), this, mutex);

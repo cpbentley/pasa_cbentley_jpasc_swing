@@ -182,7 +182,7 @@ public class PascalSwingUtils implements IEventConsumer {
       isInited = true;
       //we only need to register for changes when it is required
       //we want to be notified when a language change occurs
-      psc.getUCtx().getEventBusRoot().addConsumer(this, IEventsCore.PID_01_FRAMEWORK, IEventsCore.PID_01_FRAMEWORK_2_LANGUAGE_CHANGED);
+      psc.getUC().getEventBusRoot().addConsumer(this, IEventsCore.PID_01_FRAMEWORK, IEventsCore.PID_01_FRAMEWORK_2_LANGUAGE_CHANGED);
 
       //at construction time, the bundle of string is not yet available.
       computeStringValues();
@@ -212,7 +212,7 @@ public class PascalSwingUtils implements IEventConsumer {
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
 
    private void toStringPrivate(Dctx dc) {

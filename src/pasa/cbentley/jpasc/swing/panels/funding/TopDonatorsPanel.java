@@ -101,7 +101,7 @@ public class TopDonatorsPanel extends RiverPanel implements IWorkerPanel, IMyGui
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
    //#enddebug
 

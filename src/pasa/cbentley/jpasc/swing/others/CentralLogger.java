@@ -87,7 +87,7 @@ public class CentralLogger implements IUserLog {
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
 
    //#enddebug

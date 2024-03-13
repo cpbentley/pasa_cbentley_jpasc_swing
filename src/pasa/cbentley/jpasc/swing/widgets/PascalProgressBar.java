@@ -155,7 +155,7 @@ public class PascalProgressBar extends JProgressBar implements IStringable, Mous
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
    //#enddebug
 

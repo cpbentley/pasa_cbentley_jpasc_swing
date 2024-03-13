@@ -90,7 +90,7 @@ public class WalletKeyMapper implements IWorkerPanel, IEventsPascalSwing, IEvent
    //#enddebug
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
 
 }

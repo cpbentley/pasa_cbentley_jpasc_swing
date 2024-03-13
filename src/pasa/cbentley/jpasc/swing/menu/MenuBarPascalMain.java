@@ -668,7 +668,7 @@ public class MenuBarPascalMain extends MenuBarPascalAbstract implements ActionLi
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
    //#enddebug
 

@@ -158,7 +158,7 @@ public class PanelBlockDetails extends PanelTabAbstractPascal implements Documen
          textBlock.setText(block.toString());
       } else if (src == butRandom) {
          int lastValidBlock = root.getBlockLast().intValue();
-         Integer block = psc.getUCtx().getRandom().nextInt(lastValidBlock);
+         Integer block = psc.getUC().getRandom().nextInt(lastValidBlock);
          textBlock.setText(block.toString());
       } else if (src == butCopyBlockPayload) {
          String value = textBlock.getText() + "-" + textPayload.getText();

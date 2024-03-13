@@ -64,7 +64,7 @@ public abstract class MenuBarPascalAbstract extends JMenuBar implements IMyGui, 
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
    //#enddebug
 

@@ -267,7 +267,7 @@ public class PascalAudio implements IBlockListener {
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
 
    public String toString1Line() {

@@ -151,7 +151,7 @@ public class PublicKeyJavaComboBox extends JComboBox<String> implements IStringa
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
 
    //#enddebug

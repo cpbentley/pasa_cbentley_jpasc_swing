@@ -119,7 +119,7 @@ public class FundingPrinciples extends RiverPanel implements IMyGui {
    }
 
    public UCtx toStringGetUCtx() {
-      return sc.getUCtx();
+      return sc.getUC();
    }
    //#enddebug
    

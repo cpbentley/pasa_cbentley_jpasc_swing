@@ -245,7 +245,7 @@ public abstract class ModelProviderPublicJavaKeyAbstract implements IWorkerPanel
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
 
    private void toStringPrivate(Dctx dc) {

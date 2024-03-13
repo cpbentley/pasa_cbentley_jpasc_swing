@@ -589,7 +589,7 @@ public class PascalCmdManager implements IStringable, ITechShow {
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
    //#enddebug
 

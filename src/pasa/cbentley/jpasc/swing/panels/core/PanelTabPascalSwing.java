@@ -99,7 +99,7 @@ public class PanelTabPascalSwing extends PanelTabAbstractPascal implements IMyGu
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getSwingCtx().getUCtx();
+      return psc.getSwingCtx().getUC();
    }
    //#enddebug
 

@@ -320,7 +320,7 @@ public class ModelProviderPublicJavaKey implements IWorkerPanel, IMyGui, IEventC
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
 
    private void toStringPrivate(Dctx dc) {

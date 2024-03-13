@@ -392,7 +392,7 @@ public class PascalSkinManager implements ActionListener, MenuListener, IStringa
    public void setRandomLAF() {
       if (currentAction != null) {
          checkPopulateRootMenu(); //make sure actions are loaded
-         int rIndex = psc.getUCtx().getRandom().nextInt(myLafActions.size());
+         int rIndex = psc.getUC().getRandom().nextInt(myLafActions.size());
          LafAction action = myLafActions.get(rIndex);
          action.executeSetMyLafTheme();
       }
@@ -1043,7 +1043,7 @@ public class PascalSkinManager implements ActionListener, MenuListener, IStringa
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
    //#enddebug
 

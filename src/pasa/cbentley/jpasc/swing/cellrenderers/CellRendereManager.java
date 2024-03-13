@@ -389,7 +389,7 @@ public class CellRendereManager implements IEventConsumer, IStringable, Property
    }
 
    public UCtx toStringGetUCtx() {
-      return psc.getUCtx();
+      return psc.getUC();
    }
    //#enddebug
 
