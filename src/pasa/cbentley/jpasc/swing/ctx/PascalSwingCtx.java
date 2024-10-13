@@ -256,6 +256,9 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
       this.gifc = gifc;
       this.imgCtx = gifc.getImgCtx();
       this.pc = pc;
+      if(sc == null) {
+         throw new NullPointerException();
+      }
       this.sc = sc;
 
       pascalSwingUtils = new PascalSwingUtils(this);
@@ -1474,10 +1477,6 @@ public class PascalSwingCtx extends ACtx implements ICtx, IEventsPascalSwing {
    }
 
    //#mdebug
-   public IDLog toDLog() {
-      return sc.toDLog();
-   }
-
    public void toString(Dctx dc) {
       dc.root(this, "PascalSwingCtx");
       toStringPrivate(dc);
