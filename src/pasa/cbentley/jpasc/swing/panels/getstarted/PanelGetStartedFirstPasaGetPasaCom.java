@@ -25,7 +25,7 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import pasa.cbentley.core.src4.logging.ITechConfig;
+import pasa.cbentley.core.src4.logging.ITechDLogConfig;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.jpasc.swing.audio.PascalAudio;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
@@ -201,7 +201,7 @@ public class PanelGetStartedFirstPasaGetPasaCom extends PanelTabAbstractPascal i
 
    public void refreshTable() {
       //#debug
-      toDLog().pEvent("", this, PanelGetStartedFirstPasaGetPasaCom.class, "refreshTable", ITechLvl.LVL_04_FINER, ITechConfig.FORMAT_FLAG_03_STACK);
+      toDLog().pEvent("", this, PanelGetStartedFirstPasaGetPasaCom.class, "refreshTable", ITechLvl.LVL_04_FINER, ITechDLogConfig.FORMAT_FLAG_03_STACK);
 
       simpleModel = new ModelTablePublicKeyJavaSimple(psc);
       jtableKeys.setModel(simpleModel);

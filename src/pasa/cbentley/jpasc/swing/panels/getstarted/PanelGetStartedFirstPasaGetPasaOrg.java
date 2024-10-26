@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import pasa.cbentley.core.src4.logging.ITechConfig;
+import pasa.cbentley.core.src4.logging.ITechDLogConfig;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.jpasc.swing.ctx.PascalSwingCtx;
 import pasa.cbentley.jpasc.swing.interfaces.ITechHelpKeys;
@@ -196,7 +196,7 @@ public class PanelGetStartedFirstPasaGetPasaOrg extends PanelTabAbstractPascal i
 
    public void refreshTable() {
       //#debug
-      toDLog().pEvent("", this, PanelGetStartedFirstPasaGetPasaOrg.class, "refreshTable", ITechLvl.LVL_04_FINER, ITechConfig.FORMAT_FLAG_03_STACK);
+      toDLog().pEvent("", this, PanelGetStartedFirstPasaGetPasaOrg.class, "refreshTable", ITechLvl.LVL_04_FINER, ITechDLogConfig.FORMAT_FLAG_03_STACK);
 
       simpleModel = new ModelTablePublicKeyJavaSimple(psc);
       jtableKeys.setModel(simpleModel);

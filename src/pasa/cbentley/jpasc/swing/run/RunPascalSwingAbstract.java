@@ -20,7 +20,7 @@ import pasa.cbentley.core.src4.logging.Dctx;
 import pasa.cbentley.core.src4.logging.IDLogConfig;
 import pasa.cbentley.core.src4.logging.IDLog;
 import pasa.cbentley.core.src4.logging.IStringable;
-import pasa.cbentley.core.src4.logging.ITechConfig;
+import pasa.cbentley.core.src4.logging.ITechDLogConfig;
 import pasa.cbentley.core.src4.logging.ITechLvl;
 import pasa.cbentley.core.src5.ctx.C5Ctx;
 import pasa.cbentley.jpasc.pcore.ctx.PCoreCtx;
